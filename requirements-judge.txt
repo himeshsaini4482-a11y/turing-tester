@@ -1,0 +1,8 @@
+# .venv-judge: SpeechJudge-GRM (versions from the SpeechJudge README)
+transformers==4.52.3
+torch
+accelerate
+qwen-omni-utils
+huggingface_hub
+soundfile
+librosa

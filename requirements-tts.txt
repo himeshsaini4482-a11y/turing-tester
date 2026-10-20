@@ -1,0 +1,8 @@
+# .venv-tts: Qwen3-TTS generation, data preparation and supporting metrics
+# (qwen-tts pins transformers==4.57.3, which conflicts with SpeechJudge, hence two venvs)
+qwen-tts==0.1.1
+torch
+torchaudio
+soundfile
+librosa
+jiwer

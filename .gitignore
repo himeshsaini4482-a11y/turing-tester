@@ -1,0 +1,14 @@
+.venv-*/
+__pycache__/
+*.pyc
+
+# downloaded on the VM
+/data/
+/pretrained/
+/third_party/
+
+# run outputs: keep the small result files, ignore audio and raw logs
+runs/*/*
+!runs/*/summary.json
+!runs/*/metrics_summary.json
+!runs/*/generation_config.json

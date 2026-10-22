@@ -62,6 +62,44 @@ RUN_NAME=trained TTS_MODEL=/path/to/checkpoint bash scripts/run_benchmark.sh
 Options (env vars): `VOTES=3` (judge calls per A/B order), `LIMIT=N`, `SKIP_METRICS=1`.
 Every stage is resumable: if the VM drops, re-run the same command.
 
+## Direct Qwen 3.5 9B client
+
+VoiceGym includes a minimal client that sends any text prompt directly to the
+standalone Qwen 3.5 9B vLLM endpoint and prints the answer. It does **not** use
+UAI `router.py`, retrieval, databases, chat history, or any other UAI application
+data. Later code can invoke this client when it needs general text such as
+candidate sentences for TTS or SFT.
+
+```bash
+cp .env.example .env
+# Set VOICEGYM_QWEN_API_KEY in .env; obtain it from the endpoint administrator.
+
+python scripts/qwen9b_client.py "Write five varied sentences for a TTS model to speak."
+
+# stdin and interactive input also work:
+echo "Explain why clear pauses matter in speech." | python scripts/qwen9b_client.py
+python scripts/qwen9b_client.py
+```
+
+Use `--system` to set a system instruction, `--temperature` and `--max-tokens`
+to override generation settings, or `--raw` to print the complete
+OpenAI-compatible response JSON. The script uses only Python's standard library.
+
+Endpoint configuration lives in `.env`:
+
+| Variable | Purpose |
+|---|---|
+| `VOICEGYM_QWEN_BASE_URL` | OpenAI-compatible base URL; currently `https://api.uaitesting.com/general-llm/v1` |
+| `VOICEGYM_QWEN_API_KEY` | Bearer token (secret; never commit it) |
+| `VOICEGYM_QWEN_MODEL` | Served model name, `qwen/qwen3.5-9b` |
+| `VOICEGYM_QWEN_TIMEOUT_SECONDS` | HTTP timeout for a generation request |
+| `VOICEGYM_QWEN_TEMPERATURE` | Sentence diversity |
+| `VOICEGYM_QWEN_MAX_TOKENS` | Maximum response tokens |
+
+The gateway exposes only `GET /models` and `POST /chat/completions` under this
+base URL. Missing/invalid tokens return HTTP 401, and other vLLM paths are not
+published. Rotate a leaked token immediately.
+
 Long runs should survive SSH disconnects, so start them in `tmux` or with `nohup`:
 
 ```bash
@@ -119,6 +157,7 @@ benchmark/generate_tts.py   stage 2: Qwen3-TTS voice-clone generation
 benchmark/judge.py          stage 3: SpeechJudge scoring + closeness formula
 benchmark/metrics.py        stage 4: WER, speaker similarity, UTMOS
 benchmark/data/             LibriSpeech test-clean speaker genders
+scripts/qwen9b_client.py    send a prompt directly to the standalone Qwen 9B endpoint
 scripts/                    setup_vm.sh, run_benchmark.sh, run_sanity_check.sh
 ```
 

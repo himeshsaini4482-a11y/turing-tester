@@ -15,7 +15,7 @@ import re
 from collections import defaultdict
 from statistics import mean
 
-from common import read_manifest
+from common import read_manifest, speaker_key
 
 SR = 16000
 
@@ -115,7 +115,7 @@ def main():
         "overall": {k: mean(res[k] for res in results.values()) for k in numeric},
         "per_speaker": {
             spk: {k: mean(res[k] for res in group) for k in numeric}
-            for spk, group in sorted(by_speaker.items(), key=lambda kv: int(kv[0]))
+            for spk, group in sorted(by_speaker.items(), key=lambda kv: speaker_key(kv[0]))
         },
         "n_sentences": len(results),
         "models": {"asr": args.asr_model, "speaker_verification": args.sv_model, "utmos": "utmos22_strong"},

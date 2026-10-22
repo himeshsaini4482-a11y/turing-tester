@@ -27,7 +27,7 @@ import time
 from collections import defaultdict
 from statistics import mean
 
-from common import read_manifest, resolve_attn
+from common import read_manifest, resolve_attn, speaker_key
 
 SPEECHJUDGE_REPO = "RMSnow/SpeechJudge-GRM"
 ORDERS = ("tts_first", "human_first")
@@ -145,7 +145,7 @@ def summarize(results_path):
         "n_sentences": len(per_sentence),
         "per_speaker": {
             spk: {"closeness": mean(v), "n_sentences": len(v)}
-            for spk, v in sorted(by_speaker.items(), key=lambda kv: int(kv[0]))
+            for spk, v in sorted(by_speaker.items(), key=lambda kv: speaker_key(kv[0]))
         },
         "per_sentence": per_sentence,
     }

@@ -1,0 +1,24 @@
+{
+  "overall": {
+    "human_utmos": 4.289174556732178,
+    "human_wer": 0.059893048128342244,
+    "speaker_sim": 0.9511325001716614,
+    "tts_utmos": 4.493669700622559,
+    "tts_wer": 0.04171122994652406
+  },
+  "per_speaker": {
+    "121": {
+      "human_utmos": 4.289174556732178,
+      "human_wer": 0.059893048128342244,
+      "speaker_sim": 0.9511325001716614,
+      "tts_utmos": 4.493669700622559,
+      "tts_wer": 0.04171122994652406
+    }
+  },
+  "n_sentences": 5,
+  "models": {
+    "asr": "openai/whisper-large-v3",
+    "speaker_verification": "microsoft/wavlm-base-plus-sv",
+    "utmos": "utmos22_strong"
+  }
+}

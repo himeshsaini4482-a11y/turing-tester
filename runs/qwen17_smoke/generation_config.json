@@ -1,0 +1,12 @@
+{
+  "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+  "language": "English",
+  "batch_size": 8,
+  "max_new_tokens": 2048,
+  "seed": 1234,
+  "attn_implementation": "sdpa",
+  "qwen_tts_version": "0.1.1",
+  "torch_version": "2.14.1+cu130",
+  "source_manifest": "benchmark/manifests/ears_regular_26x19.csv",
+  "n_sentences": 5
+}

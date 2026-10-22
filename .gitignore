@@ -12,3 +12,8 @@ runs/*/*
 !runs/*/summary.json
 !runs/*/metrics_summary.json
 !runs/*/generation_config.json
+!runs/*/btrm_summary.json
+# job log/exit code from scripts/gpu_run.sh
+/runs/job.*
+/runs/*.log
+scripts/gpu/state.env

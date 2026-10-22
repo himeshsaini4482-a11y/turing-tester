@@ -1,0 +1,47 @@
+{
+  "overall_closeness": 82.3529411764706,
+  "n_sentences": 5,
+  "per_speaker": {
+    "p002": {
+      "closeness": 82.3529411764706,
+      "n_sentences": 5
+    }
+  },
+  "per_sentence": {
+    "p002_rainbow_02_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_03_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_04_regular": {
+      "closeness": 52.94117647058824,
+      "tts_score": 4.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_05_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_06_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    }
+  },
+  "settings": {
+    "votes": 1,
+    "self_check": false,
+    "judge_model": "RMSnow/SpeechJudge-GRM"
+  }
+}

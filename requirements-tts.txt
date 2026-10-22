@@ -6,3 +6,4 @@ torchaudio
 soundfile
 librosa
 jiwer
+snac==1.2.1   # SNAC 24 kHz codec for Orpheus-TTS (generate_orpheus.py)

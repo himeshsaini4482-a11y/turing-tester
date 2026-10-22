@@ -1,8 +1,11 @@
 # .venv-judge: SpeechJudge-GRM (versions from the SpeechJudge README)
 transformers==4.52.3
 torch
+torchvision   # Qwen2.5-Omni processor loads a video processor that requires it
 accelerate
+peft==0.17.1  # SpeechJudge-BTRM loads a LoRA adapter
 qwen-omni-utils
 huggingface_hub
 soundfile
 librosa
+audioread     # qwen-omni-utils imports it; librosa no longer installs it

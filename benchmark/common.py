@@ -21,3 +21,8 @@ def resolve_attn(attn):
     if attn != "auto":
         return attn
     return "flash_attention_2" if importlib.util.find_spec("flash_attn") else "sdpa"
+
+
+def speaker_key(speaker_id):
+    """Sort key for speaker ids: numeric LibriTTS ids ("121") and EARS ids ("p001")."""
+    return (0, int(speaker_id), "") if speaker_id.isdigit() else (1, 0, speaker_id)

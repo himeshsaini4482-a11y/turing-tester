@@ -1,0 +1,9 @@
+{
+  "n_sentences": 5,
+  "mean_tts_reward": 8.71875,
+  "mean_human_reward": 17.3375,
+  "mean_p_tts_better": 0.012842653009389625,
+  "human_parity_score": 2.5685306018779253,
+  "tts_wins": 0,
+  "model": "RMSnow/SpeechJudge-BTRM"
+}

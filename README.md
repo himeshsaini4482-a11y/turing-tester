@@ -14,11 +14,23 @@ Full design and caveats: `VoiceGym_SpeechJudge_Project_Plan.md` §8.6.
 
 ## Benchmark set
 
-- LibriTTS-R `test-clean` (CC BY 4.0), 10 speakers (5 M / 5 F) × 50 sentences = 500
-- Sentences 3–15 s, ≥ 5 words; selection is deterministic (`--seed 1234`)
-- Voice prompt per sentence: a different 4–10 s clip from the same speaker **and chapter**
-- TTS model: `Qwen/Qwen3-TTS-12Hz-0.6B-Base` (voice clone). The paper's Qwen2.5-0.5B-TTS
-  has no official release.
+Default (`CORPUS=ears`): **EARS** (facebookresearch/ears_dataset, CC BY-NC 4.0), studio
+anechoic 48 kHz recordings, chosen over LibriTTS-R for cleaner human reference audio.
+
+- 26 native American English speakers (13 M / 13 F, `--seed 1234`) × 19 readings = 494 pairs
+- The 20 neutral "regular"-style readings per speaker (7–18 s, all with transcripts); every
+  speaker reads the same texts. Emotional/whisper/fast/slow styles are excluded: Qwen3-TTS
+  Base has no style control, so those would test style, not naturalness.
+- Voice prompt: the same speaker's `rainbow_01_regular` (7.7 s), never a test sentence
+- Locked set: `benchmark/manifests/ears_regular_26x19.csv`. A fresh worker re-downloads the
+  26 speakers' audio (~15 GB of zips, only the regular readings are kept).
+
+Previous set (`CORPUS=libritts-r`): LibriTTS-R `test-clean` (CC BY 4.0), 10 speakers
+(5 M / 5 F) × 50 sentences of 3–15 s, prompt from the same speaker and chapter,
+`benchmark/manifests/libritts_r_test_clean_10x50.csv`.
+
+TTS model: `Qwen/Qwen3-TTS-12Hz-0.6B-Base` (voice clone). The paper's Qwen2.5-0.5B-TTS
+has no official release.
 
 ## VM requirements
 
@@ -38,7 +50,7 @@ bash scripts/run_sanity_check.sh              # human vs itself → should be ~1
 bash scripts/run_benchmark.sh                 # full 500-sentence benchmark → runs/base/
 ```
 
-After the first run, **commit `benchmark/manifests/libritts_r_test_clean_10x50.csv`**. That file
+After the first run, **commit `benchmark/manifests/ears_regular_26x19.csv`**. That file
 is the locked benchmark set; every later run reuses it.
 
 To benchmark a trained checkpoint on the same sentences:
@@ -57,6 +69,34 @@ mkdir -p runs && nohup bash scripts/run_benchmark.sh > runs/base.log 2>&1 &
 tail -f runs/base.log
 ```
 
+## On-demand GPU worker (AWS)
+
+The benchmark runs on a disposable EC2 GPU worker (1x L40S 48 GB) that exists only while a
+job needs it. `gpu_up.sh` launches it from the `voicegym-gpu-v1` image (Ubuntu DLAMI + both
+venvs + SpeechJudge code + LibriTTS-R) in the first place with capacity: ap-south-2a, 2b,
+ap-south-1a, 1b, trying g6e.xlarge then g6e.2xlarge, for up to 10 rounds a minute apart.
+`gpu_down.sh` copies `runs/` back and terminates it.
+Cost: ~$2.24/hr while it exists (per second); ~$5/month per region for the stored image.
+
+```bash
+bash scripts/gpu_run.sh "RUN_NAME=smoke LIMIT=5 bash scripts/run_benchmark.sh"
+# launch worker -> copy code -> run in tmux -> copy runs/ back -> terminate worker
+
+bash scripts/gpu_up.sh       # launch manually (ssh details are in scripts/gpu/state.env)
+bash scripts/gpu_down.sh     # copy runs/ back, terminate
+bash scripts/gpu_status.sh   # any workers alive (= costing money), GPU memory, current job
+```
+
+Each job re-downloads the judge checkpoint from Hugging Face to the worker's local NVMe
+(`scripts/stage_judge.sh`): loading it from the EBS disk takes 35+ min.
+
+Safety net: the worker powers itself off after 30 min with no GPU process, SSH login or tmux
+session (`touch ~/.keep-awake` on the worker to prevent that). It is *stopped*, not
+terminated, so unsynced results survive; `gpu_up.sh` refuses to launch another until you
+recover or delete it. SSH is open only to the UAI server (`voicegym-gpu-sg` in each region).
+Settings: `scripts/gpu/config.sh`. To rebuild the image after changing the environment,
+`aws ec2 create-image` from a stopped worker and update the AMI ids there.
+
 ## Outputs (`runs/<RUN_NAME>/`)
 
 | File | Contents |
@@ -73,7 +113,8 @@ Re-compute the summary without the GPU: `.venv-judge/bin/python benchmark/judge.
 ## Layout
 
 ```
-benchmark/prepare_data.py   stage 1: download LibriTTS-R, select the 500 sentences
+benchmark/prepare_ears.py   stage 1: download EARS, select the 494 pairs (default)
+benchmark/prepare_data.py   stage 1 for CORPUS=libritts-r
 benchmark/generate_tts.py   stage 2: Qwen3-TTS voice-clone generation
 benchmark/judge.py          stage 3: SpeechJudge scoring + closeness formula
 benchmark/metrics.py        stage 4: WER, speaker similarity, UTMOS

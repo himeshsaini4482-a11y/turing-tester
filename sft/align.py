@@ -10,12 +10,12 @@ Then build one unit per sentence (sft/INTERFACES.md §2.2):
     WER(script, ASR) (status "misread" if > 0.10). Unit text is the script's own sentence; times
     come from its first/last matched words ("align_fail" if a sentence has no matched word).
   - freeform / freeform-emotion / interjection: Whisper's words, split after . ! ?
-  - energy (20 ms RMS, threshold = file p95 - 35 dB):
+  - energy (20 ms RMS, threshold = max(file p95 - 35 dB, file p5 + 12 dB)):
       bad        a word gap > 0.35 s inside the unit with > 30% speech frames (dropped filler),
                  or (read) ASR words inside the sentence that the script does not have
       cut_*      lowest-energy point between the unit's edge word and the neighbouring ASR word
                  (or within 0.15 s beyond the edge word at the file edge)
-      left/right_ok  that gap >= 0.2 s and the cut point is low-energy (file edge: ok)
+      left/right_ok  >= 0.2 s of quiet frames at the word boundary (quiet_gap; file edge: ok)
 
 Output: runs/sft/data/units.jsonl, one line per wav, appended (resumable: done files skipped).
 
@@ -40,12 +40,14 @@ UNITS = DATA / "units.jsonl"
 
 SR = 16000
 FRAME = 0.02                 # energy frame (s)
-REL_DB = 35.0                # speech threshold = p95(frame dB) - REL_DB
+REL_DB = 35.0                # speech threshold = p95(frame dB) - REL_DB ...
+NOISE_DB = 12.0              # ... but at least this far above the noise floor (p5 frame dB)
 GAP_BAD = 0.35               # an inner word gap longer than this is checked for speech
 GAP_SHRINK = 0.10            # ... after shrinking it this much on each side
 SPEECH_FRAC_BAD = 0.30       # ... and it is "bad" if more than this share of frames is speech
 GAP_OK = 0.20                # min gap at a chunk boundary
 EDGE_PAD = 0.15              # search window beyond the edge word at the file edge
+GAP_SNAP = 0.30              # the quiet gap is searched this far around the ASR word boundary
 MISREAD_WER = 0.10
 READ_CLASSES = ("read-regular", "read-styled", "read-emotion")
 PROMPT_TEXT = "Um, so, I was like, uh, thinking about it, you know, and, hmm, yeah."
@@ -279,11 +281,16 @@ def frame_db(audio, sr=SR, frame=FRAME):
     return (20 * np.log10(rms + 1e-10)).tolist()
 
 
-def speech_threshold(db, rel=REL_DB):
+def speech_threshold(db, rel=REL_DB, noise=NOISE_DB):
+    """p95 - rel, but at least noise dB above the file's noise floor (p5). EARS has only ~26 dB
+    between speech and pauses (p95 -32 vs p5 -58 dB on a freeform file), so p95 - 35 sat below
+    the noise floor and no pause ever counted as quiet."""
     if not db:
         return 0.0
     s = sorted(db)
-    return s[min(len(s) - 1, int(0.95 * (len(s) - 1)))] - rel
+    p95 = s[min(len(s) - 1, int(0.95 * (len(s) - 1)))]
+    p5 = s[int(0.05 * (len(s) - 1))]
+    return max(p95 - rel, p5 + noise)
 
 
 def _frames_in(a, b, n_frames, frame=FRAME):
@@ -311,6 +318,32 @@ def lowest_point(db, a, b, frame=FRAME):
     return (i + 0.5) * frame, db[i]
 
 
+def quiet_gap(db, thr, a, b, frame=FRAME):
+    """Boundary between ASR words ending at a and starting at b -> (gap s, cut time s, dB at cut).
+
+    The transformers Whisper word timestamps are contiguous: a word ends where the next starts
+    (median gap 0.000 s on EARS freeform), so their gap can't show a pause. Measure the pause from
+    the energy instead: the longest run of quiet frames (dB <= thr) within GAP_SNAP of [a, b]
+    that also touches [a - 0.05, b + 0.05] (so a pause before the last word or after the next
+    one is never taken). The cut is the run's quietest frame; with no such run, it falls back to
+    lowest_point."""
+    idx = _frames_in(max(0.0, a - GAP_SNAP), b + GAP_SNAP, len(db), frame)
+    runs, run = [], []
+    for i in idx:
+        if db[i] <= thr and run and i == run[-1] + 1:
+            run.append(i)
+        elif db[i] <= thr:
+            run = [i]
+            runs.append(run)
+    runs = [r for r in runs if (r[-1] + 1) * frame >= a - 0.05 and r[0] * frame <= b + 0.05]
+    if not runs:
+        cut, db_cut = lowest_point(db, a, b, frame)
+        return 0.0, cut, db_cut
+    best = max(runs, key=len)
+    k = min(best, key=lambda j: db[j])
+    return len(best) * frame, (k + 0.5) * frame, db[k]
+
+
 def build_units(spans, tokens, db, thr, duration, frame=FRAME):
     """spans (all timed, in order) + tokens + frame dB -> §2.2 units."""
     units = []
@@ -325,15 +358,15 @@ def build_units(spans, tokens, db, thr, duration, frame=FRAME):
         # left: gap back to the previous ASR word (any word: unit or untimed insertion)
         if sp["i0"] > 0:
             prev_end = tokens[sp["i0"] - 1]["end"]
-            cut_s, db_s = lowest_point(db, prev_end, start, frame)
-            left_ok = start - prev_end >= GAP_OK and db_s <= thr
+            gap_s, cut_s, db_s = quiet_gap(db, thr, prev_end, start, frame)
+            left_ok = gap_s >= GAP_OK and db_s <= thr
         else:
             cut_s, _ = lowest_point(db, max(0.0, start - EDGE_PAD), start, frame)
             left_ok = True
         if sp["i1"] + 1 < len(tokens):
             next_start = tokens[sp["i1"] + 1]["start"]
-            cut_e, db_e = lowest_point(db, end, next_start, frame)
-            right_ok = next_start - end >= GAP_OK and db_e <= thr
+            gap_e, cut_e, db_e = quiet_gap(db, thr, end, next_start, frame)
+            right_ok = gap_e >= GAP_OK and db_e <= thr
         else:
             cut_e, _ = lowest_point(db, end, min(duration, end + EDGE_PAD), frame)
             right_ok = True

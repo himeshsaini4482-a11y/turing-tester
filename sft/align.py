@@ -25,6 +25,7 @@ Env: TTS (.venv-tts: torch, transformers, librosa, jiwer).
 """
 import argparse
 import difflib
+import gc
 import os
 import re
 import sys
@@ -420,13 +421,28 @@ def main():
             print(f"prompt_ids unavailable ({e}); running without the disfluent prompt", flush=True)
             use_prompt = False
 
+    bs = [args.batch_size]
+
     def run(audios, with_prompt):
+        """CUDA OOM -> free the memory and halve the batch size (kept for later calls). Word
+        timestamps keep every encoder layer's eager attention, ~2.7 GB per 30 s chunk."""
         kw = {"language": "english", "task": "transcribe"}
         if with_prompt:
             kw["prompt_ids"] = prompt_ids
-        inputs = [{"raw": a, "sampling_rate": SR} for a in audios]
-        return asr(inputs, batch_size=args.batch_size, return_timestamps="word", chunk_length_s=30,
-                   generate_kwargs=kw)
+        while True:
+            inputs = [{"raw": a, "sampling_rate": SR} for a in audios]   # the pipeline pops "raw"
+            try:
+                return asr(inputs, batch_size=bs[0], return_timestamps="word", chunk_length_s=30,
+                           generate_kwargs=kw)
+            except torch.cuda.OutOfMemoryError as e:
+                msg = str(e).split(".")[0]
+            # outside the except block: the traceback's reference cycles hold the CUDA tensors
+            gc.collect()
+            torch.cuda.empty_cache()
+            if bs[0] == 1:
+                raise RuntimeError(f"CUDA OOM at batch size 1 ({msg})")
+            bs[0] //= 2
+            print(f"WARNING: CUDA OOM; Whisper batch size -> {bs[0]}", flush=True)
 
     def transcribe(audios):
         """-> list of (chunks or None, used_prompt). Prompt errors -> no prompt from then on."""

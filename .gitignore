@@ -27,3 +27,6 @@ runs/sft/pilot/*
 /runs/job.*
 /runs/*.log
 scripts/gpu/state.env
+
+# local agent orchestration notes
+.super-claude/

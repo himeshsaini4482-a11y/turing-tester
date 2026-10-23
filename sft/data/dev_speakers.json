@@ -1,0 +1,10 @@
+{
+  "seed": 4321,
+  "rule": "2 male + 2 female, native American English, not in the 26 benchmark speakers, random.Random(4321).sample per gender (male first)",
+  "speakers": {
+    "p015": "female",
+    "p016": "male",
+    "p046": "male",
+    "p061": "female"
+  }
+}

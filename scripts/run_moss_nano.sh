@@ -5,6 +5,9 @@
 #   RUN_NAME=moss_nano_smoke LIMIT=5 bash scripts/run_moss_nano.sh
 #   KEEP_UP=1 bash scripts/gpu_run.sh "RUN_NAME=moss_nano_smoke LIMIT=5 bash scripts/run_moss_nano.sh"
 #   GEN_ONLY=1 ...   # stop after generating the TTS clips
+#   SKIP_GRM=1 ...   # skip the (slow) SpeechJudge-GRM stage
+#   MOSS_MAX_TEXT_TOKENS=100 ...  # MOSS voice-clone chunk limit (default 50; 100 = no split)
+#   MOSS_MODEL=/path/to/checkpoint ...  # a fine-tuned checkpoint instead of the HF model
 #
 # MOSS-TTS-Nano pins torch 2.7.0 / transformers 4.57.1, so it gets its own venv (and a
 # checkout of its repo, for the text normalization) on the local NVMe.
@@ -46,14 +49,17 @@ fi
 
 echo "== Stage 2: generating TTS ($MOSS_MODEL -> $RUN_DIR)"
 "$VENV/bin/python" benchmark/generate_moss_nano.py --manifest "$MANIFEST" --run-dir "$RUN_DIR" \
-  --repo-dir "$REPO" --model "$MOSS_MODEL" --limit "$LIMIT"
+  --repo-dir "$REPO" --model "$MOSS_MODEL" --limit "$LIMIT" \
+  --voice-clone-max-text-tokens "${MOSS_MAX_TEXT_TOKENS:-50}"
 
 [ "${GEN_ONLY:-0}" = 1 ] && exit 0
 
-echo "== Stage 3: SpeechJudge-GRM human-closeness"
-JUDGE_MODEL=$(bash scripts/stage_judge.sh)
-$JUDGE_PY benchmark/judge.py --manifest "$RUN_DIR/manifest.csv" --out-dir "$RUN_DIR" --votes "$VOTES" --limit "$LIMIT" \
-  --model-path "$JUDGE_MODEL"
+if [ "${SKIP_GRM:-0}" != 1 ]; then
+  echo "== Stage 3: SpeechJudge-GRM human-closeness"
+  JUDGE_MODEL=$(bash scripts/stage_judge.sh)
+  $JUDGE_PY benchmark/judge.py --manifest "$RUN_DIR/manifest.csv" --out-dir "$RUN_DIR" --votes "$VOTES" --limit "$LIMIT" \
+    --model-path "$JUDGE_MODEL"
+fi
 
 echo "== Stage 4: WER / speaker similarity / UTMOS"
 $TTS_PY benchmark/metrics.py --manifest "$RUN_DIR/manifest.csv" --out-dir "$RUN_DIR" --limit "$LIMIT"
@@ -61,4 +67,4 @@ $TTS_PY benchmark/metrics.py --manifest "$RUN_DIR/manifest.csv" --out-dir "$RUN_
 echo "== SpeechJudge-BTRM"
 RUN_NAME=$RUN_NAME CORPUS=$CORPUS LIMIT=$LIMIT MANIFEST=$MANIFEST bash scripts/run_btrm.sh
 
-echo "Done. Results: $RUN_DIR/summary.json, metrics_summary.json, btrm_summary.json"
+echo "Done. Results: $RUN_DIR/{summary.json (unless SKIP_GRM),metrics_summary.json,btrm_summary.json}"

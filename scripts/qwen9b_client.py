@@ -50,14 +50,18 @@ def get_prompt(parts: list[str]) -> str:
     return input("Prompt: ").strip()
 
 
-def main() -> int:
-    args = parse_args()
-    load_dotenv(args.env_file)
+def chat(
+    prompt: str,
+    system: str = "You are a helpful general-purpose assistant.",
+    temperature: float | None = None,
+    max_tokens: int | None = None,
+    env_file: Path = REPO_ROOT / ".env",
+) -> dict:
+    """Send one prompt and return the OpenAI-compatible response JSON.
 
-    prompt = get_prompt(args.prompt)
-    if not prompt:
-        raise ValueError("prompt must not be empty")
-
+    Other VoiceGym stages import this (e.g. sft/gen_texts.py); main() is the CLI around it.
+    """
+    load_dotenv(env_file)
     base_url = os.getenv("VOICEGYM_QWEN_BASE_URL", "").strip()
     api_key = os.getenv("VOICEGYM_QWEN_API_KEY", "").strip()
     model = os.getenv("VOICEGYM_QWEN_MODEL", "qwen/qwen3.5-9b").strip()
@@ -67,10 +71,8 @@ def main() -> int:
             "(copy .env.example first)"
         )
 
-    temperature = args.temperature
     if temperature is None:
         temperature = float(os.getenv("VOICEGYM_QWEN_TEMPERATURE", "0.7"))
-    max_tokens = args.max_tokens
     if max_tokens is None:
         max_tokens = int(os.getenv("VOICEGYM_QWEN_MAX_TOKENS", "1024"))
     timeout = float(os.getenv("VOICEGYM_QWEN_TIMEOUT_SECONDS", "300"))
@@ -79,7 +81,7 @@ def main() -> int:
         {
             "model": model,
             "messages": [
-                {"role": "system", "content": args.system},
+                {"role": "system", "content": system},
                 {"role": "user", "content": prompt},
             ],
             "temperature": temperature,
@@ -100,12 +102,24 @@ def main() -> int:
 
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
-            result = json.loads(response.read().decode("utf-8"))
+            return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode("utf-8", errors="replace")[:500]
         raise RuntimeError(f"Qwen endpoint returned HTTP {exc.code}: {detail}") from exc
     except urllib.error.URLError as exc:
         raise RuntimeError(f"could not reach Qwen endpoint: {exc.reason}") from exc
+
+
+def main() -> int:
+    args = parse_args()
+    load_dotenv(args.env_file)
+
+    prompt = get_prompt(args.prompt)
+    if not prompt:
+        raise ValueError("prompt must not be empty")
+
+    result = chat(prompt, system=args.system, temperature=args.temperature,
+                  max_tokens=args.max_tokens, env_file=args.env_file)
 
     if args.raw:
         print(json.dumps(result, ensure_ascii=False, indent=2))

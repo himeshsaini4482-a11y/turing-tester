@@ -14,6 +14,15 @@ runs/*/*
 !runs/*/metrics_summary.json
 !runs/*/generation_config.json
 !runs/*/btrm_summary.json
+# SFT pipeline (runs/sft/): keep the decisions and reports, ignore audio, codes, mixes, checkpoints
+!runs/sft/REPORT.md
+!runs/sft/DECISIONS.md
+!runs/sft/timings.json
+!runs/sft/decoding.json
+!runs/sft/pilot/
+runs/sft/pilot/*
+!runs/sft/pilot/recipe.json
+!runs/sft/pilot/pilot_report.md
 # job log/exit code from scripts/gpu_run.sh
 /runs/job.*
 /runs/*.log

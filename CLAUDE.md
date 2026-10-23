@@ -6,6 +6,13 @@ VoiceGym benchmarks TTS human-closeness using LibriTTS-R, Qwen3-TTS, and
 SpeechJudge-GRM. Preserve the locked benchmark split and keep automated judge
 results distinct from human-listener claims.
 
+## SFT pipeline (MOSS-TTS-Nano)
+
+Current work: SFT of `OpenMOSS-Team/MOSS-TTS-Nano-100M` to raise its SpeechJudge-BTRM score on
+the EARS benchmark. The spec is `sft/PLAN.md`. If you are running on the VM (UAI server) to
+execute it, follow `sft/RUNBOOK.md` step by step. Never run `scripts/gpu_down.sh` mid-project,
+and never tune on the 494 benchmark sentences.
+
 ## Standalone Qwen 3.5 9B endpoint
 
 `scripts/qwen9b_client.py` is a minimal general-purpose client: it accepts prompt

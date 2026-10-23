@@ -36,6 +36,9 @@ def main():
     p.add_argument("--model", default="OpenMOSS-Team/MOSS-TTS-Nano-100M")
     p.add_argument("--audio-tokenizer", default="OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano")
     p.add_argument("--max-new-frames", type=int, default=375, help="infer.py default")
+    p.add_argument("--voice-clone-max-text-tokens", type=int, default=50,
+                   help="MOSS splits longer texts into chunks generated separately and joined with "
+                        "silence; 50 = the model's default, 100 = one chunk per benchmark text")
     p.add_argument("--seed", type=int, default=1234)
     p.add_argument("--device", default="cuda:0")
     p.add_argument("--limit", type=int, default=0, help="only the first N sentences (smoke test)")
@@ -85,7 +88,8 @@ def main():
                 result = model.inference(
                     text=text, output_audio_path=part, mode="voice_clone", prompt_audio_path=r["prompt_wav"],
                     text_tokenizer=text_tokenizer, audio_tokenizer=audio_tokenizer, device=device,
-                    max_new_frames=args.max_new_frames, do_sample=True, use_kv_cache=True, **SAMPLING,
+                    max_new_frames=args.max_new_frames, do_sample=True, use_kv_cache=True,
+                    voice_clone_max_text_tokens=args.voice_clone_max_text_tokens, **SAMPLING,
                 )
             wav, sr = sf.read(result["audio_path"])
             if wav.ndim == 2:
@@ -103,6 +107,7 @@ def main():
             "audio_tokenizer": args.audio_tokenizer,
             "mode": "voice_clone",
             "max_new_frames": args.max_new_frames,
+            "voice_clone_max_text_tokens": args.voice_clone_max_text_tokens,
             "sampling": SAMPLING,
             "text_normalization": "normalize_tts_text (WeTextProcessing off)",
             "seed": args.seed,

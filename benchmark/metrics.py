@@ -36,6 +36,8 @@ def main():
     p.add_argument("--skip-wer", action="store_true")
     p.add_argument("--skip-sim", action="store_true")
     p.add_argument("--skip-utmos", action="store_true")
+    p.add_argument("--tts-only", action="store_true",
+                   help="score only the tts_wav side (no human WER / UTMOS); speaker sim still uses human_wav")
     p.add_argument("--limit", type=int, default=0)
     args = p.parse_args()
 
@@ -64,7 +66,7 @@ def main():
             torch_dtype=torch.float16 if device == "cuda" else torch.float32,
             device=device,
         )
-        for kind in ("human", "tts"):
+        for kind in (("tts",) if args.tts_only else ("human", "tts")):
             inputs = [{"raw": load(r[f"{kind}_wav"]), "sampling_rate": SR} for r in rows]
             outputs = asr(inputs, batch_size=args.batch_size,
                           generate_kwargs={"language": "english", "task": "transcribe"})
@@ -96,7 +98,7 @@ def main():
     if not args.skip_utmos:
         utmos = torch.hub.load("tarepan/SpeechMOS:v1.2.0", "utmos22_strong", trust_repo=True).to(device).eval()
         for r in rows:
-            for kind in ("human", "tts"):
+            for kind in (("tts",) if args.tts_only else ("human", "tts")):
                 wav = torch.from_numpy(load(r[f"{kind}_wav"])).unsqueeze(0).to(device)
                 with torch.no_grad():
                     results[r["sentence_id"]][f"{kind}_utmos"] = float(utmos(wav, SR))

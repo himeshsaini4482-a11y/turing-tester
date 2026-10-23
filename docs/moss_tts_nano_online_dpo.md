@@ -6,7 +6,7 @@ Sources this design is built on (all read directly, not paraphrased from memory)
 
 | Source | Pinned version |
 |---|---|
-| KL paper: *On the Optimality of Global Improvement Regularization over Local KL Maximization in Incremental Direct Preference Optimization* (A. S. Yadav, Oct 2026), `~/Downloads/KL_divergence_paper.pdf`, all 6 pages | — |
+| KL paper: *On the Optimality of Global Improvement Regularization over Local KL Maximization in Incremental Direct Preference Optimization* (A. S. Yadav, Oct 2026), `docs/KL_divergence_paper.pdf`, all 6 pages | — |
 | Model: [`OpenMOSS-Team/MOSS-TTS-Nano-100M`](https://huggingface.co/OpenMOSS-Team/MOSS-TTS-Nano-100M) (`OpenMOSS-Team/MOSS-TTS-Nano` 307-redirects here) | commit `44502f80dbf9743528fa921cc544d662c685ebec` |
 | Codec: [`OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano`](https://huggingface.co/OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano) | commit `6aa02b01e445cc585582cf0ba480bc3ea6c8dd68` |
 | Code + official SFT recipe: [github.com/OpenMOSS/MOSS-TTS-Nano](https://github.com/OpenMOSS/MOSS-TTS-Nano) (`finetuning/sft.py`, `finetuning/dataset.py`, `ort_cpu_runtime.py`, `infer.py`) | commit `8b7bcc9341b3b4ef3a3a58ba1338a7d85ff133eb` |

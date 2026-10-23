@@ -1,0 +1,16 @@
+# .venv-dpo: MOSS-TTS-Nano rollout, codec decode and trl DPO training (docs/moss_tts_nano_online_dpo.md)
+# (Nano pins transformers==4.57.1, which conflicts with SpeechJudge's 4.52.3, hence a separate venv)
+# trl 1.16.0 requires Python >= 3.11
+trl==1.16.0
+transformers==4.57.1  # MOSS-TTS-Nano upstream pin (trl needs >=4.56.2)
+torch==2.7.0          # MOSS-TTS-Nano upstream pin
+torchaudio==2.7.0
+peft==0.17.1          # LoRA policy; same version as .venv-judge (trl needs >=0.13)
+accelerate==1.10.1    # trl minimum
+datasets==4.8.5       # datasets 5.x needs huggingface-hub>=1.31, transformers 4.57.1 needs <1.0
+huggingface_hub<1.0
+sentencepiece>=0.1.99 # MossTTSNanoSentencePieceTokenizer
+numpy>=1.26
+soundfile
+onnxruntime>=1.20.0   # upstream requirements.txt; used by the ORT codec runtime
+WeTextProcessing>=1.0.4.1  # upstream text normalisation; [UNVERIFIED] whether the DPO path needs it (pulls pynini)

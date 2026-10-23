@@ -163,6 +163,8 @@ scripts/                    setup_vm.sh, run_benchmark.sh, run_sanity_check.sh
 
 Two venvs because the packages conflict: `qwen-tts` pins `transformers==4.57.3`,
 SpeechJudge needs `transformers==4.52.3`. SpeechJudge code is pinned to commit `1fbd1c8`.
+A third venv, `.venv-dpo` (`requirements-dpo.txt`: `trl==1.16.0`, `transformers==4.57.1`, Python >= 3.11),
+runs the MOSS-TTS-Nano DPO pipeline in `docs/moss_tts_nano_online_dpo.md`.
 
 ## Licences
 

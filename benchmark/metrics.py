@@ -68,8 +68,16 @@ def main():
         )
         for kind in (("tts",) if args.tts_only else ("human", "tts")):
             inputs = [{"raw": load(r[f"{kind}_wav"]), "sampling_rate": SR} for r in rows]
-            outputs = asr(inputs, batch_size=args.batch_size,
-                          generate_kwargs={"language": "english", "task": "transcribe"})
+            # Clips over 30 s take Whisper's long-form path, whose features can't be batched with
+            # short clips ("elements of the batch contain different keys"), so run them one by one.
+            gen = {"language": "english", "task": "transcribe"}
+            short = [i for i, x in enumerate(inputs) if len(x["raw"]) <= 30 * SR]
+            long = [i for i, x in enumerate(inputs) if len(x["raw"]) > 30 * SR]
+            outputs = [None] * len(inputs)
+            for idx, bs in ((short, args.batch_size), (long, 1)):
+                if idx:
+                    for i, out in zip(idx, asr([inputs[i] for i in idx], batch_size=bs, generate_kwargs=gen)):
+                        outputs[i] = out
             for r, out in zip(rows, outputs):
                 res = results[r["sentence_id"]]
                 res[f"{kind}_transcript"] = out["text"].strip()

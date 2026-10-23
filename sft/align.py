@@ -411,6 +411,22 @@ def main():
     dtype = torch.float16 if device == "cuda" else torch.float32
     asr = pipeline("automatic-speech-recognition", model=args.model, torch_dtype=dtype, device=device,
                    model_kwargs={"attn_implementation": args.attn})
+    # Word timestamps turn on output_attentions. Whisper's _postprocess_outputs (transformers 4.57)
+    # then copies every chunk's attentions, ~2.9 GB of encoder self-attention per 30 s chunk, to the
+    # CPU one slice at a time (81% of align time in a py-spy profile). The timestamps are computed
+    # from cross-attentions just before that copy, so blank the attentions once they are used. A/B on
+    # the worker (6 files): 6.3x faster, identical text and word timestamps.
+    whisper_cls = type(asr.model)
+    extract_token_timestamps = whisper_cls._extract_token_timestamps
+
+    def extract_then_drop_attentions(self, generate_outputs, *a, **kw):
+        out = extract_token_timestamps(self, generate_outputs, *a, **kw)
+        for key in ("encoder_attentions", "decoder_attentions", "cross_attentions"):
+            if key in generate_outputs:
+                generate_outputs[key] = ()
+        return out
+
+    whisper_cls._extract_token_timestamps = extract_then_drop_attentions
     processor = AutoProcessor.from_pretrained(args.model)
     use_prompt = not args.no_prompt
     prompt_ids = None

@@ -223,7 +223,18 @@ def summary_of(ev, base=None):
     summary = {"name": ev["name"], "model": ev["model"], "sets": {}}
     for s in sets_of(ev):
         rows = set_rows(ev, s)
-        p = pct(rows)
+        try:
+            p = pct(rows)
+        except ValueError as e:
+            # BTRM % = mean TTS reward / mean human reward needs a positive human mean. EARS
+            # freeform (dev-fresh) human clips average below 0 under BTRM, so the % is undefined
+            # there: record it as such with the raw reward gap. Every decision reads dev-mirror.
+            gap = [r["tts_reward"] - r["human_reward"] for r in rows]
+            summary["sets"][s] = {"btrm_pct": None, "lo": None, "hi": None, "undefined": str(e),
+                                  "mean_reward_gap": mean(gap) if gap else None,
+                                  "n_items": len({r["item"] for r in rows}), "n_rows": len(rows),
+                                  **metric_means(rows)}
+            continue
         summary["sets"][s] = {"btrm_pct": p["pct"], "lo": p["lo"], "hi": p["hi"],
                               "n_items": p["n_items"], "n_rows": p["n_rows"], **metric_means(rows)}
     if base is not None:

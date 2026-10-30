@@ -1,0 +1,126 @@
+{
+  "_doc": "MOSS-TTS-Nano online DPO settings. The three USER_REVIEW sections (beta, kl, optimizer) are left null on purpose: the user sets every value there by hand. dpo/train.py refuses to start while any required USER_REVIEW field is null (dpolib.check_user_review lists them). Rollout, scoring and pairing do not need them, so round 1 runs up to its pairs first and prints the paper's beta* diagnostic (runs/dpo/r01/pairs_summary.json) to help choose. Everything outside USER_REVIEW is a pipeline default; see dpo/README.md section 5 for each one.",
+  "model": "moss_nano",
+  "_model": "Which adapter (dpo/adapters/) this run trains. Its settings are models.<model>; they override the shared rollout values below.",
+  "models": {
+    "moss_nano": {
+      "policy_init": "runs/sft/best/final",
+      "_policy_init": "pi_ref = pi_theta_1 (Alg. 1 Require line): the SFT deliverable checkpoint, frozen for the whole run.",
+      "venv": "MOSS",
+      "eval_generator": "benchmark/generate_moss_nano.py",
+      "nq": 16,
+      "max_text_tokens": 50,
+      "rollout": {
+        "batch_size": 64,
+        "max_new": 300
+      }
+    },
+    "orpheus": {
+      "policy_init": "unsloth/orpheus-3b-0.1-pretrained",
+      "_policy_init": "No SFT exists for Orpheus: pi_ref = the pretrained model the benchmark used.",
+      "venv": "ORPHEUS",
+      "eval_generator": "benchmark/generate_orpheus.py",
+      "lora": {
+        "r": 16,
+        "alpha": 32,
+        "dropout": 0.0,
+        "target_modules": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ]
+      },
+      "_lora": "LoRA shape (not an optimizer value). dropout must stay 0 (gates.py D3).",
+      "gradient_checkpointing": true,
+      "rollout": {
+        "batch_size": 16,
+        "max_new": 1800
+      },
+      "reward": {
+        "sim_min": 0.75
+      },
+      "_reward": "Orpheus's mean speaker similarity on the 494 is 0.85 (MOSS 0.95), so the shared 0.85 gate would reject about half its samples."
+    }
+  },
+  "rounds": 3,
+  "patience": 1,
+  "_rounds": "Online rounds T_round (each = one rollout -> score -> pair -> train pass). Stop early after `patience` rounds without a dev BTRM % gain, or on any guard-rail failure.",
+  "texts": {
+    "n": 6000,
+    "_n": "9B-written prompt texts (sft/gen_texts.py rules: 8-40 words, no digits, deduped against all SFT texts and the 19 benchmark texts)."
+  },
+  "voices": {
+    "include_benchmark_speakers": true,
+    "_doc": "Every non-dev EARS speaker's rainbow_01_regular. The 26 benchmark speakers' prompt clip is allowed by SFT decision D6; false leaves them out."
+  },
+  "rollout": {
+    "prompts_per_round": 1000,
+    "k": 4,
+    "sampling": "deployment",
+    "_sampling": "deployment = the benchmark's decoding (benchmark/generate_moss_nano.py SAMPLING), so preferences are learned on the outputs the benchmark measures. on_policy = T 1, no top-k/top-p, no repetition penalty: samples come from exactly the pi_theta that train.py scores (Alg. 1 line 3). README section 5.2.",
+    "seed": 1234,
+    "_doc": "Shared across models; models.<model>.rollout adds batch_size (multiple of k) and max_new (frames for MOSS, tokens for Orpheus)."
+  },
+  "reward": {
+    "model": "btrm",
+    "wer_max": 0.2,
+    "sim_min": 0.85,
+    "sec_per_word": [
+      0.15,
+      1.0
+    ],
+    "tie_delta": 0.5,
+    "pair_rule": "best_vs_worst",
+    "_reward": "Reward = SpeechJudge-BTRM scalar (a Bradley-Terry logit, the scale the paper's sigma_r^2 assumes). Hard gates make a candidate invalid (Alg. 1 line 5): no audio_end, WER > wer_max, speaker sim to the voice prompt < sim_min, duration outside sec_per_word x words. Pairs with r_w - r_l < tie_delta are ties and skipped (Alg. 1 lines 5-6)."
+  },
+  "eval": {
+    "manifest": "runs/sft/dev/eval_mirror.csv",
+    "final_skip_grm": false,
+    "_eval": "Every round: the model's benchmark generator on the SFT dev mirror (228 rows, 4 held-out speakers), BTRM, WER/sim/UTMOS, then sft/compare.py vs the round-0 (pi_ref) eval with the SFT guard rails (sft/PLAN.md section 1). The 494 benchmark runs once, at the end, never to choose anything."
+  },
+  "precision": "fp32_master_bf16_autocast",
+  "_precision": "Same as SFT decision D13: fp32 weights, bf16 autocast. Pure bf16 rounds most small updates away.",
+  "USER_REVIEW": "Everything below is for the user to set. null = not decided yet. Suggested starting points with reasons are in dpo/README.md section 6; nothing here is filled in by the pipeline or the agents.",
+  "beta": {
+    "mode": "dual_ascent",
+    "beta0": 1.0573,
+    "beta_min": 0.3524,
+    "beta_max": 3.172,
+    "eta_beta": 0.01,
+    "_doc": "mode: \"fixed\" (beta = beta0 for the whole run) or \"dual_ascent\" (paper Alg. 1 line 12: beta_{t+1} = clip(beta_t + eta_beta (D_hat_t - epsilon), beta_min, beta_max), carried across rounds). beta_min, beta_max and eta_beta are only needed for dual_ascent.",
+    "eta_schedule": "inv_sqrt"
+  },
+  "kl": {
+    "epsilon": 10.0,
+    "ema_alpha": 0.1,
+    "k_hat_per": "sequence",
+    "on_violation": "none",
+    "lambda": null,
+    "_doc": "epsilon: KL trust region (Eq. 9), also D_hat_0 (Alg. 1 line 1). Required for dual_ascent or when on_violation is not \"none\". ema_alpha: EMA rate of D_hat (line 10). k_hat_per: \"sequence\" (k_hat = 1/2 (u_w^2 + u_l^2) as in line 9) or \"frame\" (u divided by the completion's frame count first; sequences are ~100-300 frames x 17 tokens). on_violation (D_hat > epsilon): \"none\" (log only), \"stop_round\" (end this round's training early), \"rollback\" (discard this round's update). lambda: optional, only for the diagnostic beta* = (lambda sigma_r^2 / 2)^(1/3)."
+  },
+  "optimizer": {
+    "name": "adamw",
+    "lr": 1e-06,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "momentum": null,
+    "alpha": null,
+    "weight_decay": 0.0,
+    "max_grad_norm": 1.0,
+    "scheduler": "linear",
+    "warmup_steps": 5,
+    "batch_pairs": 16,
+    "grad_accum": 1,
+    "epochs_per_round": 1,
+    "state_across_rounds": "reset",
+    "_doc": "name: \"adamw\" | \"adam\" | \"rmsprop\" | \"sgd\". betas [b1, b2] and eps for adam/adamw; alpha (smoothing) and eps for rmsprop; momentum for sgd. max_grad_norm: clip value (paper section 4: ||g_t|| <= 2 beta_t G), 0 = no clipping. scheduler: \"constant\" | \"linear\" | \"cosine\" (per round). batch_pairs x grad_accum = pairs per optimizer step (Alg. 1 is 1 pair per step). epochs_per_round: passes over the round's fresh pairs (1 = each pair used once, no stale reuse). state_across_rounds: \"reset\" | \"carry\" (optimizer moments)."
+  },
+  "_user_review_filled": "2026-10-28 trial 2 on pilotB (user): paper Alg. 1, beta0 = beta* = sqrt(22.3587 / 2 x 10.0) = 1.0573 from this pi_ref's own round-1 sigma_r^2; dual ascent in [beta*/3, 3 beta*], eta_t = 0.01/sqrt(t), k_hat per sequence; AdamW lr 1e-6 unchanged."
+}

@@ -1,0 +1,3081 @@
+{
+  "overall_closeness": 103.28639953568879,
+  "n_sentences": 494,
+  "per_speaker": {
+    "p002": {
+      "closeness": 103.74919859981779,
+      "n_sentences": 19
+    },
+    "p004": {
+      "closeness": 111.65115858128563,
+      "n_sentences": 19
+    },
+    "p009": {
+      "closeness": 103.74082258757181,
+      "n_sentences": 19
+    },
+    "p010": {
+      "closeness": 97.26642672772704,
+      "n_sentences": 19
+    },
+    "p014": {
+      "closeness": 110.18281178884463,
+      "n_sentences": 19
+    },
+    "p017": {
+      "closeness": 125.94765413862656,
+      "n_sentences": 19
+    },
+    "p018": {
+      "closeness": 118.50844934368962,
+      "n_sentences": 19
+    },
+    "p022": {
+      "closeness": 101.95598014853634,
+      "n_sentences": 19
+    },
+    "p024": {
+      "closeness": 94.03590489683741,
+      "n_sentences": 19
+    },
+    "p027": {
+      "closeness": 101.15117957938324,
+      "n_sentences": 19
+    },
+    "p038": {
+      "closeness": 92.06459951242165,
+      "n_sentences": 19
+    },
+    "p043": {
+      "closeness": 103.69165880322066,
+      "n_sentences": 19
+    },
+    "p052": {
+      "closeness": 102.39852504825282,
+      "n_sentences": 19
+    },
+    "p053": {
+      "closeness": 117.33313723600101,
+      "n_sentences": 19
+    },
+    "p056": {
+      "closeness": 114.00660353291933,
+      "n_sentences": 19
+    },
+    "p066": {
+      "closeness": 102.63838500680606,
+      "n_sentences": 19
+    },
+    "p069": {
+      "closeness": 102.40148009884852,
+      "n_sentences": 19
+    },
+    "p079": {
+      "closeness": 113.26517886227505,
+      "n_sentences": 19
+    },
+    "p081": {
+      "closeness": 80.44089700823447,
+      "n_sentences": 19
+    },
+    "p085": {
+      "closeness": 105.0896028754468,
+      "n_sentences": 19
+    },
+    "p086": {
+      "closeness": 112.94885891416922,
+      "n_sentences": 19
+    },
+    "p088": {
+      "closeness": 100.34313807542748,
+      "n_sentences": 19
+    },
+    "p097": {
+      "closeness": 104.44502166971577,
+      "n_sentences": 19
+    },
+    "p100": {
+      "closeness": 86.60621739569108,
+      "n_sentences": 19
+    },
+    "p101": {
+      "closeness": 88.97976888181863,
+      "n_sentences": 19
+    },
+    "p102": {
+      "closeness": 90.60372861433981,
+      "n_sentences": 19
+    }
+  },
+  "per_sentence": {
+    "p002_rainbow_02_regular": {
+      "closeness": 70.58823529411765,
+      "tts_score": 6.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_03_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_04_regular": {
+      "closeness": 103.84615384615385,
+      "tts_score": 6.75,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_05_regular": {
+      "closeness": 111.11111111111111,
+      "tts_score": 7.5,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p002_rainbow_06_regular": {
+      "closeness": 170.0,
+      "tts_score": 8.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p002_rainbow_07_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p002_rainbow_08_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p002_sentences_01_regular": {
+      "closeness": 111.11111111111111,
+      "tts_score": 7.5,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p002_sentences_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 5.5,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p002_sentences_15_regular": {
+      "closeness": 70.58823529411765,
+      "tts_score": 6.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p002_sentences_16_regular": {
+      "closeness": 115.99999999999999,
+      "tts_score": 7.25,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p002_sentences_17_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p002_sentences_18_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p002_sentences_19_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p002_sentences_20_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p002_sentences_21_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p002_sentences_22_regular": {
+      "closeness": 81.25,
+      "tts_score": 6.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p002_sentences_23_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p002_sentences_24_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p004_rainbow_02_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p004_rainbow_03_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p004_rainbow_04_regular": {
+      "closeness": 144.0,
+      "tts_score": 9.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p004_rainbow_05_regular": {
+      "closeness": 93.10344827586206,
+      "tts_score": 6.75,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p004_rainbow_06_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p004_rainbow_07_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p004_rainbow_08_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p004_sentences_01_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p004_sentences_02_regular": {
+      "closeness": 250.0,
+      "tts_score": 7.5,
+      "human_score": 3.0,
+      "n_calls": 2
+    },
+    "p004_sentences_15_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p004_sentences_16_regular": {
+      "closeness": 112.00000000000001,
+      "tts_score": 7.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p004_sentences_17_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p004_sentences_18_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p004_sentences_19_regular": {
+      "closeness": 109.09090909090908,
+      "tts_score": 6.0,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p004_sentences_20_regular": {
+      "closeness": 87.5,
+      "tts_score": 7.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p004_sentences_21_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.75,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p004_sentences_22_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p004_sentences_23_regular": {
+      "closeness": 138.46153846153845,
+      "tts_score": 9.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p004_sentences_24_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p009_rainbow_02_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p009_rainbow_03_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p009_rainbow_04_regular": {
+      "closeness": 112.00000000000001,
+      "tts_score": 7.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p009_rainbow_05_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p009_rainbow_06_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p009_rainbow_07_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p009_rainbow_08_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p009_sentences_01_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p009_sentences_02_regular": {
+      "closeness": 242.85714285714283,
+      "tts_score": 8.5,
+      "human_score": 3.5,
+      "n_calls": 2
+    },
+    "p009_sentences_15_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p009_sentences_16_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p009_sentences_17_regular": {
+      "closeness": 87.5,
+      "tts_score": 7.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p009_sentences_18_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p009_sentences_19_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p009_sentences_20_regular": {
+      "closeness": 72.22222222222221,
+      "tts_score": 6.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p009_sentences_21_regular": {
+      "closeness": 72.72727272727273,
+      "tts_score": 6.0,
+      "human_score": 8.25,
+      "n_calls": 2
+    },
+    "p009_sentences_22_regular": {
+      "closeness": 128.0,
+      "tts_score": 8.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p009_sentences_23_regular": {
+      "closeness": 103.7037037037037,
+      "tts_score": 7.0,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p009_sentences_24_regular": {
+      "closeness": 57.14285714285714,
+      "tts_score": 5.0,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p010_rainbow_02_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p010_rainbow_03_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p010_rainbow_04_regular": {
+      "closeness": 138.46153846153845,
+      "tts_score": 9.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p010_rainbow_05_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p010_rainbow_06_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p010_rainbow_07_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p010_rainbow_08_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p010_sentences_01_regular": {
+      "closeness": 112.00000000000001,
+      "tts_score": 7.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p010_sentences_02_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p010_sentences_15_regular": {
+      "closeness": 80.0,
+      "tts_score": 6.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p010_sentences_16_regular": {
+      "closeness": 64.70588235294117,
+      "tts_score": 5.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p010_sentences_17_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p010_sentences_18_regular": {
+      "closeness": 109.09090909090908,
+      "tts_score": 6.0,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p010_sentences_19_regular": {
+      "closeness": 63.888888888888886,
+      "tts_score": 5.75,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p010_sentences_20_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p010_sentences_21_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p010_sentences_22_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p010_sentences_23_regular": {
+      "closeness": 150.0,
+      "tts_score": 7.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p010_sentences_24_regular": {
+      "closeness": 52.94117647058824,
+      "tts_score": 4.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p014_rainbow_02_regular": {
+      "closeness": 69.44444444444444,
+      "tts_score": 6.25,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p014_rainbow_03_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p014_rainbow_04_regular": {
+      "closeness": 87.09677419354838,
+      "tts_score": 6.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p014_rainbow_05_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p014_rainbow_06_regular": {
+      "closeness": 67.64705882352942,
+      "tts_score": 5.75,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p014_rainbow_07_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p014_rainbow_08_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p014_sentences_01_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p014_sentences_02_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p014_sentences_15_regular": {
+      "closeness": 144.44444444444443,
+      "tts_score": 6.5,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p014_sentences_16_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p014_sentences_17_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p014_sentences_18_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p014_sentences_19_regular": {
+      "closeness": 109.09090909090908,
+      "tts_score": 6.0,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p014_sentences_20_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p014_sentences_21_regular": {
+      "closeness": 257.14285714285717,
+      "tts_score": 9.0,
+      "human_score": 3.5,
+      "n_calls": 2
+    },
+    "p014_sentences_22_regular": {
+      "closeness": 110.34482758620689,
+      "tts_score": 8.0,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p014_sentences_23_regular": {
+      "closeness": 100.0,
+      "tts_score": 5.5,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p014_sentences_24_regular": {
+      "closeness": 118.5185185185185,
+      "tts_score": 8.0,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p017_rainbow_02_regular": {
+      "closeness": 75.0,
+      "tts_score": 6.75,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p017_rainbow_03_regular": {
+      "closeness": 66.66666666666666,
+      "tts_score": 6.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p017_rainbow_04_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p017_rainbow_05_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p017_rainbow_06_regular": {
+      "closeness": 66.66666666666666,
+      "tts_score": 6.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p017_rainbow_07_regular": {
+      "closeness": 87.09677419354838,
+      "tts_score": 6.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p017_rainbow_08_regular": {
+      "closeness": 93.75,
+      "tts_score": 7.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p017_sentences_01_regular": {
+      "closeness": 110.34482758620689,
+      "tts_score": 8.0,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p017_sentences_02_regular": {
+      "closeness": 188.88888888888889,
+      "tts_score": 8.5,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p017_sentences_15_regular": {
+      "closeness": 242.85714285714283,
+      "tts_score": 8.5,
+      "human_score": 3.5,
+      "n_calls": 2
+    },
+    "p017_sentences_16_regular": {
+      "closeness": 194.44444444444443,
+      "tts_score": 8.75,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p017_sentences_17_regular": {
+      "closeness": 206.25,
+      "tts_score": 8.25,
+      "human_score": 4.0,
+      "n_calls": 2
+    },
+    "p017_sentences_18_regular": {
+      "closeness": 155.0,
+      "tts_score": 7.75,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p017_sentences_19_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p017_sentences_20_regular": {
+      "closeness": 114.28571428571428,
+      "tts_score": 8.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p017_sentences_21_regular": {
+      "closeness": 72.22222222222221,
+      "tts_score": 6.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p017_sentences_22_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p017_sentences_23_regular": {
+      "closeness": 242.85714285714283,
+      "tts_score": 8.5,
+      "human_score": 3.5,
+      "n_calls": 2
+    },
+    "p017_sentences_24_regular": {
+      "closeness": 61.29032258064516,
+      "tts_score": 4.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p018_rainbow_02_regular": {
+      "closeness": 188.88888888888889,
+      "tts_score": 8.5,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p018_rainbow_03_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p018_rainbow_04_regular": {
+      "closeness": 61.111111111111114,
+      "tts_score": 5.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p018_rainbow_05_regular": {
+      "closeness": 80.0,
+      "tts_score": 7.0,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p018_rainbow_06_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p018_rainbow_07_regular": {
+      "closeness": 72.22222222222221,
+      "tts_score": 6.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p018_rainbow_08_regular": {
+      "closeness": 96.66666666666667,
+      "tts_score": 7.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p018_sentences_01_regular": {
+      "closeness": 160.0,
+      "tts_score": 8.0,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p018_sentences_02_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p018_sentences_15_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p018_sentences_16_regular": {
+      "closeness": 200.0,
+      "tts_score": 9.0,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p018_sentences_17_regular": {
+      "closeness": 140.9090909090909,
+      "tts_score": 7.75,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p018_sentences_18_regular": {
+      "closeness": 58.333333333333336,
+      "tts_score": 5.25,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p018_sentences_19_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p018_sentences_20_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p018_sentences_21_regular": {
+      "closeness": 152.17391304347828,
+      "tts_score": 8.75,
+      "human_score": 5.75,
+      "n_calls": 2
+    },
+    "p018_sentences_22_regular": {
+      "closeness": 170.0,
+      "tts_score": 8.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p018_sentences_23_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p018_sentences_24_regular": {
+      "closeness": 160.0,
+      "tts_score": 8.0,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p022_rainbow_02_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p022_rainbow_03_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p022_rainbow_04_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p022_rainbow_05_regular": {
+      "closeness": 64.70588235294117,
+      "tts_score": 5.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p022_rainbow_06_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p022_rainbow_07_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p022_rainbow_08_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p022_sentences_01_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p022_sentences_02_regular": {
+      "closeness": 133.33333333333331,
+      "tts_score": 6.0,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p022_sentences_15_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p022_sentences_16_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p022_sentences_17_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p022_sentences_18_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p022_sentences_19_regular": {
+      "closeness": 113.04347826086956,
+      "tts_score": 6.5,
+      "human_score": 5.75,
+      "n_calls": 2
+    },
+    "p022_sentences_20_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p022_sentences_21_regular": {
+      "closeness": 120.83333333333333,
+      "tts_score": 7.25,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p022_sentences_22_regular": {
+      "closeness": 57.57575757575758,
+      "tts_score": 4.75,
+      "human_score": 8.25,
+      "n_calls": 2
+    },
+    "p022_sentences_23_regular": {
+      "closeness": 228.57142857142856,
+      "tts_score": 8.0,
+      "human_score": 3.5,
+      "n_calls": 2
+    },
+    "p022_sentences_24_regular": {
+      "closeness": 70.58823529411765,
+      "tts_score": 6.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p024_rainbow_02_regular": {
+      "closeness": 96.66666666666667,
+      "tts_score": 7.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p024_rainbow_03_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p024_rainbow_04_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p024_rainbow_05_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p024_rainbow_06_regular": {
+      "closeness": 70.58823529411765,
+      "tts_score": 6.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p024_rainbow_07_regular": {
+      "closeness": 86.20689655172413,
+      "tts_score": 6.25,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p024_rainbow_08_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p024_sentences_01_regular": {
+      "closeness": 89.65517241379311,
+      "tts_score": 6.5,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p024_sentences_02_regular": {
+      "closeness": 93.54838709677419,
+      "tts_score": 7.25,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p024_sentences_15_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p024_sentences_16_regular": {
+      "closeness": 141.66666666666669,
+      "tts_score": 8.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p024_sentences_17_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p024_sentences_18_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p024_sentences_19_regular": {
+      "closeness": 159.0909090909091,
+      "tts_score": 8.75,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p024_sentences_20_regular": {
+      "closeness": 55.55555555555556,
+      "tts_score": 5.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p024_sentences_21_regular": {
+      "closeness": 63.888888888888886,
+      "tts_score": 5.75,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p024_sentences_22_regular": {
+      "closeness": 114.81481481481481,
+      "tts_score": 7.75,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p024_sentences_23_regular": {
+      "closeness": 89.28571428571429,
+      "tts_score": 6.25,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p024_sentences_24_regular": {
+      "closeness": 40.0,
+      "tts_score": 3.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p027_rainbow_02_regular": {
+      "closeness": 95.65217391304348,
+      "tts_score": 5.5,
+      "human_score": 5.75,
+      "n_calls": 2
+    },
+    "p027_rainbow_03_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p027_rainbow_04_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p027_rainbow_05_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p027_rainbow_06_regular": {
+      "closeness": 40.0,
+      "tts_score": 3.5,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p027_rainbow_07_regular": {
+      "closeness": 160.0,
+      "tts_score": 8.0,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p027_rainbow_08_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p027_sentences_01_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p027_sentences_02_regular": {
+      "closeness": 138.0952380952381,
+      "tts_score": 7.25,
+      "human_score": 5.25,
+      "n_calls": 2
+    },
+    "p027_sentences_15_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p027_sentences_16_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p027_sentences_17_regular": {
+      "closeness": 90.625,
+      "tts_score": 7.25,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p027_sentences_18_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p027_sentences_19_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p027_sentences_20_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p027_sentences_21_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p027_sentences_22_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p027_sentences_23_regular": {
+      "closeness": 62.5,
+      "tts_score": 5.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p027_sentences_24_regular": {
+      "closeness": 84.61538461538461,
+      "tts_score": 5.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p038_rainbow_02_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p038_rainbow_03_regular": {
+      "closeness": 132.14285714285714,
+      "tts_score": 9.25,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p038_rainbow_04_regular": {
+      "closeness": 72.22222222222221,
+      "tts_score": 6.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p038_rainbow_05_regular": {
+      "closeness": 89.65517241379311,
+      "tts_score": 6.5,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p038_rainbow_06_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p038_rainbow_07_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p038_rainbow_08_regular": {
+      "closeness": 100.0,
+      "tts_score": 5.5,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p038_sentences_01_regular": {
+      "closeness": 70.27027027027027,
+      "tts_score": 6.5,
+      "human_score": 9.25,
+      "n_calls": 2
+    },
+    "p038_sentences_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p038_sentences_15_regular": {
+      "closeness": 50.0,
+      "tts_score": 4.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p038_sentences_16_regular": {
+      "closeness": 81.25,
+      "tts_score": 6.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p038_sentences_17_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p038_sentences_18_regular": {
+      "closeness": 71.42857142857143,
+      "tts_score": 6.25,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p038_sentences_19_regular": {
+      "closeness": 177.77777777777777,
+      "tts_score": 8.0,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p038_sentences_20_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p038_sentences_21_regular": {
+      "closeness": 50.0,
+      "tts_score": 4.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p038_sentences_22_regular": {
+      "closeness": 90.9090909090909,
+      "tts_score": 7.5,
+      "human_score": 8.25,
+      "n_calls": 2
+    },
+    "p038_sentences_23_regular": {
+      "closeness": 103.57142857142858,
+      "tts_score": 7.25,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p038_sentences_24_regular": {
+      "closeness": 80.0,
+      "tts_score": 6.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p043_rainbow_02_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p043_rainbow_03_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p043_rainbow_04_regular": {
+      "closeness": 127.27272727272727,
+      "tts_score": 7.0,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p043_rainbow_05_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p043_rainbow_06_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p043_rainbow_07_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p043_rainbow_08_regular": {
+      "closeness": 170.0,
+      "tts_score": 8.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p043_sentences_01_regular": {
+      "closeness": 103.44827586206897,
+      "tts_score": 7.5,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p043_sentences_02_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p043_sentences_15_regular": {
+      "closeness": 64.70588235294117,
+      "tts_score": 5.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p043_sentences_16_regular": {
+      "closeness": 47.05882352941176,
+      "tts_score": 4.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p043_sentences_17_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p043_sentences_18_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p043_sentences_19_regular": {
+      "closeness": 150.0,
+      "tts_score": 9.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p043_sentences_20_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p043_sentences_21_regular": {
+      "closeness": 63.888888888888886,
+      "tts_score": 5.75,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p043_sentences_22_regular": {
+      "closeness": 122.72727272727273,
+      "tts_score": 6.75,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p043_sentences_23_regular": {
+      "closeness": 50.0,
+      "tts_score": 2.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p043_sentences_24_regular": {
+      "closeness": 176.19047619047618,
+      "tts_score": 9.25,
+      "human_score": 5.25,
+      "n_calls": 2
+    },
+    "p052_rainbow_02_regular": {
+      "closeness": 150.0,
+      "tts_score": 9.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p052_rainbow_03_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p052_rainbow_04_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p052_rainbow_05_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p052_rainbow_06_regular": {
+      "closeness": 86.20689655172413,
+      "tts_score": 6.25,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p052_rainbow_07_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p052_rainbow_08_regular": {
+      "closeness": 100.0,
+      "tts_score": 5.5,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p052_sentences_01_regular": {
+      "closeness": 103.33333333333334,
+      "tts_score": 7.75,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p052_sentences_02_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p052_sentences_15_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p052_sentences_16_regular": {
+      "closeness": 55.55555555555556,
+      "tts_score": 5.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p052_sentences_17_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p052_sentences_18_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p052_sentences_19_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p052_sentences_20_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p052_sentences_21_regular": {
+      "closeness": 114.28571428571428,
+      "tts_score": 8.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p052_sentences_22_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p052_sentences_23_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p052_sentences_24_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p053_rainbow_02_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p053_rainbow_03_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p053_rainbow_04_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p053_rainbow_05_regular": {
+      "closeness": 133.33333333333331,
+      "tts_score": 7.0,
+      "human_score": 5.25,
+      "n_calls": 2
+    },
+    "p053_rainbow_06_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p053_rainbow_07_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p053_rainbow_08_regular": {
+      "closeness": 160.0,
+      "tts_score": 8.0,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p053_sentences_01_regular": {
+      "closeness": 96.0,
+      "tts_score": 6.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p053_sentences_02_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p053_sentences_15_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p053_sentences_16_regular": {
+      "closeness": 200.0,
+      "tts_score": 8.0,
+      "human_score": 4.0,
+      "n_calls": 2
+    },
+    "p053_sentences_17_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p053_sentences_18_regular": {
+      "closeness": 122.22222222222223,
+      "tts_score": 5.5,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p053_sentences_19_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p053_sentences_20_regular": {
+      "closeness": 84.375,
+      "tts_score": 6.75,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p053_sentences_21_regular": {
+      "closeness": 257.14285714285717,
+      "tts_score": 9.0,
+      "human_score": 3.5,
+      "n_calls": 2
+    },
+    "p053_sentences_22_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p053_sentences_23_regular": {
+      "closeness": 52.94117647058824,
+      "tts_score": 4.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p053_sentences_24_regular": {
+      "closeness": 141.66666666666669,
+      "tts_score": 8.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p056_rainbow_02_regular": {
+      "closeness": 96.29629629629629,
+      "tts_score": 6.5,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p056_rainbow_03_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p056_rainbow_04_regular": {
+      "closeness": 93.75,
+      "tts_score": 7.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p056_rainbow_05_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p056_rainbow_06_regular": {
+      "closeness": 62.5,
+      "tts_score": 5.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p056_rainbow_07_regular": {
+      "closeness": 96.15384615384616,
+      "tts_score": 6.25,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p056_rainbow_08_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p056_sentences_01_regular": {
+      "closeness": 144.0,
+      "tts_score": 9.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p056_sentences_02_regular": {
+      "closeness": 170.0,
+      "tts_score": 8.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p056_sentences_15_regular": {
+      "closeness": 150.0,
+      "tts_score": 9.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p056_sentences_16_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p056_sentences_17_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p056_sentences_18_regular": {
+      "closeness": 130.0,
+      "tts_score": 6.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p056_sentences_19_regular": {
+      "closeness": 218.75,
+      "tts_score": 8.75,
+      "human_score": 4.0,
+      "n_calls": 2
+    },
+    "p056_sentences_20_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p056_sentences_21_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p056_sentences_22_regular": {
+      "closeness": 91.66666666666666,
+      "tts_score": 5.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p056_sentences_23_regular": {
+      "closeness": 48.484848484848484,
+      "tts_score": 4.0,
+      "human_score": 8.25,
+      "n_calls": 2
+    },
+    "p056_sentences_24_regular": {
+      "closeness": 170.0,
+      "tts_score": 8.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p066_rainbow_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p066_rainbow_03_regular": {
+      "closeness": 90.0,
+      "tts_score": 6.75,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p066_rainbow_04_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p066_rainbow_05_regular": {
+      "closeness": 80.0,
+      "tts_score": 6.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p066_rainbow_06_regular": {
+      "closeness": 111.11111111111111,
+      "tts_score": 7.5,
+      "human_score": 6.75,
+      "n_calls": 2
+    },
+    "p066_rainbow_07_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p066_rainbow_08_regular": {
+      "closeness": 168.1818181818182,
+      "tts_score": 9.25,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p066_sentences_01_regular": {
+      "closeness": 130.76923076923077,
+      "tts_score": 8.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p066_sentences_02_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p066_sentences_15_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p066_sentences_16_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p066_sentences_17_regular": {
+      "closeness": 110.00000000000001,
+      "tts_score": 8.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p066_sentences_18_regular": {
+      "closeness": 61.111111111111114,
+      "tts_score": 5.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p066_sentences_19_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p066_sentences_20_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p066_sentences_21_regular": {
+      "closeness": 96.66666666666667,
+      "tts_score": 7.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p066_sentences_22_regular": {
+      "closeness": 96.66666666666667,
+      "tts_score": 7.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p066_sentences_23_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p066_sentences_24_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p069_rainbow_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p069_rainbow_03_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p069_rainbow_04_regular": {
+      "closeness": 63.63636363636363,
+      "tts_score": 5.25,
+      "human_score": 8.25,
+      "n_calls": 2
+    },
+    "p069_rainbow_05_regular": {
+      "closeness": 87.5,
+      "tts_score": 7.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p069_rainbow_06_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p069_rainbow_07_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p069_rainbow_08_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p069_sentences_01_regular": {
+      "closeness": 93.75,
+      "tts_score": 7.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p069_sentences_02_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p069_sentences_15_regular": {
+      "closeness": 87.5,
+      "tts_score": 7.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p069_sentences_16_regular": {
+      "closeness": 141.66666666666669,
+      "tts_score": 8.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p069_sentences_17_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p069_sentences_18_regular": {
+      "closeness": 96.55172413793103,
+      "tts_score": 7.0,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p069_sentences_19_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p069_sentences_20_regular": {
+      "closeness": 103.44827586206897,
+      "tts_score": 7.5,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p069_sentences_21_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p069_sentences_22_regular": {
+      "closeness": 176.19047619047618,
+      "tts_score": 9.25,
+      "human_score": 5.25,
+      "n_calls": 2
+    },
+    "p069_sentences_23_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p069_sentences_24_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p079_rainbow_02_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p079_rainbow_03_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p079_rainbow_04_regular": {
+      "closeness": 86.20689655172413,
+      "tts_score": 6.25,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p079_rainbow_05_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p079_rainbow_06_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p079_rainbow_07_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p079_rainbow_08_regular": {
+      "closeness": 138.46153846153845,
+      "tts_score": 9.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p079_sentences_01_regular": {
+      "closeness": 93.75,
+      "tts_score": 7.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p079_sentences_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p079_sentences_15_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p079_sentences_16_regular": {
+      "closeness": 124.0,
+      "tts_score": 7.75,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p079_sentences_17_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p079_sentences_18_regular": {
+      "closeness": 200.0,
+      "tts_score": 8.0,
+      "human_score": 4.0,
+      "n_calls": 2
+    },
+    "p079_sentences_19_regular": {
+      "closeness": 170.0,
+      "tts_score": 8.5,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p079_sentences_20_regular": {
+      "closeness": 130.76923076923077,
+      "tts_score": 8.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p079_sentences_21_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p079_sentences_22_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p079_sentences_23_regular": {
+      "closeness": 133.33333333333331,
+      "tts_score": 8.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p079_sentences_24_regular": {
+      "closeness": 56.25,
+      "tts_score": 4.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p081_rainbow_02_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p081_rainbow_03_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p081_rainbow_04_regular": {
+      "closeness": 81.25,
+      "tts_score": 6.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p081_rainbow_05_regular": {
+      "closeness": 96.15384615384616,
+      "tts_score": 6.25,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p081_rainbow_06_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p081_rainbow_07_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p081_rainbow_08_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p081_sentences_01_regular": {
+      "closeness": 58.82352941176471,
+      "tts_score": 5.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p081_sentences_02_regular": {
+      "closeness": 93.75,
+      "tts_score": 7.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p081_sentences_15_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p081_sentences_16_regular": {
+      "closeness": 54.054054054054056,
+      "tts_score": 5.0,
+      "human_score": 9.25,
+      "n_calls": 2
+    },
+    "p081_sentences_17_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p081_sentences_18_regular": {
+      "closeness": 55.55555555555556,
+      "tts_score": 5.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p081_sentences_19_regular": {
+      "closeness": 42.857142857142854,
+      "tts_score": 3.75,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p081_sentences_20_regular": {
+      "closeness": 93.75,
+      "tts_score": 7.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p081_sentences_21_regular": {
+      "closeness": 61.76470588235294,
+      "tts_score": 5.25,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p081_sentences_22_regular": {
+      "closeness": 83.33333333333334,
+      "tts_score": 6.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p081_sentences_23_regular": {
+      "closeness": 159.0909090909091,
+      "tts_score": 8.75,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p081_sentences_24_regular": {
+      "closeness": 64.70588235294117,
+      "tts_score": 5.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p085_rainbow_02_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p085_rainbow_03_regular": {
+      "closeness": 89.65517241379311,
+      "tts_score": 6.5,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p085_rainbow_04_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p085_rainbow_05_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p085_rainbow_06_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p085_rainbow_07_regular": {
+      "closeness": 87.5,
+      "tts_score": 7.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p085_rainbow_08_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p085_sentences_01_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p085_sentences_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 8.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p085_sentences_15_regular": {
+      "closeness": 60.0,
+      "tts_score": 5.25,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p085_sentences_16_regular": {
+      "closeness": 89.28571428571429,
+      "tts_score": 6.25,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p085_sentences_17_regular": {
+      "closeness": 93.10344827586206,
+      "tts_score": 6.75,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p085_sentences_18_regular": {
+      "closeness": 63.888888888888886,
+      "tts_score": 5.75,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p085_sentences_19_regular": {
+      "closeness": 123.07692307692308,
+      "tts_score": 8.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p085_sentences_20_regular": {
+      "closeness": 180.0,
+      "tts_score": 9.0,
+      "human_score": 5.0,
+      "n_calls": 2
+    },
+    "p085_sentences_21_regular": {
+      "closeness": 103.33333333333334,
+      "tts_score": 7.75,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p085_sentences_22_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p085_sentences_23_regular": {
+      "closeness": 212.5,
+      "tts_score": 8.5,
+      "human_score": 4.0,
+      "n_calls": 2
+    },
+    "p085_sentences_24_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p086_rainbow_02_regular": {
+      "closeness": 114.28571428571428,
+      "tts_score": 8.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p086_rainbow_03_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p086_rainbow_04_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p086_rainbow_05_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p086_rainbow_06_regular": {
+      "closeness": 66.66666666666666,
+      "tts_score": 5.5,
+      "human_score": 8.25,
+      "n_calls": 2
+    },
+    "p086_rainbow_07_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p086_rainbow_08_regular": {
+      "closeness": 103.2258064516129,
+      "tts_score": 8.0,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p086_sentences_01_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p086_sentences_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p086_sentences_15_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p086_sentences_16_regular": {
+      "closeness": 136.36363636363635,
+      "tts_score": 7.5,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p086_sentences_17_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p086_sentences_18_regular": {
+      "closeness": 212.5,
+      "tts_score": 8.5,
+      "human_score": 4.0,
+      "n_calls": 2
+    },
+    "p086_sentences_19_regular": {
+      "closeness": 129.16666666666669,
+      "tts_score": 7.75,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p086_sentences_20_regular": {
+      "closeness": 94.11764705882352,
+      "tts_score": 8.0,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p086_sentences_21_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p086_sentences_22_regular": {
+      "closeness": 130.43478260869566,
+      "tts_score": 7.5,
+      "human_score": 5.75,
+      "n_calls": 2
+    },
+    "p086_sentences_23_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p086_sentences_24_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p088_rainbow_02_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p088_rainbow_03_regular": {
+      "closeness": 112.00000000000001,
+      "tts_score": 7.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p088_rainbow_04_regular": {
+      "closeness": 127.58620689655173,
+      "tts_score": 9.25,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p088_rainbow_05_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p088_rainbow_06_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p088_rainbow_07_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p088_rainbow_08_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p088_sentences_01_regular": {
+      "closeness": 103.57142857142858,
+      "tts_score": 7.25,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p088_sentences_02_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p088_sentences_15_regular": {
+      "closeness": 93.10344827586206,
+      "tts_score": 6.75,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p088_sentences_16_regular": {
+      "closeness": 73.52941176470588,
+      "tts_score": 6.25,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p088_sentences_17_regular": {
+      "closeness": 96.66666666666667,
+      "tts_score": 7.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p088_sentences_18_regular": {
+      "closeness": 64.70588235294117,
+      "tts_score": 5.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p088_sentences_19_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p088_sentences_20_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p088_sentences_21_regular": {
+      "closeness": 93.54838709677419,
+      "tts_score": 7.25,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p088_sentences_22_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p088_sentences_23_regular": {
+      "closeness": 83.33333333333334,
+      "tts_score": 6.25,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p088_sentences_24_regular": {
+      "closeness": 118.18181818181819,
+      "tts_score": 6.5,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p097_rainbow_02_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p097_rainbow_03_regular": {
+      "closeness": 100.0,
+      "tts_score": 5.5,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p097_rainbow_04_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p097_rainbow_05_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p097_rainbow_06_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p097_rainbow_07_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p097_rainbow_08_regular": {
+      "closeness": 87.5,
+      "tts_score": 7.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p097_sentences_01_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p097_sentences_02_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p097_sentences_15_regular": {
+      "closeness": 91.66666666666666,
+      "tts_score": 5.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p097_sentences_16_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p097_sentences_17_regular": {
+      "closeness": 93.10344827586206,
+      "tts_score": 6.75,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p097_sentences_18_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p097_sentences_19_regular": {
+      "closeness": 87.09677419354838,
+      "tts_score": 6.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p097_sentences_20_regular": {
+      "closeness": 108.33333333333333,
+      "tts_score": 6.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p097_sentences_21_regular": {
+      "closeness": 137.5,
+      "tts_score": 8.25,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p097_sentences_22_regular": {
+      "closeness": 96.15384615384616,
+      "tts_score": 6.25,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p097_sentences_23_regular": {
+      "closeness": 126.92307692307692,
+      "tts_score": 8.25,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p097_sentences_24_regular": {
+      "closeness": 188.88888888888889,
+      "tts_score": 8.5,
+      "human_score": 4.5,
+      "n_calls": 2
+    },
+    "p100_rainbow_02_regular": {
+      "closeness": 72.22222222222221,
+      "tts_score": 6.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p100_rainbow_03_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p100_rainbow_04_regular": {
+      "closeness": 86.66666666666667,
+      "tts_score": 6.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p100_rainbow_05_regular": {
+      "closeness": 77.14285714285715,
+      "tts_score": 6.75,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p100_rainbow_06_regular": {
+      "closeness": 61.111111111111114,
+      "tts_score": 5.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p100_rainbow_07_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.75,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p100_rainbow_08_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p100_sentences_01_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p100_sentences_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p100_sentences_15_regular": {
+      "closeness": 75.0,
+      "tts_score": 6.75,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p100_sentences_16_regular": {
+      "closeness": 70.27027027027027,
+      "tts_score": 6.5,
+      "human_score": 9.25,
+      "n_calls": 2
+    },
+    "p100_sentences_17_regular": {
+      "closeness": 109.09090909090908,
+      "tts_score": 6.0,
+      "human_score": 5.5,
+      "n_calls": 2
+    },
+    "p100_sentences_18_regular": {
+      "closeness": 54.054054054054056,
+      "tts_score": 5.0,
+      "human_score": 9.25,
+      "n_calls": 2
+    },
+    "p100_sentences_19_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p100_sentences_20_regular": {
+      "closeness": 66.66666666666666,
+      "tts_score": 6.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p100_sentences_21_regular": {
+      "closeness": 123.07692307692308,
+      "tts_score": 8.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p100_sentences_22_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p100_sentences_23_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p100_sentences_24_regular": {
+      "closeness": 78.78787878787878,
+      "tts_score": 6.5,
+      "human_score": 8.25,
+      "n_calls": 2
+    },
+    "p101_rainbow_02_regular": {
+      "closeness": 64.70588235294117,
+      "tts_score": 5.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p101_rainbow_03_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p101_rainbow_04_regular": {
+      "closeness": 106.66666666666667,
+      "tts_score": 8.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p101_rainbow_05_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p101_rainbow_06_regular": {
+      "closeness": 125.0,
+      "tts_score": 7.5,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p101_rainbow_07_regular": {
+      "closeness": 68.75,
+      "tts_score": 5.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p101_rainbow_08_regular": {
+      "closeness": 107.6923076923077,
+      "tts_score": 7.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p101_sentences_01_regular": {
+      "closeness": 107.14285714285714,
+      "tts_score": 7.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p101_sentences_02_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p101_sentences_15_regular": {
+      "closeness": 81.25,
+      "tts_score": 6.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p101_sentences_16_regular": {
+      "closeness": 62.5,
+      "tts_score": 5.0,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p101_sentences_17_regular": {
+      "closeness": 92.3076923076923,
+      "tts_score": 6.0,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p101_sentences_18_regular": {
+      "closeness": 103.84615384615385,
+      "tts_score": 6.75,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p101_sentences_19_regular": {
+      "closeness": 64.70588235294117,
+      "tts_score": 5.5,
+      "human_score": 8.5,
+      "n_calls": 2
+    },
+    "p101_sentences_20_regular": {
+      "closeness": 86.20689655172413,
+      "tts_score": 6.25,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p101_sentences_21_regular": {
+      "closeness": 55.55555555555556,
+      "tts_score": 5.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p101_sentences_22_regular": {
+      "closeness": 92.85714285714286,
+      "tts_score": 6.5,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p101_sentences_23_regular": {
+      "closeness": 100.0,
+      "tts_score": 6.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p101_sentences_24_regular": {
+      "closeness": 85.71428571428571,
+      "tts_score": 6.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p102_rainbow_02_regular": {
+      "closeness": 112.00000000000001,
+      "tts_score": 7.0,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p102_rainbow_03_regular": {
+      "closeness": 115.99999999999999,
+      "tts_score": 7.25,
+      "human_score": 6.25,
+      "n_calls": 2
+    },
+    "p102_rainbow_04_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.0,
+      "human_score": 7.0,
+      "n_calls": 2
+    },
+    "p102_rainbow_05_regular": {
+      "closeness": 77.77777777777779,
+      "tts_score": 7.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p102_rainbow_06_regular": {
+      "closeness": 72.22222222222221,
+      "tts_score": 6.5,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p102_rainbow_07_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p102_rainbow_08_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.25,
+      "human_score": 7.25,
+      "n_calls": 2
+    },
+    "p102_sentences_01_regular": {
+      "closeness": 115.38461538461537,
+      "tts_score": 7.5,
+      "human_score": 6.5,
+      "n_calls": 2
+    },
+    "p102_sentences_02_regular": {
+      "closeness": 71.42857142857143,
+      "tts_score": 6.25,
+      "human_score": 8.75,
+      "n_calls": 2
+    },
+    "p102_sentences_15_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p102_sentences_16_regular": {
+      "closeness": 100.0,
+      "tts_score": 7.5,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p102_sentences_17_regular": {
+      "closeness": 93.33333333333333,
+      "tts_score": 7.0,
+      "human_score": 7.5,
+      "n_calls": 2
+    },
+    "p102_sentences_18_regular": {
+      "closeness": 56.25,
+      "tts_score": 4.5,
+      "human_score": 8.0,
+      "n_calls": 2
+    },
+    "p102_sentences_19_regular": {
+      "closeness": 66.66666666666666,
+      "tts_score": 6.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p102_sentences_20_regular": {
+      "closeness": 106.4516129032258,
+      "tts_score": 8.25,
+      "human_score": 7.75,
+      "n_calls": 2
+    },
+    "p102_sentences_21_regular": {
+      "closeness": 66.66666666666666,
+      "tts_score": 6.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p102_sentences_22_regular": {
+      "closeness": 66.66666666666666,
+      "tts_score": 6.0,
+      "human_score": 9.0,
+      "n_calls": 2
+    },
+    "p102_sentences_23_regular": {
+      "closeness": 116.66666666666667,
+      "tts_score": 7.0,
+      "human_score": 6.0,
+      "n_calls": 2
+    },
+    "p102_sentences_24_regular": {
+      "closeness": 68.57142857142857,
+      "tts_score": 6.0,
+      "human_score": 8.75,
+      "n_calls": 2
+    }
+  },
+  "settings": {
+    "votes": 1,
+    "self_check": false,
+    "judge_model": "RMSnow/SpeechJudge-GRM"
+  }
+}

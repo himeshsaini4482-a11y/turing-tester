@@ -1,0 +1,22 @@
+{
+  "model": "/opt/dlami/nvme/moss_nano/models/MOSS-TTS-Nano-100M",
+  "audio_tokenizer": "OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano",
+  "mode": "voice_clone",
+  "max_new_frames": 375,
+  "voice_clone_max_text_tokens": 50,
+  "sampling": {
+    "text_temperature": 1.0,
+    "text_top_p": 1.0,
+    "text_top_k": 50,
+    "audio_temperature": 0.8,
+    "audio_top_p": 0.95,
+    "audio_top_k": 25,
+    "audio_repetition_penalty": 1.2
+  },
+  "text_normalization": "normalize_tts_text (WeTextProcessing off)",
+  "seed": 1234,
+  "output": "48 kHz stereo downmixed to mono",
+  "torch_version": "2.7.0+cu126",
+  "source_manifest": "benchmark/manifests/ears_regular_26x19.csv",
+  "n_sentences": 494
+}

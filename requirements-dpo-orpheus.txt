@@ -1,0 +1,11 @@
+# .venv-dpo-orpheus: Orpheus-TTS 3B DPO (dpo/adapters/orpheus.py): LoRA training, rollouts, SNAC decode
+# Same transformers as .venv-tts (where benchmark/generate_orpheus.py evaluates the merged checkpoints)
+torch==2.7.0
+transformers==4.57.3
+peft==0.17.1
+accelerate==1.10.1
+snac==1.2.1
+soundfile
+librosa
+numpy>=1.26
+tensorboard>=2.17

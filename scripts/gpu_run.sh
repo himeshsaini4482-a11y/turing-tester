@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run a command on a GPU worker, then get rid of it:
-#   launch worker -> copy code -> run command in tmux -> copy runs/ back -> terminate worker
+#   launch worker -> copy code -> run command in tmux -> copy small runs/ reports back (FULL_PULL=1: all) -> terminate worker
 #
 #   bash scripts/gpu_run.sh "RUN_NAME=smoke LIMIT=5 bash scripts/run_benchmark.sh"
 #   KEEP_UP=1 bash scripts/gpu_run.sh "..."     # leave the worker running (no idle stop) until gpu_down.sh
@@ -38,6 +38,8 @@ if gpu_ssh 'tmux has-session -t vg 2>/dev/null'; then
   echo "A job is already running on the worker; waiting for it instead of starting a new one."
 else
   printf -v QCMD '%q' "$CMD"
+  # keep the previous job's log instead of truncating it
+  gpu_ssh "cd $GPU_DIR && mkdir -p runs/logs && if [ -s runs/job.log ]; then mv runs/job.log runs/logs/job.\$(date -u +%Y%m%dT%H%M%S).log; fi; rm -f runs/job.exit"
   gpu_ssh "cd $GPU_DIR && mkdir -p runs && tmux new-session -d -s vg \"bash -c $QCMD > runs/job.log 2>&1; echo \\\$? > runs/job.exit\""
   echo "Job started on worker: $CMD"
 fi
@@ -46,7 +48,15 @@ gpu_ssh "cd $GPU_DIR && touch runs/job.log && tail -n +1 -f runs/job.log --pid=\
 while gpu_ssh 'tmux has-session -t vg 2>/dev/null'; do sleep 10; done
 
 mkdir -p runs
-rsync -az -e "$RSYNC_SSH" "ubuntu@$GPU_HOST:$GPU_DIR/runs/" runs/
+if [ "${FULL_PULL:-0}" = 1 ]; then
+  rsync -az -e "$RSYNC_SSH" "ubuntu@$GPU_HOST:$GPU_DIR/runs/" runs/
+else
+  # default: only small reports (audio, checkpoints and rollouts stay on the worker; this host's disk is small)
+  rsync -az -e "$RSYNC_SSH" --prune-empty-dirs --max-size=20m \
+    --include='*/' --include='*.json' --include='*.md' --include='*.log' --include='*.csv' --include='*.txt' \
+    --include='job.exit' --include='.done/*' --exclude='*' \
+    "ubuntu@$GPU_HOST:$GPU_DIR/runs/" runs/
+fi
 rsync -az -e "$RSYNC_SSH" "ubuntu@$GPU_HOST:$GPU_DIR/benchmark/manifests/" benchmark/manifests/ 2>/dev/null || true
 status=$(cat runs/job.exit 2>/dev/null || echo "?")
 echo "Job finished with exit code $status. Results copied to $(pwd)/runs/"

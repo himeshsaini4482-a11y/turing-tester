@@ -37,6 +37,7 @@ EARS_RAW = sftlib.RUNS / "data" / "ears_raw.jsonl"
 DEV_SPEAKERS = Path(__file__).resolve().parent / "data" / "dev_speakers.json"
 SET_FILES = {"mirror": DEV / "dev_mirror.csv", "fresh": DEV / "dev_fresh.csv"}
 FRESH_PER_SPEAKER = 10
+FRESH_MIN_PER_SPEAKER = 5    # fewer eligible chunks than FRESH_PER_SPEAKER: use them all, if at least this many
 FRESH_MIN, FRESH_MAX = 4.0, 12.0
 COLUMNS = ["speaker_id", "gender", "chapter_id", "sentence_id", "text", "duration", "human_wav",
            "prompt_id", "prompt_wav", "prompt_text", "set", "item_id"]
@@ -112,13 +113,16 @@ def fresh_rows(speakers, chunks, inventory, copy=copy_in, seed=sftlib.DEV_SEED, 
     for spk in sorted(speakers):
         cands = sorted((c for c in chunks if c["speaker"] == spk and c["class"] == "freeform"
                         and FRESH_MIN <= c["duration"] <= FRESH_MAX), key=lambda c: c["id"])
-        if len(cands) < k:
+        if len(cands) < min(k, FRESH_MIN_PER_SPEAKER):
             raise SystemExit(f"{spk}: only {len(cands)} freeform chunks of {FRESH_MIN:g}-{FRESH_MAX:g} s")
+        if len(cands) < k:
+            print(f"WARNING: {spk}: only {len(cands)} freeform chunks of {FRESH_MIN:g}-{FRESH_MAX:g} s "
+                  f"(want {k}); using all of them", flush=True)
         prompt = inventory.get((spk, sftlib.PROMPT_READING))
         if prompt is None:
             raise SystemExit(f"{spk}/{sftlib.PROMPT_READING} missing from the inventory")
         prompt_wav = copy(prompt["path"], f"{spk}_{sftlib.PROMPT_READING}")
-        for c in sorted(rng.sample(cands, k), key=lambda c: c["id"]):
+        for c in sorted(rng.sample(cands, min(k, len(cands))), key=lambda c: c["id"]):
             rows.append({
                 "speaker_id": spk, "gender": gender_code(speakers[spk]), "chapter_id": "",
                 "sentence_id": c["id"], "text": c["text"], "duration": f"{c['duration']:.2f}",

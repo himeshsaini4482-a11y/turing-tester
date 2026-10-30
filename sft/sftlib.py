@@ -1,7 +1,7 @@
 """Helpers shared by the SFT pipeline stages. Standard library only, so it imports in every venv.
 
 Paths: durable outputs (everything that cost GPU time) live under runs/sft/ on the worker's EBS
-disk and are copied back to the UAI server by scripts/gpu_run.sh. Bulky re-creatable files (raw
+disk and are copied back to the UAI server by tools/aws/gpu_run.sh. Bulky re-creatable files (raw
 EARS audio, cut training clips, training mixes) live under the scratch dir on the local NVMe.
 
 Named sftlib, not common, so it never shadows benchmark/common.py on sys.path.
@@ -17,7 +17,11 @@ from pathlib import Path
 from statistics import mean
 
 REPO = Path(__file__).resolve().parents[1]
-RUNS = REPO / "runs" / "sft"
+# One SFT run's outputs. The experiment pipeline (scripts/sft/) uses runs/sft itself; the voicegym CLI
+# points SFT_RUNS at runs/sft/<name>, and SFT_DATA / SFT_DEV at prepared data shared by all runs.
+RUNS = Path(os.environ["SFT_RUNS"]) if os.environ.get("SFT_RUNS") else REPO / "runs" / "sft"
+DATA = Path(os.environ["SFT_DATA"]) if os.environ.get("SFT_DATA") else RUNS / "data"
+DEV = Path(os.environ["SFT_DEV"]) if os.environ.get("SFT_DEV") else RUNS / "dev"
 BENCH_MANIFEST = REPO / "benchmark" / "manifests" / "ears_regular_26x19.csv"
 
 

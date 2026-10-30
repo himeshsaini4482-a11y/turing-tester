@@ -67,7 +67,7 @@ def cmd_texts(args):
 
 def voices(include_bench):
     """{speaker: durable voice wav}, copying each prompt clip to runs/dpo/voices/ once."""
-    inv = dpolib.read_jsonl(dpolib.SFT_RUNS / "data" / "ears_inventory.jsonl")
+    inv = dpolib.read_jsonl(dpolib.sftlib.DATA / "ears_inventory.jsonl")
     if not inv:
         sys.exit("runs/sft/data/ears_inventory.jsonl missing: the SFT pipeline makes it (pilot step 03)")
     dev = set(dpolib.read_json(dpolib.DEV_SPEAKERS)["speakers"])
@@ -102,7 +102,12 @@ def cmd_build(args):
     if out.exists() and not args.force:
         print(f"{out} exists ({len(dpolib.read_jsonl(out))} prompts); --force rebuilds it", flush=True)
         return
-    vmap, n_bench = voices(h.get("voices", {}).get("include_benchmark_speakers", True))
+    if args.voices:   # voicegym CLI: an explicit voice list ({speaker, path, transcript} per line)
+        bench = {r["speaker_id"] for r in dpolib.read_csv(dpolib.sftlib.BENCH_MANIFEST)}
+        vmap = {v["speaker"]: {"wav": v["path"], "transcript": v["transcript"]} for v in dpolib.read_jsonl(args.voices)}
+        n_bench = len(set(vmap) & bench)
+    else:
+        vmap, n_bench = voices(h.get("voices", {}).get("include_benchmark_speakers", True))
     speakers = sorted(vmap)
     rng = random.Random(h["rollout"]["seed"])
     texts = sorted(texts, key=lambda r: r["id"])
@@ -140,6 +145,7 @@ def main():
     t.add_argument("--workers", type=int, default=4)
     b = sub.add_parser("build")
     b.add_argument("--force", action="store_true")
+    b.add_argument("--voices", default="", help="voices jsonl instead of the SFT EARS inventory (voicegym CLI)")
     args = p.parse_args()
     {"texts": cmd_texts, "build": cmd_build}[args.cmd](args)
 

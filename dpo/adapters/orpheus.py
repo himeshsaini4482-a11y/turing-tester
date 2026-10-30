@@ -62,7 +62,8 @@ class OrpheusAdapter(Adapter):
                                                     attn_implementation="sdpa").to(self.device)
         base.config.use_cache = False
         adapter = Path(policy_dir) / "adapter"
-        if adapter.is_dir():
+        # a round's adapter applies to pi_ref's weights; policy_dir == init_dir means round 1 (fresh LoRA)
+        if adapter.is_dir() and Path(str(policy_dir)).resolve() != Path(str(init_dir)).resolve():
             self.model = PeftModel.from_pretrained(base, str(adapter), is_trainable=True)
         else:                     # round 1: pi_theta_1 = pi_ref, fresh zero-initialised LoRA
             lc = cfg["lora"]

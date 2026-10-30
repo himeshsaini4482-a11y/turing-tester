@@ -3,7 +3,7 @@
 # Settings come from dpo/sweep.json, which you must approve first ("approved": true). Results are
 # ranked in runs/dpo/sweep/SWEEP_REPORT.md; you then copy the chosen values into dpo/hparams.json.
 #
-#   KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/dpo/sweep.sh"
+#   KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/dpo/sweep.sh"
 #
 # Needs round 1 up to its pairs (scripts/dpo/run.sh does that before it pauses).
 source "$(dirname "$0")/env.sh"

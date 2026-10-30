@@ -37,7 +37,7 @@ import sftlib  # noqa: E402
 from align import (FRAME, GAP_BAD, GAP_SHRINK, SPEECH_FRAC_BAD, frame_db, read_jsonl_tolerant,  # noqa: E402
                    speech_fraction, speech_threshold)
 
-DATA = sftlib.RUNS / "data"
+DATA = sftlib.DATA
 INVENTORY = DATA / "ears_inventory.jsonl"
 UNITS = DATA / "units.jsonl"
 RAW = DATA / "ears_raw.jsonl"

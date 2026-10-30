@@ -154,7 +154,7 @@ def regular_name(name, style):
 
 def probe_items(ev, notes):
     """Dev-mirror item ids whose text the dev-leak-probe records (styled readings) also cover."""
-    inv_path = sftlib.RUNS / "data" / "ears_inventory.jsonl"
+    inv_path = sftlib.DATA / "ears_inventory.jsonl"
     probes = [r for r in sftlib.read_jsonl(inv_path) if r.get("dev_leak_probe")]
     rows = compare.mirror_rows(ev)
     items = {r["item"] for r in rows}

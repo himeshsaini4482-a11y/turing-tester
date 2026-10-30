@@ -28,6 +28,8 @@ from statistics import mean
 
 from common import read_manifest, resolve_attn
 
+DEVICE = os.environ.get("VOICEGYM_DEVICE", "cuda")   # "mps" on Apple Silicon
+
 
 def load_btrm(speechjudge_dir, base_path, rm_path, attn):
     # SpeechJudge's infer/ modules import each other as top-level modules
@@ -44,16 +46,16 @@ def load_btrm(speechjudge_dir, base_path, rm_path, attn):
     snapshot_download("RMSnow/SpeechJudge-BTRM", local_dir=rm_path)
     processor = Qwen2_5OmniProcessor.from_pretrained(base_path)
     base = Qwen2_5OmniThinkerForConditionalGeneration.from_pretrained(
-        base_path, torch_dtype=torch.bfloat16, device_map="cuda", attn_implementation=resolve_attn(attn)
+        base_path, torch_dtype=torch.bfloat16, device_map=DEVICE, attn_implementation=resolve_attn(attn)
     )
     model = RewardModel(PeftModel.from_pretrained(base, os.path.join(rm_path, "lora")))
-    model.to_reward.load_state_dict(torch.load(os.path.join(rm_path, "reward_head.pt"), map_location="cuda"))
-    model.to("cuda").eval()
+    model.to_reward.load_state_dict(torch.load(os.path.join(rm_path, "reward_head.pt"), map_location=DEVICE))
+    model.to(DEVICE).eval()
 
     @torch.no_grad()
     def score(text, wav):
         inputs = build_qwen_omni_inputs(processor, build_rm_conversation(wav, text))
-        inputs = {k: v.to("cuda") if hasattr(v, "to") else v for k, v in inputs.items()}
+        inputs = {k: v.to(DEVICE) if hasattr(v, "to") else v for k, v in inputs.items()}
         return float(model(inputs)[0][0])
 
     return score

@@ -3,20 +3,20 @@
 #
 #   bash scripts/sft/teacher_round.sh STAGE STUDENT_MODEL GPU_HOURS N_TEXTS
 #
-#   STAGE          pilot | main_r<k>; reads runs/sft/STAGE/diag/weakness_report.json (diagnose.sh)
+#   STAGE          pilot | main_r<k>; reads $RUNS/STAGE/diag/weakness_report.json (diagnose.sh)
 #   STUDENT_MODEL  current student: a checkpoint dir or $MOSS_MODEL_DIR (base)
 #   GPU_HOURS      time box for teacher generation
 #   N_TEXTS        number of texts, or "auto": budget mode from the most recent
-#                  runs/sft/*/teacher/filter_summary.json (fallback when there is none:
+#                  $RUNS/*/teacher/filter_summary.json (fallback when there is none:
 #                  TEACHER_FALLBACK_N, default 1500 texts per GPU-hour)
 #
-# Steps (each marked done in runs/sft/.done/${STAGE}_*, so a re-run resumes):
+# Steps (each marked done in $RUNS/.done/${STAGE}_*, so a re-run resumes):
 #   texts -> teacher (Orpheus, time-boxed) -> prescore (teacher WER + voice match, cheap)
 #   -> prefilter (eos, rate, WER, sim) -> student gen (MOSS, candidates only) -> BTRM teacher vs
 #   student (candidates only) -> filter -> encode.
 # The cheap rules run first so the student generation and the BTRM scoring, the expensive part,
 # only see clips that can still be accepted.
-# Everything durable lives in runs/sft/STAGE/ (teacher wavs in runs/sft/STAGE/teacher/wav/).
+# Everything durable lives in $RUNS/STAGE/ (teacher wavs in $RUNS/STAGE/teacher/wav/).
 # Env: TEACHER_SIM_MIN overrides the 0.88 voice-match threshold (recorded in the summaries).
 source "$(dirname "$0")/env.sh"
 
@@ -27,7 +27,7 @@ STAGE=$1
 STUDENT_MODEL=$2
 GPU_HOURS=$3
 N_TEXTS=$4
-D=runs/sft/$STAGE
+D=$RUNS/$STAGE
 T=$D/teacher
 REPORT=$D/diag/weakness_report.json
 
@@ -38,7 +38,7 @@ mkdir -p "$T"
 # them (ears_inventory.py is resumable per speaker) before any step that reads them.
 missing_refs=$("$TTS_PY" - <<'EOF'
 import json, os
-rows = [json.loads(l) for l in open("runs/sft/data/ears_inventory.jsonl", encoding="utf-8") if l.strip()]
+rows = [json.loads(l) for l in open(os.path.join(os.environ.get("SFT_RUNS", "runs/sft"), "data", "ears_inventory.jsonl"), encoding="utf-8") if l.strip()]
 print(sum(1 for r in rows if r["name"] == "rainbow_01_regular" and not os.path.exists(r["path"])))
 EOF
 )
@@ -52,7 +52,7 @@ round_texts() {
   if [ "$N_TEXTS" = auto ]; then
     local fallback summary
     fallback=${TEACHER_FALLBACK_N:-$("$TTS_PY" -c "import math; print(math.ceil(1500 * $GPU_HOURS))")}
-    summary=$(ls -t runs/sft/*/teacher/filter_summary.json 2>/dev/null | head -n 1 || true)
+    summary=$(ls -t $RUNS/*/teacher/filter_summary.json 2>/dev/null | head -n 1 || true)
     if [ -n "$summary" ]; then
       echo "budget mode from $summary (fallback --n $fallback)"
       "$TTS_PY" sft/gen_texts.py --report "$REPORT" --out "$D/texts.jsonl" --stage "$STAGE" \

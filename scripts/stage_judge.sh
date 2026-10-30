@@ -19,7 +19,7 @@ if [ ! -f "$DST/.staged" ]; then
   echo "Downloading SpeechJudge-GRM to local NVMe $DST ..." >&2
   sudo mkdir -p "$DST" && sudo chown "$(id -u):$(id -g)" "$DST"
   start=$(date +%s)
-  .venv-judge/bin/python -c "
+  "${JUDGE_PY:-.venv-judge/bin/python}" -c "
 from huggingface_hub import snapshot_download
 snapshot_download('RMSnow/SpeechJudge-GRM', local_dir='$DST', max_workers=16)
 " >&2

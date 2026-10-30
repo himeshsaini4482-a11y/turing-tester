@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Copy runs/ back from the GPU worker, then terminate it (billing stops, nothing is left).
 # If results cannot be copied, the worker is only stopped so they are not lost.
-#   bash scripts/gpu_down.sh
+#   bash tools/aws/gpu_down.sh
 set -euo pipefail
-cd "$(dirname "$0")/.."
-source scripts/gpu/config.sh
+cd "$(dirname "$0")/../.."
+source tools/aws/config.sh
 
 state=$(gpu_state)
 if [ "$state" = none ] || [ "$state" = terminated ] || [ "$state" = shutting-down ]; then

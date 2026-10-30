@@ -61,7 +61,7 @@ gpu_logger_start() {
 }
 
 # pause_for_user STATE DETAIL: record why the run stopped for the user and let the worker's 30-min
-# idle stop (scripts/gpu/user-data.sh) act, so a paused run does not bill while you decide.
+# idle stop (tools/aws/user-data.sh) act, so a paused run does not bill while you decide.
 # Stopping keeps runs/ (EBS); relaunch the same command afterwards.
 pause_for_user() {
   "$TTS_PY" - "$1" "$2" <<'PY'

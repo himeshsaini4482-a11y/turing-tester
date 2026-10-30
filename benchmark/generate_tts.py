@@ -32,6 +32,8 @@ def main():
     p.add_argument("--attn", default="auto", help="auto | flash_attention_2 | sdpa | eager")
     p.add_argument("--device", default="cuda:0")
     p.add_argument("--limit", type=int, default=0, help="only the first N sentences (smoke test)")
+    p.add_argument("--speaker", default="",
+                   help="a fine-tuned (custom_voice) checkpoint: speak as this built-in speaker instead of cloning")
     args = p.parse_args()
 
     import soundfile as sf
@@ -60,13 +62,25 @@ def main():
 
         start, done = time.time(), 0
         for prompt_wav, group in by_prompt.items():
-            prompt = model.create_voice_clone_prompt(
-                ref_audio=prompt_wav, ref_text=group[0]["prompt_text"], x_vector_only_mode=False
-            )
+            if not args.speaker:
+                prompt = model.create_voice_clone_prompt(
+                    ref_audio=prompt_wav, ref_text=group[0]["prompt_text"], x_vector_only_mode=False
+                )
             for i in range(0, len(group), args.batch_size):
                 batch = group[i : i + args.batch_size]
                 # Seed from the batch's first sentence so base and trained runs sample identically
                 torch.manual_seed(args.seed + zlib.crc32(batch[0]["sentence_id"].encode()) % 100_000)
+                if args.speaker:   # Qwen3-TTS fine-tuned on one voice (sft/train_qwen3.py)
+                    wavs, sr = model.generate_custom_voice(
+                        text=[r["text"] for r in batch],
+                        language=[args.language] * len(batch),
+                        speaker=[args.speaker] * len(batch),
+                        max_new_tokens=args.max_new_tokens,
+                    )
+                    for r, wav in zip(batch, wavs):
+                        sf.write(r["tts_wav"], wav, sr)
+                    done += len(batch)
+                    continue
                 wavs, sr = model.generate_voice_clone(
                     text=[r["text"] for r in batch],
                     language=[args.language] * len(batch),
@@ -88,6 +102,7 @@ def main():
             "batch_size": args.batch_size,
             "max_new_tokens": args.max_new_tokens,
             "seed": args.seed,
+            "speaker": args.speaker or None,
             "attn_implementation": attn,
             "qwen_tts_version": version("qwen-tts"),
             "torch_version": torch.__version__,

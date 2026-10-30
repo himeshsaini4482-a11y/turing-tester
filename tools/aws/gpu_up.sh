@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Launch the GPU worker (billing starts) in the first zone with capacity, wait for SSH.
 # Reuses the current worker if it is already running.
-#   bash scripts/gpu_up.sh
+#   bash tools/aws/gpu_up.sh
 set -euo pipefail
-source "$(dirname "$0")/gpu/config.sh"
+source "$(dirname "$0")/config.sh"
 
 wait_for_ssh() {
   for _ in $(seq 1 60); do

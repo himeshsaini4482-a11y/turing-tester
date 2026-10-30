@@ -9,10 +9,9 @@ case "$CORPUS" in
     ;;
   libritts-r)
     MANIFEST=${MANIFEST:-benchmark/manifests/libritts_r_test_clean_10x50.csv}
-    if [ ! -f "$MANIFEST" ]; then
-      echo "== Stage 1: selecting LibriTTS-R benchmark sentences"
-      $TTS_PY benchmark/prepare_data.py --corpus libritts-r --speakers 10 --sentences-per-speaker 50 --out "$MANIFEST"
-    fi
+    echo "== Stage 1: LibriTTS-R benchmark set ($MANIFEST)"
+    # creates the manifest once; afterwards only downloads the audio if this machine lacks it
+    $TTS_PY benchmark/prepare_data.py --corpus libritts-r --speakers 10 --sentences-per-speaker 50 --out "$MANIFEST"
     ;;
   *) echo "unknown CORPUS=$CORPUS (ears | libritts-r)" >&2; exit 1 ;;
 esac

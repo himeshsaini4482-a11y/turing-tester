@@ -123,12 +123,12 @@ ap-south-1a, 1b, trying g6e.xlarge then g6e.2xlarge, for up to 10 rounds a minut
 Cost: ~$2.24/hr while it exists (per second); ~$5/month per region for the stored image.
 
 ```bash
-bash scripts/gpu_run.sh "RUN_NAME=smoke LIMIT=5 bash scripts/run_benchmark.sh"
+bash tools/aws/gpu_run.sh "RUN_NAME=smoke LIMIT=5 bash scripts/run_benchmark.sh"
 # launch worker -> copy code -> run in tmux -> copy runs/ back -> terminate worker
 
-bash scripts/gpu_up.sh       # launch manually (ssh details are in scripts/gpu/state.env)
-bash scripts/gpu_down.sh     # copy runs/ back, terminate
-bash scripts/gpu_status.sh   # any workers alive (= costing money), GPU memory, current job
+bash tools/aws/gpu_up.sh       # launch manually (ssh details are in tools/aws/state.env)
+bash tools/aws/gpu_down.sh     # copy runs/ back, terminate
+bash tools/aws/gpu_status.sh   # any workers alive (= costing money), GPU memory, current job
 ```
 
 Each job re-downloads the judge checkpoint from Hugging Face to the worker's local NVMe
@@ -138,7 +138,7 @@ Safety net: the worker powers itself off after 30 min with no GPU process, SSH l
 session (`touch ~/.keep-awake` on the worker to prevent that). It is *stopped*, not
 terminated, so unsynced results survive; `gpu_up.sh` refuses to launch another until you
 recover or delete it. SSH is open only to the UAI server (`voicegym-gpu-sg` in each region).
-Settings: `scripts/gpu/config.sh`. To rebuild the image after changing the environment,
+Settings: `tools/aws/config.sh`. To rebuild the image after changing the environment,
 `aws ec2 create-image` from a stopped worker and update the AMI ids there.
 
 ## Outputs (`runs/<RUN_NAME>/`)

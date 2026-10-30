@@ -2,7 +2,7 @@
 # Score run_btrm_full.sh's clips with BTRM while they are generated (benchmark/btrm_follow.py),
 # so little BTRM work is left when generation ends. Start it next to the running job:
 #
-#   source scripts/gpu/config.sh
+#   source tools/aws/config.sh
 #   gpu_ssh 'cd voicegym && tmux new-session -d -s btrm "bash scripts/btrm_follow.sh > runs/btrm_follow.log 2>&1"'
 #
 # Never puts a second BTRM model on the GPU: btrm_follow.py exits when a run finishes
@@ -12,7 +12,8 @@ cd "$(dirname "$0")/.."
 unset LD_LIBRARY_PATH   # see run_btrm.sh
 MANIFEST=benchmark/manifests/ears_regular_26x19.csv
 N=$(($(wc -l < "$MANIFEST") - 1))
-DIR=/opt/dlami/nvme/btrm   # same weights as run_btrm.sh
+DIR=pretrained   # same weights as run_btrm.sh: the AWS worker's local NVMe when present
+[ -d /opt/dlami/nvme ] && DIR=/opt/dlami/nvme/btrm
 RUNS=${RUNS:-"runs/moss_nano_full runs/orpheus_full"}
 
 while :; do

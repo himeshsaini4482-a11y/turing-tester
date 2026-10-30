@@ -1,0 +1,145 @@
+{
+  "n_sentences": 494,
+  "mean_tts_reward": 7.4886449898785425,
+  "mean_human_reward": 7.909989453520369,
+  "mean_p_tts_better": 0.4809518968633091,
+  "human_parity_score": 96.19037937266182,
+  "tts_wins": 240,
+  "ratio_score": 102.99161325615604,
+  "ratio_n_sentences": 395,
+  "ratio_skipped_human_reward_le_0": 99,
+  "ratio_n_tts_reward_le_0": 31,
+  "per_speaker": {
+    "p002": {
+      "ratio_score": 368.2656985819518,
+      "human_parity_score": 76.14114927014755,
+      "n_sentences": 19
+    },
+    "p004": {
+      "ratio_score": 41.894375621473884,
+      "human_parity_score": 99.47844357092144,
+      "n_sentences": 19
+    },
+    "p009": {
+      "ratio_score": 57.248463311333715,
+      "human_parity_score": 63.789822821234466,
+      "n_sentences": 19
+    },
+    "p010": {
+      "ratio_score": 93.13458129108183,
+      "human_parity_score": 92.66093756701771,
+      "n_sentences": 19
+    },
+    "p014": {
+      "ratio_score": 136.4216439495232,
+      "human_parity_score": 126.13363235229853,
+      "n_sentences": 19
+    },
+    "p017": {
+      "ratio_score": 337.1271438820238,
+      "human_parity_score": 134.63210378292968,
+      "n_sentences": 19
+    },
+    "p018": {
+      "ratio_score": 124.41325134654628,
+      "human_parity_score": 114.28605500996154,
+      "n_sentences": 19
+    },
+    "p022": {
+      "ratio_score": 81.07968835467815,
+      "human_parity_score": 79.30107034315846,
+      "n_sentences": 19
+    },
+    "p024": {
+      "ratio_score": 122.32625564286647,
+      "human_parity_score": 103.45507827404552,
+      "n_sentences": 19
+    },
+    "p027": {
+      "ratio_score": 172.65846034221033,
+      "human_parity_score": 104.39675080311774,
+      "n_sentences": 19
+    },
+    "p038": {
+      "ratio_score": 111.30095396029374,
+      "human_parity_score": 72.70106543356665,
+      "n_sentences": 19
+    },
+    "p043": {
+      "ratio_score": -371.3179497304369,
+      "human_parity_score": 93.96637315704844,
+      "n_sentences": 19
+    },
+    "p052": {
+      "ratio_score": 123.80334571183464,
+      "human_parity_score": 93.00737985248983,
+      "n_sentences": 19
+    },
+    "p053": {
+      "ratio_score": -16.85445555412117,
+      "human_parity_score": 84.92900817921173,
+      "n_sentences": 19
+    },
+    "p056": {
+      "ratio_score": 196.61115125999626,
+      "human_parity_score": 167.90942567437907,
+      "n_sentences": 19
+    },
+    "p066": {
+      "ratio_score": 122.43181268634355,
+      "human_parity_score": 87.72813110084243,
+      "n_sentences": 19
+    },
+    "p069": {
+      "ratio_score": 131.34316847606559,
+      "human_parity_score": 96.12270304762576,
+      "n_sentences": 19
+    },
+    "p079": {
+      "ratio_score": 47.92804464139601,
+      "human_parity_score": 48.30305076073781,
+      "n_sentences": 19
+    },
+    "p081": {
+      "ratio_score": 80.08362658887592,
+      "human_parity_score": 57.059616090012625,
+      "n_sentences": 19
+    },
+    "p085": {
+      "ratio_score": 105.11140766055567,
+      "human_parity_score": 102.43973220392803,
+      "n_sentences": 19
+    },
+    "p086": {
+      "ratio_score": 122.90016372998262,
+      "human_parity_score": 158.81494735397038,
+      "n_sentences": 19
+    },
+    "p088": {
+      "ratio_score": 97.27066539796787,
+      "human_parity_score": 90.21670727133412,
+      "n_sentences": 19
+    },
+    "p097": {
+      "ratio_score": 104.50365453959996,
+      "human_parity_score": 94.56494570802403,
+      "n_sentences": 19
+    },
+    "p100": {
+      "ratio_score": 117.63207849679982,
+      "human_parity_score": 108.18068381401665,
+      "n_sentences": 19
+    },
+    "p101": {
+      "ratio_score": 56.2582037020855,
+      "human_parity_score": 66.47408190580532,
+      "n_sentences": 19
+    },
+    "p102": {
+      "ratio_score": 102.94707911849024,
+      "human_parity_score": 84.2569683413816,
+      "n_sentences": 19
+    }
+  },
+  "model": "RMSnow/SpeechJudge-BTRM"
+}

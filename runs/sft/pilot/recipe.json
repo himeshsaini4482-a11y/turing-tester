@@ -1,0 +1,524 @@
+{
+  "status": "go",
+  "decoding": "chunked",
+  "freeform_tag": "U",
+  "f1_include": false,
+  "recipe": "M",
+  "ears_in_mix": true,
+  "teacher_gpu_hours_per_round": 10,
+  "teacher_oversample": 1.14,
+  "lr": 2e-05,
+  "main_rounds": 2,
+  "pilot_best": {
+    "arm": "B",
+    "eval": "pilot_B",
+    "ckpt": "runs/sft/ckpt/pilot/B/checkpoint-last",
+    "btrm_pct": 86.20796008905782
+  },
+  "evidence": {
+    "delta1": {
+      "mirror": {
+        "diff": 16.945394477009586,
+        "lo": -2.694742588978727,
+        "hi": 42.97421082000802,
+        "n_items": 76
+      },
+      "fresh": null
+    },
+    "delta2": {
+      "mirror": {
+        "diff": -5.518968504795595,
+        "lo": -19.5118539267239,
+        "hi": 7.710720695917075,
+        "n_items": 76
+      },
+      "fresh": null,
+      "pct_B": 86.20796008905782,
+      "pct_D": 94.11081431628861
+    },
+    "tag": {
+      "mirror": {
+        "diff": 1.259659484737682,
+        "lo": -10.321440553742661,
+        "hi": 12.774121688453533,
+        "n_items": 76
+      },
+      "fresh": null,
+      "why": "diff(CT − CU) on dev-mirror = +1.3 [-10.3, +12.8]; CI lo ≤ 0 → U (simpler)"
+    },
+    "f1": {
+      "policy": "auto",
+      "mirror": {
+        "diff": 6.237513683911317,
+        "lo": -6.96608983671311,
+        "hi": 19.837756745110696,
+        "n_items": 76
+      },
+      "fresh": null,
+      "probe_items": {
+        "diff": 4.165026611674904,
+        "lo": -4.607617994570717,
+        "hi": 12.962096396817984,
+        "n_items": 36
+      },
+      "other_items": null,
+      "n_probe_items": 36,
+      "why": "F1_POLICY=auto but F, CU or the probe items are missing: safe default exclude"
+    },
+    "go": {
+      "beats_base": [
+        "B",
+        "CU",
+        "CT",
+        "D"
+      ],
+      "why": "arms beating base (diff CI lo > 0): B, CU, CT, D"
+    },
+    "teacher_oversample": {
+      "n_ears_records": 16430.0,
+      "n_teacher_pilot": 1719.0,
+      "pilot_teacher_gpu_h": 2.833833333333333,
+      "projected_teacher_after_round1": 7784.988354996178,
+      "target_share": 0.35,
+      "raw": 1.1364080039047688,
+      "clamped_to": [
+        1.0,
+        5.0
+      ]
+    },
+    "no_teacher_data": false,
+    "base": {
+      "eval": "base_chunked",
+      "sets": {
+        "mirror": {
+          "btrm_pct": 59.72088684724674,
+          "lo": 41.16449712357863,
+          "hi": 84.21145819528469,
+          "n_items": 76,
+          "n_rows": 228,
+          "wer": 0.042047992879915674,
+          "sim": 0.9547888594761229,
+          "utmos": 3.6595640977223716
+        },
+        "fresh": {
+          "btrm_pct": null,
+          "lo": null,
+          "hi": null,
+          "undefined": "mean human BTRM reward is -3.125 <= 0; BTRM % is undefined on this set",
+          "mean_reward_gap": -2.1211027922453702,
+          "n_items": 36,
+          "n_rows": 108,
+          "wer": 0.10329729864697933,
+          "sim": 0.9201614056472425,
+          "utmos": 3.417500888859784
+        }
+      }
+    },
+    "arms": {
+      "A": {
+        "sets": {
+          "mirror": {
+            "btrm_pct": 69.26256561204823,
+            "lo": 46.225430950579664,
+            "hi": 98.73080323724086,
+            "n_items": 76,
+            "n_rows": 228,
+            "wer": 0.03638784504330559,
+            "sim": 0.9542494646289892,
+            "utmos": 3.8460892339547477
+          },
+          "fresh": {
+            "btrm_pct": null,
+            "lo": null,
+            "hi": null,
+            "undefined": "mean human BTRM reward is -3.125 <= 0; BTRM % is undefined on this set",
+            "mean_reward_gap": -6.7174072265625,
+            "n_items": 36,
+            "n_rows": 108,
+            "wer": 0.233623703640684,
+            "sim": 0.8957944189508756,
+            "utmos": 3.2569368216726513
+          }
+        },
+        "vs_base": {
+          "base": "base_chunked",
+          "mirror": {
+            "diff": 9.541678764801496,
+            "lo": -10.430801169445118,
+            "hi": 29.0651453865203,
+            "n_items": 76
+          }
+        },
+        "guards": {
+          "wer_ok": false,
+          "sim_ok": true,
+          "utmos_ok": true,
+          "pass": false,
+          "unchecked": [],
+          "n_rows": 336,
+          "values": {
+            "wer": 0.09978508530674865,
+            "sim": 0.9354603428038812,
+            "utmos": 3.6567188157212165
+          },
+          "base_values": {
+            "wer": 0.061735269733614706,
+            "sim": 0.9436586064596971,
+            "utmos": 3.581758066302254
+          }
+        }
+      },
+      "B": {
+        "sets": {
+          "mirror": {
+            "btrm_pct": 86.20796008905782,
+            "lo": 66.77075862941433,
+            "hi": 117.34520024896214,
+            "n_items": 76,
+            "n_rows": 228,
+            "wer": 0.02099469959703241,
+            "sim": 0.9451609256497601,
+            "utmos": 4.0385178996805555
+          },
+          "fresh": {
+            "btrm_pct": null,
+            "lo": null,
+            "hi": null,
+            "undefined": "mean human BTRM reward is -3.125 <= 0; BTRM % is undefined on this set",
+            "mean_reward_gap": 1.0312183521412037,
+            "n_items": 36,
+            "n_rows": 108,
+            "wer": 0.04412240148791313,
+            "sim": 0.9099117931392458,
+            "utmos": 3.8443734270555003
+          }
+        },
+        "vs_base": {
+          "base": "base_chunked",
+          "mirror": {
+            "diff": 26.487073241811082,
+            "lo": 12.156864188563567,
+            "hi": 46.01342347393967,
+            "n_items": 76
+          }
+        },
+        "guards": {
+          "wer_ok": true,
+          "sim_ok": true,
+          "utmos_ok": true,
+          "pass": true,
+          "unchecked": [],
+          "n_rows": 336,
+          "values": {
+            "wer": 0.028428603776244073,
+            "sim": 0.9338308473428091,
+            "utmos": 3.9761143191939308
+          },
+          "base_values": {
+            "wer": 0.061735269733614706,
+            "sim": 0.9436586064596971,
+            "utmos": 3.581758066302254
+          }
+        }
+      },
+      "CU": {
+        "sets": {
+          "mirror": {
+            "btrm_pct": 99.6297828210842,
+            "lo": 78.72135205350237,
+            "hi": 135.0808873980331,
+            "n_items": 76,
+            "n_rows": 228,
+            "wer": 0.05993251112161533,
+            "sim": 0.9588098680241066,
+            "utmos": 3.9841792259299966
+          },
+          "fresh": {
+            "btrm_pct": null,
+            "lo": null,
+            "hi": null,
+            "undefined": "mean human BTRM reward is -3.125 <= 0; BTRM % is undefined on this set",
+            "mean_reward_gap": -5.939398871527778,
+            "n_items": 36,
+            "n_rows": 108,
+            "wer": 0.15043150551106907,
+            "sim": 0.9050853547674639,
+            "utmos": 3.3832500367252916
+          }
+        },
+        "vs_base": {
+          "base": "base_chunked",
+          "mirror": {
+            "diff": 39.90889597383747,
+            "lo": 23.47381367473595,
+            "hi": 64.77299961984097,
+            "n_items": 76
+          }
+        },
+        "guards": {
+          "wer_ok": false,
+          "sim_ok": true,
+          "utmos_ok": true,
+          "pass": false,
+          "unchecked": [],
+          "n_rows": 336,
+          "values": {
+            "wer": 0.08902147360393974,
+            "sim": 0.9415412744773286,
+            "utmos": 3.7910234151141986
+          },
+          "base_values": {
+            "wer": 0.061735269733614706,
+            "sim": 0.9436586064596971,
+            "utmos": 3.581758066302254
+          }
+        }
+      },
+      "CT": {
+        "sets": {
+          "mirror": {
+            "btrm_pct": 100.88944230582189,
+            "lo": 79.55881058899847,
+            "hi": 136.92623730049547,
+            "n_items": 76,
+            "n_rows": 228,
+            "wer": 0.0468188222178607,
+            "sim": 0.9597021736073912,
+            "utmos": 3.9655201142294363
+          },
+          "fresh": {
+            "btrm_pct": null,
+            "lo": null,
+            "hi": null,
+            "undefined": "mean human BTRM reward is -3.125 <= 0; BTRM % is undefined on this set",
+            "mean_reward_gap": -6.512950755931713,
+            "n_items": 36,
+            "n_rows": 108,
+            "wer": 0.2014544415169886,
+            "sim": 0.9049174402047087,
+            "utmos": 3.364466419926396
+          }
+        },
+        "vs_base": {
+          "base": "base_chunked",
+          "mirror": {
+            "diff": 41.16855545857515,
+            "lo": 24.410226885986262,
+            "hi": 67.06087659382382,
+            "n_items": 76
+          }
+        },
+        "guards": {
+          "wer_ok": false,
+          "sim_ok": true,
+          "utmos_ok": true,
+          "pass": false,
+          "unchecked": [],
+          "n_rows": 336,
+          "values": {
+            "wer": 0.09652312842115181,
+            "sim": 0.9420927950136718,
+            "utmos": 3.772324283917745
+          },
+          "base_values": {
+            "wer": 0.061735269733614706,
+            "sim": 0.9436586064596971,
+            "utmos": 3.581758066302254
+          }
+        }
+      },
+      "D": {
+        "sets": {
+          "mirror": {
+            "btrm_pct": 94.11081431628861,
+            "lo": 72.69456879528754,
+            "hi": 129.71140163094248,
+            "n_items": 76,
+            "n_rows": 228,
+            "wer": 0.035545081721895674,
+            "sim": 0.9585910248651839,
+            "utmos": 3.996257231946577
+          },
+          "fresh": {
+            "btrm_pct": null,
+            "lo": null,
+            "hi": null,
+            "undefined": "mean human BTRM reward is -3.125 <= 0; BTRM % is undefined on this set",
+            "mean_reward_gap": -5.978990342881945,
+            "n_items": 36,
+            "n_rows": 108,
+            "wer": 0.17519004600712842,
+            "sim": 0.9096394495831596,
+            "utmos": 3.3852664320557206
+          }
+        },
+        "vs_base": {
+          "base": "base_chunked",
+          "mirror": {
+            "diff": 34.38992746904187,
+            "lo": 19.651258345313977,
+            "hi": 57.4801708661425,
+            "n_items": 76
+          }
+        },
+        "guards": {
+          "wer_ok": false,
+          "sim_ok": true,
+          "utmos_ok": true,
+          "pass": false,
+          "unchecked": [],
+          "n_rows": 336,
+          "values": {
+            "wer": 0.08043096309929192,
+            "sim": 0.9428565899531046,
+            "utmos": 3.799867331981659
+          },
+          "base_values": {
+            "wer": 0.061735269733614706,
+            "sim": 0.9436586064596971,
+            "utmos": 3.581758066302254
+          }
+        }
+      },
+      "F": {
+        "sets": {
+          "mirror": {
+            "btrm_pct": 105.86729650499552,
+            "lo": 83.83557389688103,
+            "hi": 143.71886350621594,
+            "n_items": 76,
+            "n_rows": 228,
+            "wer": 0.05194683926893225,
+            "sim": 0.9687610318263372,
+            "utmos": 3.937785475400456
+          },
+          "fresh": {
+            "btrm_pct": null,
+            "lo": null,
+            "hi": null,
+            "undefined": "mean human BTRM reward is -3.125 <= 0; BTRM % is undefined on this set",
+            "mean_reward_gap": -4.4926576967592595,
+            "n_items": 36,
+            "n_rows": 108,
+            "wer": 0.1576995220458947,
+            "sim": 0.9027774723039733,
+            "utmos": 3.32718723570859
+          }
+        },
+        "vs_base": {
+          "base": "base_chunked",
+          "mirror": {
+            "diff": 46.146409657748784,
+            "lo": 28.924190349791125,
+            "hi": 72.99829079492083,
+            "n_items": 76
+          }
+        },
+        "guards": {
+          "wer_ok": false,
+          "sim_ok": true,
+          "utmos_ok": true,
+          "pass": false,
+          "unchecked": [],
+          "n_rows": 336,
+          "values": {
+            "wer": 0.08593877301867019,
+            "sim": 0.9475520305512917,
+            "utmos": 3.741521755499499
+          },
+          "base_values": {
+            "wer": 0.061735269733614706,
+            "sim": 0.9436586064596971,
+            "utmos": 3.581758066302254
+          }
+        }
+      }
+    },
+    "missing_arms": [],
+    "teacher": {
+      "n_generated": 4000,
+      "n_candidates": 2842,
+      "n_accepted": 1719,
+      "yield": 0.4298,
+      "rejected": {
+        "no_eos": 2,
+        "rate": 65,
+        "wer": 208,
+        "sim": 883,
+        "btrm": 1123
+      },
+      "accepted_audio_s": 9898.9,
+      "gen_gpu_s": 10201.8,
+      "accepted_audio_per_gpu_s": 0.97031,
+      "mean_accepted_duration": 5.759,
+      "generated_audio_s": 22724.5,
+      "eos_rate": 0.9995,
+      "n_decode_failed": 0,
+      "by_category": {
+        "stress_emphasis": {
+          "generated": 379,
+          "accepted": 118
+        },
+        "sentence_final_intonation": {
+          "generated": 142,
+          "accepted": 47
+        },
+        "emotion_mismatch": {
+          "generated": 205,
+          "accepted": 83
+        },
+        "pacing_too_slow": {
+          "generated": 458,
+          "accepted": 199
+        },
+        "general": {
+          "generated": 1000,
+          "accepted": 427
+        },
+        "robotic_or_metallic": {
+          "generated": 529,
+          "accepted": 228
+        },
+        "flat_prosody": {
+          "generated": 639,
+          "accepted": 295
+        },
+        "unnatural_pauses": {
+          "generated": 545,
+          "accepted": 270
+        },
+        "pacing_too_fast": {
+          "generated": 103,
+          "accepted": 52
+        }
+      },
+      "means_all": {
+        "teacher_wer": 0.0069,
+        "sim": 0.8827,
+        "r_teacher": 6.5518,
+        "r_student": 4.3146
+      },
+      "means_accepted": {
+        "teacher_wer": 0.0005,
+        "sim": 0.9402,
+        "r_teacher": 8.7958,
+        "r_student": 1.6264
+      },
+      "missing_scores": {
+        "teacher_wer": 0,
+        "sim": 0,
+        "r_teacher": 0
+      },
+      "thresholds": {
+        "rate": [
+          8.0,
+          22.0
+        ],
+        "wer": 0.05,
+        "sim": 0.88
+      }
+    },
+    "notes": [],
+    "decided_at": "2026-10-24 16:40:55"
+  }
+}

@@ -1,0 +1,22 @@
+# Any server with an OpenAI-style POST /v1/audio/speech (OpenAI itself, or a local server).
+#   OPENAI_API_KEY    the key (servers without auth accept any value)
+#   OPENAI_BASE_URL   default https://api.openai.com
+#   OPENAI_TTS_MODEL  default gpt-4o-mini-tts
+#   OPENAI_TTS_VOICE  default alloy
+# This endpoint has no voice cloning, so every sentence is spoken in the same preset voice and the
+# report marks speaker similarity as not comparable.
+name: openai-compatible
+url: "${OPENAI_BASE_URL:-https://api.openai.com}/v1/audio/speech"
+headers:
+  Authorization: "Bearer ${OPENAI_API_KEY}"
+body:
+  model: "${OPENAI_TTS_MODEL:-gpt-4o-mini-tts}"
+  input: "{text}"
+  voice: "${OPENAI_TTS_VOICE:-alloy}"
+  response_format: wav
+response:
+  audio: binary
+  format: wav
+voice_cloning: none
+requests_per_minute: 50
+timeout_seconds: 120

@@ -14,6 +14,8 @@ runs/*/*
 !runs/*/metrics_summary.json
 !runs/*/generation_config.json
 !runs/*/btrm_summary.json
+!runs/*/report.md
+!runs/*/report.json
 # SFT pipeline (runs/sft/): keep the decisions and reports, ignore audio, codes, mixes, checkpoints
 !runs/sft/REPORT.md
 !runs/sft/DECISIONS.md
@@ -30,3 +32,11 @@ scripts/gpu/state.env
 
 # local agent orchestration notes
 .super-claude/
+
+# voicegym CLI: tools, environments and caches; your models, voices and keys
+/.voicegym/
+/models/*
+!/models/README.md
+/voices/*
+!/voices/README.md
+tools/aws/state.env

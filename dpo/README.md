@@ -54,7 +54,7 @@ UAI host and from the worker (SFT gate G0c) on 2026-10-23; if the worker cannot 
 | when | what | who |
 |---|---|---|
 | SFT running (until ~Oct 26) | nothing on the GPU; code review and CPU tests only | agents |
-| SFT `final.sh` done, `runs/sft/best/final` exists | `KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/dpo/run.sh"` | you / Claude |
+| SFT `final.sh` done, `runs/sft/best/final` exists | `KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/dpo/run.sh"` | you / Claude |
 | `gates` fails | debugger agent reads `runs/dpo/gates.json`, fixes, re-run | debugger |
 | run.sh exits 3 (paused) | read `runs/dpo/r01/beta_diagnostic.md`; either fill the USER_REVIEW values in `hparams.json` or check `dpo/sweep.json`, set `"approved": true` and run `scripts/dpo/sweep.sh`; stop the worker while you decide | **you** |
 | sweep done | read `runs/dpo/sweep/SWEEP_REPORT.md`, copy the chosen values into `hparams.json`, re-run run.sh | **you** |
@@ -67,7 +67,7 @@ Live (only the UAI host can SSH to the worker, so two tunnels):
 
 ```bash
 # on the UAI host, in the repo: start TensorBoard on the worker (not in tmux: tmux keeps it awake)
-source scripts/gpu/config.sh
+source tools/aws/config.sh
 gpu_ssh 'cd voicegym && setsid nohup /opt/dlami/nvme/moss_nano/venv/bin/tensorboard --logdir runs/dpo/tb \
   --host 127.0.0.1 --port 6006 --reload_interval 30 >/tmp/tb.log 2>&1 </dev/null &'
 ssh "${SSH_OPTS[@]}" -f -N -L 127.0.0.1:16006:127.0.0.1:6006 ubuntu@$GPU_HOST
@@ -157,7 +157,7 @@ reload; the vectorised repetition penalty is bit-identical to the pinned one. No
 GPU: real-weight bf16 gaps, codec/BTRM behaviour, memory and speed (gates D1-D7 on the worker).
 
 Open, in order (none blocks the first run):
-1. `scripts/gpu_run.sh` copies all of `runs/` back to the host (tens of GB) and truncates `runs/job.log`
+1. `tools/aws/gpu_run.sh` copies all of `runs/` back to the host (tens of GB) and truncates `runs/job.log`
    on every launch. It is shared with the running SFT, so it is left unchanged until SFT ends; until then
    launch DPO the way the SFT supervisor does (pull only small files).
 2. MOSS rollout speed beyond the repetition penalty: remove the remaining per-frame host syncs, then CUDA

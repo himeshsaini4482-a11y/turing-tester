@@ -1,0 +1,35 @@
+# Template for any TTS API. Copy it to apis/<provider>.yaml, fill it in from the provider's docs and run
+#   ./voicegym benchmark --api apis/<provider>.yaml
+#
+# Placeholders, filled per sentence:   {text} {ref_text} {ref_audio_base64} {voice_id}
+# Environment variables:               ${MY_TTS_API_KEY}   ${NAME:-default value}
+# Keys are read from the environment at request time and never written to files or logs.
+name: my-provider
+url: https://api.example.com/v1/tts
+method: POST
+headers:
+  Authorization: "Bearer ${MY_TTS_API_KEY}"
+body:                                   # sent as JSON
+  text: "{text}"
+  reference_audio: "{ref_audio_base64}" # the voice to clone (a wav file, base64)
+  reference_text: "{ref_text}"          # its transcript
+  format: wav
+response:
+  audio: binary                         # binary, or a JSON path to base64 audio, e.g. data.audio_base64
+  format: wav                           # wav | mp3 | flac | ogg | pcm_s16le
+  # sample_rate: 24000                  # needed for pcm_s16le
+voice_cloning: per_request              # per_request | create_voice | none
+requests_per_minute: 60
+timeout_seconds: 120
+
+# For APIs that clone a voice once and then refer to it by id (voice_cloning: create_voice):
+# create_voice:
+#   url: https://api.example.com/v1/voices
+#   headers: {Authorization: "Bearer ${MY_TTS_API_KEY}"}
+#   form: {name: "voicegym-{voice_key}"}  # multipart form fields
+#   file_field: file                      # the reference clip goes in this field
+#   voice_id: id                          # JSON path of the new voice's id in the response
+# delete_voice:                           # optional: remove the cloned voices afterwards
+#   method: DELETE
+#   url: "https://api.example.com/v1/voices/{voice_id}"
+#   headers: {Authorization: "Bearer ${MY_TTS_API_KEY}"}

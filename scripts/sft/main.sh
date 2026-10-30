@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Main workflow, run after the pilot (scripts/sft/pilot.sh) has written runs/sft/pilot/recipe.json.
+# Main workflow, run after the pilot (scripts/sft/pilot.sh) has written $RUNS/pilot/recipe.json.
 # Each round:
 #   GRM diagnoses the current best checkpoint on dev-mirror -> the 9B writes texts for the confirmed
 #   weaknesses -> Orpheus speaks them (GPU-hour budget from the recipe) -> filter -> training mix
@@ -9,19 +9,19 @@
 #   size and lr); if it beats the main arm, later rounds use its share (sft/reweight.py).
 # Then scripts/sft/final.sh runs the full 494 benchmark (unless SKIP_FINAL=1).
 #
-#   KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/sft/main.sh"
+#   KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/sft/main.sh"
 #
 # Env overrides: MAIN_ROUNDS, TEACHER_GPU_HOURS, MAIN_EPOCHS (3), SWEEP (1: last round also
 # trains at half the learning rate), REWEIGHT (1: train the alt arm each round), FORCE=1 (run
 # even if the pilot said stop), SKIP_FINAL=1.
-# Resumable: finished steps are skipped (runs/sft/.done/).
+# Resumable: finished steps are skipped ($RUNS/.done/).
 source "$(dirname "$0")/env.sh"
 RECIPE=$RUNS/pilot/recipe.json
 [ -f "$RECIPE" ] || { echo "main.sh: $RECIPE is missing; run scripts/sft/pilot.sh first" >&2; exit 1; }
 rj() { "$TTS_PY" -c "import json; r = json.load(open('$RECIPE')); print($1)"; }
 
 if [ "$(rj "r['status']")" != go ] && [ "${FORCE:-0}" != 1 ]; then
-  echo "main.sh: the pilot decided STOP (see runs/sft/pilot/pilot_report.md). FORCE=1 overrides." >&2
+  echo "main.sh: the pilot decided STOP (see $RUNS/pilot/pilot_report.md). FORCE=1 overrides." >&2
   exit 3
 fi
 # MOSS venv/repo/model live on the NVMe (wiped if the worker stopped since the pilot); idempotent
@@ -80,7 +80,7 @@ for r in $(seq 1 "$ROUNDS"); do
       [ "$MIX_ARM" = mix ] && variant=main || variant=alt
       "$TTS_PY" sft/reweight.py config --stage "$S" --variant "$variant" > "$CFG"
       if [ ! -s "$CFG" ]; then
-        echo "== round $r: no re-weighting arm this round (runs/sft/$S/alt_skip.json)"
+        echo "== round $r: no re-weighting arm this round ($RUNS/$S/alt_skip.json)"
         continue
       fi
       "$MOSS_PY" sft/make_mix.py --stage "$S" --arm "$MIX_ARM" --config "@$CFG" | tail -1
@@ -98,9 +98,13 @@ for r in $(seq 1 "$ROUNDS"); do
   verdict=$("$TTS_PY" sft/round_select.py --stage "$S" --round "$r" --evals "${evals[@]}" --ckpts "${ckpts[@]}" | tail -1)
 
   # keep this round's best and the overall best; drop the other checkpoints (0.4 GB each)
-  keep_round=$(realpath -m "$("$TTS_PY" -c "import json; print(json.load(open('$RUNS/$S/round_summary.json'))['best_ckpt'] or '')")")
-  keep_best=$(realpath -m "$(best ckpt)")
+  # (realpath -m "" fails, so a round without a passing checkpoint keeps nothing of its own)
+  keep_round=$("$TTS_PY" -c "import json; print(json.load(open('$RUNS/$S/round_summary.json'))['best_ckpt'] or '')")
+  [ -n "$keep_round" ] && keep_round=$(realpath -m "$keep_round")
+  keep_best=$(best ckpt)
+  [ -n "$keep_best" ] && keep_best=$(realpath -m "$keep_best")
   for ck in "$RUNS/ckpt/$S"/*/checkpoint-*; do
+    [ -e "$ck" ] || continue
     c=$(realpath -m "$ck")
     [ "$c" = "$keep_round" ] || [ "$c" = "$keep_best" ] || rm -rf "$ck"
   done

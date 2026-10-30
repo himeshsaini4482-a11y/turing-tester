@@ -11,7 +11,11 @@ cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 unset LD_LIBRARY_PATH
 
 REPO_DIR=$PWD
-RUNS=$REPO_DIR/runs/sft
+# the voicegym CLI (--mode full) points these at runs/sft/<name> and its own environments
+RUNS=${SFT_RUNS:-$REPO_DIR/runs/sft}
+export SFT_RUNS=$RUNS
+BENCH_PREFIX=${SFT_BENCH_PREFIX:-}   # 494-benchmark run dirs: runs/${BENCH_PREFIX}sft_final etc.
+export SFT_BENCH_ROOT=${SFT_BENCH_ROOT:-$REPO_DIR/runs}
 if [ -d /opt/dlami/nvme ]; then NV=/opt/dlami/nvme; else NV=$REPO_DIR/data/nvme; fi
 
 # mkdir that also works on the worker's root-owned NVMe mount (as run_moss_nano.sh does)
@@ -27,18 +31,18 @@ if [ -d /opt/dlami/nvme ]; then   # model downloads on the fast local NVMe
   export HF_HUB_CACHE=$NV/hf
 fi
 
-TTS_PY=$REPO_DIR/.venv-tts/bin/python
-JUDGE_PY=$REPO_DIR/.venv-judge/bin/python
+TTS_PY=${TTS_PY:-$REPO_DIR/.venv-tts/bin/python}
+JUDGE_PY=${JUDGE_PY:-$REPO_DIR/.venv-judge/bin/python}
 
 # MOSS-TTS-Nano: own venv + pinned repo checkout (same location as scripts/run_moss_nano.sh)
-MOSS_DIR=$NV/moss_nano
+MOSS_DIR=${MOSS_DIR:-$NV/moss_nano}
 nv_dir "$MOSS_DIR"
-MOSS_REPO=$MOSS_DIR/MOSS-TTS-Nano
+MOSS_REPO=${MOSS_REPO:-$MOSS_DIR/MOSS-TTS-Nano}
 MOSS_COMMIT=8b7bcc9341b3b4ef3a3a58ba1338a7d85ff133eb
-MOSS_PY=$MOSS_DIR/venv/bin/python
-MOSS_ACCEL=$MOSS_DIR/venv/bin/accelerate
-MOSS_MODEL_DIR=$MOSS_DIR/models/MOSS-TTS-Nano-100M
-MOSS_CODEC_DIR=$MOSS_DIR/models/MOSS-Audio-Tokenizer-Nano
+MOSS_PY=${MOSS_PY:-$MOSS_DIR/venv/bin/python}
+MOSS_ACCEL=${MOSS_ACCEL:-$MOSS_DIR/venv/bin/accelerate}
+MOSS_MODEL_DIR=${MOSS_MODEL_DIR:-$MOSS_DIR/models/MOSS-TTS-Nano-100M}
+MOSS_CODEC_DIR=${MOSS_CODEC_DIR:-$MOSS_DIR/models/MOSS-Audio-Tokenizer-Nano}
 MOSS_HF_MODEL=OpenMOSS-Team/MOSS-TTS-Nano-100M
 MOSS_HF_CODEC=OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano
 # Python stages (sft/gates.py, make_mix.py, ...) read these from the environment

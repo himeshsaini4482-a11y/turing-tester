@@ -12,12 +12,12 @@ unset LD_LIBRARY_PATH
 RUN_NAME=${RUN_NAME:-base}
 CORPUS=${CORPUS:-ears}
 LIMIT=${LIMIT:-0}
-TTS_PY=.venv-tts/bin/python
+TTS_PY=${TTS_PY:-.venv-tts/bin/python}
 source scripts/corpus.sh   # makes sure the human audio is on this machine
 
 # local NVMe on the AWS worker loads far faster than the EBS disk (see stage_judge.sh)
 DIR=pretrained
 [ -d /opt/dlami/nvme ] && { sudo mkdir -p /opt/dlami/nvme/btrm && sudo chown "$(id -u):$(id -g)" /opt/dlami/nvme/btrm; DIR=/opt/dlami/nvme/btrm; }
 
-.venv-judge/bin/python benchmark/btrm_score.py --manifest "runs/$RUN_NAME/manifest.csv" --out-dir "runs/$RUN_NAME" \
+"${JUDGE_PY:-.venv-judge/bin/python}" benchmark/btrm_score.py --manifest "runs/$RUN_NAME/manifest.csv" --out-dir "runs/$RUN_NAME" \
   --limit "$LIMIT" --base-path "$DIR/Qwen2.5-Omni-7B" --rm-path "$DIR/SpeechJudge-BTRM"

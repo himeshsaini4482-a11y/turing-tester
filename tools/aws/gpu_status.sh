@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Show whether a GPU worker exists (i.e. costs money) and what it is doing.
 set -euo pipefail
-source "$(dirname "$0")/gpu/config.sh"
+source "$(dirname "$0")/config.sh"
 
 for region in ap-south-2 ap-south-1; do
   aws ec2 describe-instances --region "$region" \

@@ -2,30 +2,30 @@
 # Run a command on a GPU worker, then get rid of it:
 #   launch worker -> copy code -> run command in tmux -> copy small runs/ reports back (FULL_PULL=1: all) -> terminate worker
 #
-#   bash scripts/gpu_run.sh "RUN_NAME=smoke LIMIT=5 bash scripts/run_benchmark.sh"
-#   KEEP_UP=1 bash scripts/gpu_run.sh "..."     # leave the worker running (no idle stop) until gpu_down.sh
-#   PUSH_RUNS=ears_smoke bash scripts/gpu_run.sh "RUN_NAME=ears_smoke LIMIT=5 bash scripts/run_btrm.sh"
+#   bash tools/aws/gpu_run.sh "RUN_NAME=smoke LIMIT=5 bash scripts/run_benchmark.sh"
+#   KEEP_UP=1 bash tools/aws/gpu_run.sh "..."     # leave the worker running (no idle stop) until gpu_down.sh
+#   PUSH_RUNS=ears_smoke bash tools/aws/gpu_run.sh "RUN_NAME=ears_smoke LIMIT=5 bash scripts/run_btrm.sh"
 #
 # The job runs in a tmux session on the worker, so it survives this terminal closing.
 # If this script dies mid-job, the worker's idle timer stops it 30 min after the job ends
 # (stopped, not terminated, so results survive); gpu_up.sh then says how to recover them.
 set -euo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 [ $# -ge 1 ] || { echo "usage: $0 \"<command>\"" >&2; exit 1; }
 CMD=$1
 
-bash scripts/gpu_up.sh
-source scripts/gpu/config.sh
+bash tools/aws/gpu_up.sh
+source tools/aws/config.sh
 if [ "${KEEP_UP:-0}" = 1 ]; then
   # also keep the idle timer (user-data.sh) from powering it off; gpu_down.sh ends it
   gpu_ssh 'touch ~/.keep-awake'
 else
-  trap 'bash scripts/gpu_down.sh' EXIT
+  trap 'bash tools/aws/gpu_down.sh' EXIT
 fi
 
 RSYNC_SSH="ssh ${SSH_OPTS[*]}"
 rsync -az -e "$RSYNC_SSH" --exclude '.venv-*' --exclude '/data/' --exclude '/pretrained/' \
-  --exclude '/third_party/' --exclude '/runs/' --exclude '__pycache__' --exclude 'scripts/gpu/state.env' \
+  --exclude '/third_party/' --exclude '/runs/' --exclude '__pycache__' --exclude 'tools/aws/state.env' \
   ./ "ubuntu@$GPU_HOST:$GPU_DIR/"
 # PUSH_RUNS="a b": copy existing runs/a, runs/b to the worker (e.g. to score TTS audio made earlier)
 for run in ${PUSH_RUNS:-}; do

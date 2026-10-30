@@ -130,6 +130,10 @@ def main():
 
     url, corpus_dir = CORPORA[args.corpus]
     split_dir = download_and_extract(url, args.data_root, corpus_dir)
+    if os.path.exists(args.out):
+        # the locked set: only make sure its audio is on this machine (a fresh clone has none)
+        print(f"Using locked manifest {args.out}; audio in {split_dir}")
+        return
     clips = scan(split_dir)
     genders = read_genders()
     rng = random.Random(args.seed)

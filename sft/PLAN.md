@@ -72,7 +72,7 @@ UTMOS ≥ base − 0.10.
 | D7 | Styles: **everything except non-verbal** (keep all reading styles + all 22 emotions + freeform + interjections; drop `nonverbal_*`, `vegetative_*`, `melodic_*`) | user |
 | D8 | LibriTTS-R: **not used** (audio quality) | user |
 | D9 | **Neither data source is assumed to be better.** The Round-1 pilot measures EARS vs the 9B→Orpheus teacher loop. The winner gets most of the round-2/3 compute: EARS-led, mixed, or teacher-led (§7.2, §8) | user + plan |
-| D10 | One GPU: AWS g6e.xlarge (1× L40S 48 GB) via `scripts/gpu_run.sh`, `KEEP_UP=1` | user |
+| D10 | One GPU: AWS g6e.xlarge (1× L40S 48 GB) via `tools/aws/gpu_run.sh`, `KEEP_UP=1` | user |
 
 | D12 | **Test round first** (user, 2026-10-22). Every open choice is settled by experiment in the pilot before the main workflow starts: Q1 decoding, Q2 freeform tag, Q3/Q4 teacher vs EARS, Q5 F1. Rules in INTERFACES §4 | user |
 | D13 | MOSS training uses **fp32 master weights with bf16 autocast** (`--fp32-master-weights`, our patch). Stock `sft.py` trains pure-bf16 weights, which rounds most lr-1e-5 updates away | plan |

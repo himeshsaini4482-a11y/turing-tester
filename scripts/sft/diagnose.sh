@@ -4,11 +4,11 @@
 #   bash scripts/sft/diagnose.sh STAGE EVAL_NAME
 #
 # Takes the seed-0 dev-mirror rows (set == mirror, sentence_id ending __s0) of an existing eval
-# run runs/sft/eval/EVAL_NAME (eval_ckpt.sh), judges student vs human in both A/B orders (1 vote)
+# run $RUNS/eval/EVAL_NAME (eval_ckpt.sh), judges student vs human in both A/B orders (1 vote)
 # and tags the critiques:
-#   runs/sft/STAGE/diag/{manifest.csv, judgments.jsonl, summary.json}           benchmark/judge.py
-#   runs/sft/STAGE/diag/{tags.jsonl, weakness_report.json, weakness_report.md}  sft/tag_weaknesses.py
-# Both steps are resumable and marked done in runs/sft/.done/.
+#   $RUNS/STAGE/diag/{manifest.csv, judgments.jsonl, summary.json}           benchmark/judge.py
+#   $RUNS/STAGE/diag/{tags.jsonl, weakness_report.json, weakness_report.md}  sft/tag_weaknesses.py
+# Both steps are resumable and marked done in $RUNS/.done/.
 source "$(dirname "$0")/env.sh"
 
 if [ $# -ne 2 ]; then
@@ -16,8 +16,8 @@ if [ $# -ne 2 ]; then
 fi
 STAGE=$1
 EVAL_NAME=$2
-EVAL_DIR=runs/sft/eval/$EVAL_NAME
-DIAG=runs/sft/$STAGE/diag
+EVAL_DIR=$RUNS/eval/$EVAL_NAME
+DIAG=$RUNS/$STAGE/diag
 
 [ -f "$EVAL_DIR/manifest.csv" ] || { echo "missing $EVAL_DIR/manifest.csv (run eval_ckpt.sh first)" >&2; exit 1; }
 mkdir -p "$DIAG"

@@ -73,10 +73,12 @@ def load_bench(run_dir):
 
 
 def headline(lines, notes, mode):
-    root = sftlib.RUNS.parent
+    # the voicegym CLI (--mode full) keeps them under runs/sft/<name>/ via SFT_BENCH_ROOT + SFT_BENCH_PREFIX
+    root = Path(os.environ["SFT_BENCH_ROOT"]) if os.environ.get("SFT_BENCH_ROOT") else sftlib.RUNS.parent
+    prefix = os.environ.get("SFT_BENCH_PREFIX", "")
     runs = {}
     for name in BENCH_RUNS:
-        r = load_bench(root / name)
+        r = load_bench(root / (prefix + name))
         if r is None:
             notes.append(f"494 run `runs/{name}` missing: skipped")
         else:
@@ -295,7 +297,7 @@ def flatten(obj, prefix=""):
 
 
 def data_section(lines, max_rows=80):
-    paths = sorted((sftlib.RUNS / "data").glob("*summary.json"))
+    paths = sorted((sftlib.DATA).glob("*summary.json"))
     mixes = sorted(sftlib.RUNS.glob("*/*/mix_summary.json"), key=lambda p: stage_key(p.parent.parent.name))
     lines += ["## Data", ""]
     if not paths and not mixes:

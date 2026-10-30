@@ -8,4 +8,7 @@ def get(name):
     if name == "orpheus":
         from adapters.orpheus import OrpheusAdapter
         return OrpheusAdapter
+    if name == "tokenlm":
+        from adapters.tokenlm import TokenLMAdapter
+        return TokenLMAdapter
     raise SystemExit(f"unknown model {name!r}: add an adapter in dpo/adapters/ (contract: adapters/base.py)")

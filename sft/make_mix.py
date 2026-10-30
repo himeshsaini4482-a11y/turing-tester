@@ -172,7 +172,7 @@ def main():
     p.add_argument("--stage", required=True)
     p.add_argument("--arm", required=True)
     p.add_argument("--config", required=True, help="JSON string, or @path to a JSON file")
-    p.add_argument("--ears-codes", default=str(sftlib.RUNS / "data" / "ears_codes"))
+    p.add_argument("--ears-codes", default=str(sftlib.DATA / "ears_codes"))
     p.add_argument("--max-length", type=int, default=640)
     args = p.parse_args()
     start = time.time()

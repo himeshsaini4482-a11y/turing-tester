@@ -3,7 +3,7 @@
 #   generate -> SpeechJudge-GRM closeness -> WER / speaker sim / UTMOS -> SpeechJudge-BTRM
 #
 #   RUN_NAME=moss_nano_smoke LIMIT=5 bash scripts/run_moss_nano.sh
-#   KEEP_UP=1 bash scripts/gpu_run.sh "RUN_NAME=moss_nano_smoke LIMIT=5 bash scripts/run_moss_nano.sh"
+#   KEEP_UP=1 bash tools/aws/gpu_run.sh "RUN_NAME=moss_nano_smoke LIMIT=5 bash scripts/run_moss_nano.sh"
 #   GEN_ONLY=1 ...   # stop after generating the TTS clips
 #   SKIP_GRM=1 ...   # skip the (slow) SpeechJudge-GRM stage
 #   MOSS_MAX_TEXT_TOKENS=100 ...  # MOSS voice-clone chunk limit (default 50; 100 = no split)
@@ -23,8 +23,8 @@ LIMIT=${LIMIT:-0}
 VOTES=${VOTES:-1}
 MOSS_MODEL=${MOSS_MODEL:-OpenMOSS-Team/MOSS-TTS-Nano-100M}
 RUN_DIR=runs/$RUN_NAME
-TTS_PY=.venv-tts/bin/python
-JUDGE_PY=.venv-judge/bin/python
+TTS_PY=${TTS_PY:-.venv-tts/bin/python}
+JUDGE_PY=${JUDGE_PY:-.venv-judge/bin/python}
 source scripts/corpus.sh   # makes sure the human audio is on this machine
 
 # local NVMe on the AWS worker (fast, wiped on stop); the repo dir elsewhere
@@ -32,10 +32,11 @@ DIR=$PWD/pretrained/moss_nano
 [ -d /opt/dlami/nvme ] && { sudo mkdir -p /opt/dlami/nvme/moss_nano && sudo chown "$(id -u):$(id -g)" /opt/dlami/nvme/moss_nano; DIR=/opt/dlami/nvme/moss_nano; }
 mkdir -p "$DIR" "$RUN_DIR"
 export UV_CACHE_DIR=$DIR/uv-cache UV_PYTHON_INSTALL_DIR=$DIR/python
-REPO=$DIR/MOSS-TTS-Nano
+REPO=${MOSS_REPO:-$DIR/MOSS-TTS-Nano}
 VENV=$DIR/venv
+MOSS_GEN_PY=${MOSS_PY:-$VENV/bin/python}   # the voicegym CLI passes its pinned, patched environment
 
-if [ ! -x "$VENV/bin/python" ]; then
+if [ ! -x "$MOSS_GEN_PY" ]; then
   echo "== MOSS-TTS-Nano: installing"
   [ -d "$REPO" ] || git clone -q --depth 1 https://github.com/OpenMOSS/MOSS-TTS-Nano.git "$REPO"
   command -v uv >/dev/null || [ -x "$DIR/bin/uv" ] ||
@@ -48,7 +49,7 @@ if [ ! -x "$VENV/bin/python" ]; then
 fi
 
 echo "== Stage 2: generating TTS ($MOSS_MODEL -> $RUN_DIR)"
-"$VENV/bin/python" benchmark/generate_moss_nano.py --manifest "$MANIFEST" --run-dir "$RUN_DIR" \
+"$MOSS_GEN_PY" benchmark/generate_moss_nano.py --manifest "$MANIFEST" --run-dir "$RUN_DIR" \
   --repo-dir "$REPO" --model "$MOSS_MODEL" --limit "$LIMIT" \
   --voice-clone-max-text-tokens "${MOSS_MAX_TEXT_TOKENS:-50}"
 

@@ -2,14 +2,15 @@
 # Full EARS set (26 speakers x 19 sentences = 494) for Orpheus 3B and MOSS-TTS-Nano,
 # voice-cloned per speaker, scored with SpeechJudge-BTRM only (ratio score + parity score).
 #
-#   KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/run_btrm_full.sh"
+#   KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/run_btrm_full.sh"
 #
 # Orpheus (~30 s/clip) is the long pole, so MOSS generation and its BTRM scoring run
 # alongside it on the same GPU (~8 + ~2 + ~22 GB of 48 GB). Every step is resumable.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 unset LD_LIBRARY_PATH   # see run_btrm.sh
-export HF_HUB_CACHE=/opt/dlami/nvme/hf   # model downloads on the fast local NVMe
+# model downloads on the AWS worker's fast local NVMe (elsewhere: the default Hugging Face cache)
+[ -d /opt/dlami/nvme ] && export HF_HUB_CACHE=/opt/dlami/nvme/hf
 
 CORPUS=ears
 TTS_PY=.venv-tts/bin/python

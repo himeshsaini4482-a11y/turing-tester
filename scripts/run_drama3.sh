@@ -3,7 +3,7 @@
 #   serve Drama 3 -> generate the TTS clips -> stop the server (frees the GPU) -> BTRM
 #
 #   RUN_NAME=drama3_smoke LIMIT=5 bash scripts/run_drama3.sh
-#   bash scripts/gpu_run.sh "RUN_NAME=drama3_smoke LIMIT=5 bash scripts/run_drama3.sh"
+#   bash tools/aws/gpu_run.sh "RUN_NAME=drama3_smoke LIMIT=5 bash scripts/run_drama3.sh"
 #
 # Drama 3 needs its own runtime (SGLang-Omni, Python 3.12, torch 2.14), so it gets a venv
 # on the local NVMe next to its weights (fishaudio/drama-3-int4, ~22 GB, 20.8 GB on GPU).

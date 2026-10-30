@@ -1,0 +1,18 @@
+{
+  "_doc": "PROPOSED optimizer / beta settings for scripts/dpo/sweep.sh (Claude's proposal, 2026-10-23; see dpo/README.md section 6 for the reasons). Nothing runs until you check every value and set \"approved\": true. Each setting trains from pi_ref on round 1's pairs and is evaluated on the dev mirror. Stage 1 = beta with AdamW; stage 2 = the other optimizers at the stage-1 winner (edit S2 tags' beta0 to that winner before approving them). REPLACE_WITH_BETA_STAR: fill from runs/dpo/r01/beta_diagnostic.md for your chosen epsilon.",
+  "approved": false,
+  "settings": [
+    {"tag": "s1_adamw_b005", "beta": {"mode": "fixed", "beta0": 0.05}, "kl": {"ema_alpha": 0.1, "k_hat_per": "frame", "on_violation": "none", "epsilon": null},
+     "optimizer": {"name": "adamw", "lr": 1e-6, "betas": [0.9, 0.95], "eps": 1e-8, "weight_decay": 0.0, "max_grad_norm": 1.0, "scheduler": "constant", "warmup_steps": 20, "batch_pairs": 16, "grad_accum": 1, "epochs_per_round": 1, "state_across_rounds": "reset"}},
+    {"tag": "s1_adamw_b01", "beta": {"mode": "fixed", "beta0": 0.1}, "kl": {"ema_alpha": 0.1, "k_hat_per": "frame", "on_violation": "none", "epsilon": null},
+     "optimizer": {"name": "adamw", "lr": 1e-6, "betas": [0.9, 0.95], "eps": 1e-8, "weight_decay": 0.0, "max_grad_norm": 1.0, "scheduler": "constant", "warmup_steps": 20, "batch_pairs": 16, "grad_accum": 1, "epochs_per_round": 1, "state_across_rounds": "reset"}},
+    {"tag": "s1_adamw_b03", "beta": {"mode": "fixed", "beta0": 0.3}, "kl": {"ema_alpha": 0.1, "k_hat_per": "frame", "on_violation": "none", "epsilon": null},
+     "optimizer": {"name": "adamw", "lr": 1e-6, "betas": [0.9, 0.95], "eps": 1e-8, "weight_decay": 0.0, "max_grad_norm": 1.0, "scheduler": "constant", "warmup_steps": 20, "batch_pairs": 16, "grad_accum": 1, "epochs_per_round": 1, "state_across_rounds": "reset"}},
+    {"tag": "s1_adamw_dual", "beta": {"mode": "dual_ascent", "beta0": 0.1, "beta_min": 0.01, "beta_max": 1.0, "eta_beta": 0.01}, "kl": {"ema_alpha": 0.1, "k_hat_per": "frame", "on_violation": "none", "epsilon": "REPLACE_WITH_YOUR_EPSILON"},
+     "optimizer": {"name": "adamw", "lr": 1e-6, "betas": [0.9, 0.95], "eps": 1e-8, "weight_decay": 0.0, "max_grad_norm": 1.0, "scheduler": "constant", "warmup_steps": 20, "batch_pairs": 16, "grad_accum": 1, "epochs_per_round": 1, "state_across_rounds": "reset"}},
+    {"tag": "s2_rmsprop", "beta": {"mode": "fixed", "beta0": 0.1}, "kl": {"ema_alpha": 0.1, "k_hat_per": "frame", "on_violation": "none", "epsilon": null},
+     "optimizer": {"name": "rmsprop", "lr": 1e-6, "alpha": 0.99, "eps": 1e-8, "weight_decay": 0.0, "max_grad_norm": 1.0, "scheduler": "constant", "warmup_steps": 150, "batch_pairs": 16, "grad_accum": 1, "epochs_per_round": 1, "state_across_rounds": "reset"}},
+    {"tag": "s2_sgd", "beta": {"mode": "fixed", "beta0": 0.1}, "kl": {"ema_alpha": 0.1, "k_hat_per": "frame", "on_violation": "none", "epsilon": null},
+     "optimizer": {"name": "sgd", "lr": 1e-4, "momentum": 0.9, "weight_decay": 0.0, "max_grad_norm": 1.0, "scheduler": "constant", "warmup_steps": 20, "batch_pairs": 16, "grad_accum": 1, "epochs_per_round": 1, "state_across_rounds": "reset"}}
+  ]
+}

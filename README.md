@@ -30,7 +30,7 @@ Turing Tester does two things:
 
 1. **🏟️ The Benchmark Arena.** Plug in your TTS model. It reads the same sentences a real human read, in that human's cloned voice, and a judge model tells you how close you got to sounding human. Change the test cases whenever you want, or buy ready-made benchmark packs from us.
 
-2. **💪 The Training Gym.** A training environment that finds what your model is bad at, makes training data aimed at exactly that, trains, tests again, and repeats. You pick where the data comes from: your own human recordings, a bigger "teacher" model, or sentences written by an LLM.
+2. **💪 The Training Gym.** A training environment that finds what your model is bad at, makes training data aimed at exactly that, trains, tests again, and repeats. You pick where the data comes from: your own human recordings, a bigger "teacher" model, or sentences written by an LLM. For labs that want more, we provide custom training and RL environments, expert multilingual voice data, and forward deployed engineers who work inside your lab to keep improving your models.
 
 And yes, it actually works. Here's what happened when we put a tiny model through it.
 
@@ -104,11 +104,13 @@ After every training round, Turing Tester takes a fresh batch of roughly 100 to 
 
 Ouch. But now we know exactly where to train.
 
+The judge tags every critique into six pillars: intonation, rhythm, stress, emotion, sound quality, and accuracy (right words, right voice). The report goes to your researchers, caveats included, and they pick what the next batch should be.
+
 ### Where the new data comes from (you pick)
 
 Once Turing Tester knows where your model is struggling, there are three ways to fix it:
 
-**🎙️ Option 1: Bring real human voices.** Got a voice dataset or a recording team? Add your human voice packs to the environment and the model trains on them. After every round the weakness report tells you what kind of recordings would help most, like "more questions with natural rising intonation" or "more expressive speech with real pauses". So your team records the stuff that fixes the model instead of reading random text for hours.
+**🎙️ Option 1: Bring real human voices.** Got a voice dataset or a recording team? Add your human voice packs to the environment and the model trains on them. After every round the weakness report tells you what kind of recordings would help most, like "more questions with natural rising intonation" or "more expressive speech with real pauses". So your team records the stuff that fixes the model instead of reading random text for hours. No recording team, or need languages you don't have speakers for? We provide expert multilingual voice data, recorded to target exactly what the report says is broken.
 
 **🧑‍🏫 Option 2: Bring a bigger teacher model.** This is RL from AI feedback (RLAIF), and it's what our current pipeline runs on. No humans needed in the loop. A big model speaks the training sentences and the small model learns from it. We used **Orpheus 3B** as the teacher, which is 30 times bigger than our 100M student.
 

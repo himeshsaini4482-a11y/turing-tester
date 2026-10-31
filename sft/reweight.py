@@ -14,7 +14,7 @@ round, so a fixed factor would drift. make_mix.py turns the share into weights e
 
 State: runs/sft/main/mix_state.json. decide() records each round there before round_select.py
 writes round_summary.json, so a crash between the two never loses a decision. Each record keeps
-`state_before`, so a round can be redone by hand (RUNBOOK §5).
+`state_before`, so a round can be redone by hand.
 
   python sft/reweight.py config --stage main_r1 --variant main    # mix config JSON on stdout
   python sft/reweight.py config --stage main_r1 --variant alt     # empty stdout = no alt arm

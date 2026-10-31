@@ -174,7 +174,7 @@ closer with SFT and DPO, all on your own machine.
 > **Status: new.** Each command wraps the code that produced [`RESULTS.md`](RESULTS.md), which
 > ran on an NVIDIA L40S. The commands themselves have so far been tested only without a GPU
 > (`tests/`). The first full GPU runs are still to come, so please report anything that breaks.
-> The scripts the experiments used are documented in [`docs/internal_pipeline.md`](docs/internal_pipeline.md).
+> The experiments' own scripts are in `scripts/`, `sft/`, `dpo/` and `tools/aws/`.
 
 ```
 your TTS model ──► /benchmark ──► score vs real human recordings
@@ -486,7 +486,7 @@ then benchmarked against the starting model, and `runs/sft/<name>/report.md` sho
 paired 95% intervals.
 
 `--mode full` instead reproduces our complete procedure. It first runs a pilot that compares six
-data sources, then training rounds with a fresh diagnosis each round (`sft/PLAN.md`). It needs
+data sources, then training rounds with a fresh diagnosis each round ([`docs/sft_experiment/REPORT.md`](docs/sft_experiment/REPORT.md)). It needs
 Linux or WSL2, a MOSS-TTS-Nano student, the Orpheus teacher, the optional LLM, and several GPU-days
 (ours took ~76 GPU-hours).
 
@@ -570,6 +570,4 @@ it continues where it left off.
 - [`RESULTS.md`](RESULTS.md): what we measured so far, with the SFT write-ups in
   [`docs/sft_experiment/`](docs/sft_experiment/). Your own runs go to `runs/`, which is never committed.
 - [`docs/adding_a_model.md`](docs/adding_a_model.md): `turing-tester.yaml`, `synthesize.py` and `train.py`.
-- [`TuringTester_SpeechJudge_Project_Plan.md`](TuringTester_SpeechJudge_Project_Plan.md): the original design and the reasoning behind the metrics.
-- [`docs/internal_pipeline.md`](docs/internal_pipeline.md): the experiment scripts (team reference; the AWS worker scripts are in `tools/aws/`).
 - Tests: `python -m unittest discover -s tests` (CPU only; needs numpy, soundfile, librosa, pyyaml; the interface tests also need prompt_toolkit and rich).

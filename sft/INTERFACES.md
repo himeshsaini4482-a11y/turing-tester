@@ -1,7 +1,8 @@
 # SFT pipeline: interface contract
 
 This is the binding contract between the pipeline's parts. Every script reads and writes exactly
-the files, columns and keys below. `sft/PLAN.md` explains *why*. This file says *what*. If you
+the files, columns and keys below. The reasons behind the choices are in
+`docs/sft_experiment/`. If you
 need to change a contract, change it here first.
 
 Nothing here runs on the dev machine (Windows, no GPU, no torch). It runs on the AWS GPU worker
@@ -336,5 +337,5 @@ The state is a teacher *share*, not a repeat factor, because the teacher pool gr
 The teacher GPU-hour budget is never changed: if the diff CI lo > 0, DECISIONS.md gets a suggestion
 only. `mix_state.json` = `{"teacher_share", "ears_in_mix", "ears_weight", "teacher_oversample",
 "max_oversample", "decided": {stage: result}}`. It is initialised from `recipe.json`. Each
-`result` keeps `state_before` (for redoing a round by hand, RUNBOOK §5) and is also stored as
+`result` keeps `state_before` (for redoing a round by hand) and is also stored as
 `round_summary.json["reweight"]`. `decide` is idempotent per stage.

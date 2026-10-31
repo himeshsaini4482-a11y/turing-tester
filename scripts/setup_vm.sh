@@ -5,8 +5,8 @@
 #
 # Env vars:
 #   PYTHON=python3.12        interpreter used to create the venvs (default: python3; .venv-dpo needs >= 3.11)
-#   WITH_TRL_VENV=1          also build .venv-dpo (trl; only docs/moss_tts_nano_online_dpo.md's design study
-#                            uses it, the DPO pipeline in dpo/ does not)
+#   WITH_TRL_VENV=1          also build .venv-dpo (trl; only the earlier trl design study used
+#                            it; the DPO pipeline in dpo/ does not)
 #   INSTALL_FLASH_ATTN=1     also build flash-attn (slow; without it SDPA attention is used)
 #   SKIP_APT=1               skip apt-get (no sudo, or packages already installed)
 set -euo pipefail

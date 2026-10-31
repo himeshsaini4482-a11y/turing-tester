@@ -1,4 +1,4 @@
-"""Gates that must pass before any GPU hours are spent on training (PLAN.md §6 S0).
+"""Gates that must pass before any GPU hours are spent on training.
 
   prompt     G0a (MOSS venv): for real/synthetic reference clips and several texts, the training
              sequence built by the (patched) finetuning/dataset.py must equal, token for token,

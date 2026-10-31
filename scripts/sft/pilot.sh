@@ -41,7 +41,7 @@ gate_qwen() {
   else
     echo fail > "$RUNS/pilot/gate_qwen.txt"
     echo "WARNING: gate qwen failed (9B unreachable from the worker); continuing." \
-         "Tagging/text generation must then run on the UAI server (RUNBOOK S0)."
+         "Tagging/text generation must then run on the UAI server."
   fi
 }
 

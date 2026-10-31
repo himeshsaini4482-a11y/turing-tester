@@ -1,4 +1,4 @@
-"""Pick a main round's best checkpoint and decide whether to continue (PLAN.md §8).
+"""Pick a main round's best checkpoint and decide whether to continue.
 
 Among the round's evals (runs/sft/eval/<name>/eval_summary.json from compare.py), main and alt
 arms alike, the best is the highest dev-mirror BTRM % whose guard rails pass. It is compared

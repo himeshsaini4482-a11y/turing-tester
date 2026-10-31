@@ -91,7 +91,7 @@ min log π(y_l), max |margin|, `entropy/<codebook>`, and `paper/epsilon` referen
 batch: `r<rr>/rollout_log.jsonl`; stage times: `runs/dpo/timings.json`; decisions: `runs/dpo/DECISIONS.md`;
 paused state: `runs/dpo/STATUS.json`. `pairs_summary.json` compares chosen vs rejected WER / sim / UTMOS /
 seconds per word (a reward-hacking signal); a round whose guard rails could not be checked counts as failed.
-Why TensorBoard and not SageMaker: `.claude/agents/observability.md`.
+TensorBoard, not SageMaker: training runs on our own GPU worker, not as SageMaker jobs.
 
 ## 5. Pipeline defaults (not USER_REVIEW; change them in `hparams.json` if needed)
 
@@ -141,17 +141,15 @@ for the SFT base eval). The pick is yours.
 | `dpo/{prompts,rollout,score_btrm,pairs,train,gates,rounds}.py` | the stages above |
 | `scripts/dpo/*.sh` | `run.sh`, `sweep.sh`, `eval.sh`, `final.sh`, `setup.sh`, `env.sh` |
 | `requirements-dpo-orpheus.txt` | `.venv-dpo-orpheus` (MOSS uses the SFT MOSS venv) |
-| `.claude/agents/{coder,debugger,observability,inference}.md` | the four agent specs |
 | `runs/dpo/` | outputs (worker EBS); candidate wavs on the NVMe |
 
-`docs/moss_tts_nano_online_dpo.md` is the earlier design study (trl-based, β never set). This
-pipeline replaces its skeleton: a plain PyTorch loop, because MOSS/Orpheus would override almost all
+An earlier design study (trl-based, β never set) was replaced by this pipeline: a plain PyTorch loop, because MOSS/Orpheus would override almost all
 of trl's DPOTrainer, and trl has no hook for the paper's adaptive β. `requirements-dpo.txt` (trl) is
 not used by this pipeline.
 
 ## 8. Review status (2026-10-23) and open items
 
-Reviewed by the debugger, observability and inference agents (specs in `.claude/agents/`). CPU tests
+Reviewed by the debugger, observability and inference agents. CPU tests
 with tiny random models proved: training log-prob = the sampler's own log-prob = the frame-by-frame
 recomputation; padding invariance; u = 0 and loss = log 2 at round start; Alg. 1 D̂/β bookkeeping in
 both β modes; resume, rollback, stop_round, sweep isolation; Orpheus LoRA log-probs, π_ref and adapter

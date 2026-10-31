@@ -63,7 +63,7 @@ def emotion_instruction(emotion):
 
 
 def classify_ears(name):
-    """EARS file stem -> (class, style, emotion). Classes are those of PLAN.md §4.2."""
+    """EARS file stem -> (class, style, emotion)."""
     if name.startswith(EXCLUDED_PREFIXES):
         return "nonverbal", None, None
     if name.startswith("emo_"):

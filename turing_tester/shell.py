@@ -362,7 +362,7 @@ def _rows_scores(report_json):
 
 
 def _old_scores(d):
-    """Runs made by the experiment scripts (docs/internal_pipeline.md) keep separate summary files."""
+    """Runs made by the experiment scripts (scripts/) keep separate summary files."""
     s = util.read_json(d / "summary.json", {}) or {}
     b = util.read_json(d / "btrm_summary.json", {}) or {}
     m = (util.read_json(d / "metrics_summary.json", {}) or {}).get("overall", {})
@@ -422,7 +422,7 @@ def show_runs(console):
                   time.strftime("%m-%d %H:%M", time.localtime(r["time"])) if r["time"] else "—")
     console.print(t)
     if any(r["kind"] == "benchmark*" for r in runs):
-        console.print("[dim]* made by the experiment scripts (docs/internal_pipeline.md)[/]")
+        console.print("[dim]* made by the experiment scripts (scripts/)[/]")
     console.print("[dim]GRM = GRM closeness. Real human = 100 on both judges; automatic judges, not human "
                   "listeners. Details: /report <run>[/]")
 

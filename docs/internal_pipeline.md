@@ -1,8 +1,8 @@
-# VoiceGym internal pipeline (team reference)
+# Turing Tester internal pipeline (team reference)
 
 > This is the scripts-level guide the team used for the experiments in `RESULTS.md`
 > (AWS GPU worker, internal Qwen 9B endpoint). It is **not** the user guide: see the top-level
-> `README.md`. These scripts keep working until the `voicegym` CLI replaces them.
+> `README.md`. These scripts keep working until the `turing-tester` CLI replaces them.
 
 ## Human-closeness benchmark
 
@@ -16,7 +16,7 @@ overall closeness      = mean over sentences (also reported per speaker)
 ```
 
 Each sentence is judged in both A/B orders and the scores are averaged before the ratio.
-Full design and caveats: `VoiceGym_SpeechJudge_Project_Plan.md` §8.6.
+Full design and caveats: `TuringTester_SpeechJudge_Project_Plan.md` §8.6.
 
 ## Benchmark set
 
@@ -70,7 +70,7 @@ Every stage is resumable: if the VM drops, re-run the same command.
 
 ## Direct Qwen 3.5 9B client
 
-VoiceGym includes a minimal client that sends any text prompt directly to the
+Turing Tester includes a minimal client that sends any text prompt directly to the
 standalone Qwen 3.5 9B vLLM endpoint and prints the answer. It does **not** use
 UAI `router.py`, retrieval, databases, chat history, or any other UAI application
 data. Later code can invoke this client when it needs general text such as

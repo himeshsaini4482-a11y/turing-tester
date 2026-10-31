@@ -1,4 +1,4 @@
-# VoiceGym SFT: MOSS-TTS-Nano-100M report
+# Turing Tester SFT: MOSS-TTS-Nano-100M report
 
 Generated 2026-10-26 13:05. Decoding: **chunked** (voice_clone_max_text_tokens 50).
 

@@ -1,4 +1,4 @@
-"""CPU tests for the voicegym CLI: model detection, API configs and calls (against a local fake
+"""CPU tests for the turing-tester CLI: model detection, API configs and calls (against a local fake
 server), the custom and API generators, voice preparation, reports and resumable steps.
 
 Needs numpy, soundfile, librosa and pyyaml (no GPU, no model weights):
@@ -22,8 +22,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
-from voicegym_cli import apiconfig, models, report, util  # noqa: E402
-from voicegym_cli.util import Fail  # noqa: E402
+from turing_tester import apiconfig, models, report, util  # noqa: E402
+from turing_tester.util import Fail  # noqa: E402
 
 PY = sys.executable
 
@@ -106,14 +106,14 @@ class Detection(unittest.TestCase):
     def test_token_lm_yaml(self):
         good = ("type: token-lm\ncodec: snac_24khz\naudio_token_offset: 128266\nstop_token: 128258\n"
                 "prompt:\n  - [128259]\n  - ref_text\n  - [128009]\n  - ref_audio\n  - [128259]\n  - text\n  - [128009]\n")
-        m = models.detect(str(self.folder({"model_type": "llama", "vocab_size": 5}, {"voicegym.yaml": good})))
+        m = models.detect(str(self.folder({"model_type": "llama", "vocab_size": 5}, {"turing-tester.yaml": good})))
         self.assertEqual(m.kind, "token_lm")
         self.assertTrue(m.can_dpo)
         for bad in (good.replace("codec: snac_24khz", "codec: nope.py"), good.replace("  - text\n", ""),
                     good.replace("stop_token: 128258", "stop_token: x")):
             with self.assertRaises(Fail):
-                models.detect(str(self.folder({"model_type": "llama"}, {"voicegym.yaml": bad})))
-        forced = models.detect(str(self.folder({"model_type": "llama"}, {"voicegym.yaml": "family: orpheus\n"})))
+                models.detect(str(self.folder({"model_type": "llama"}, {"turing-tester.yaml": bad})))
+        forced = models.detect(str(self.folder({"model_type": "llama"}, {"turing-tester.yaml": "family: orpheus\n"})))
         self.assertEqual(forced.kind, "orpheus")
 
 
@@ -368,7 +368,7 @@ class Naming(unittest.TestCase):
         self.assertEqual(models.detect(str(root / "dpo/me/ckpt/r02")).default_name, "me_r02")
 
     def test_user_texts_drop_benchmark_sentences(self):
-        from voicegym_cli import sft
+        from turing_tester import sft
         bench = next(csv.DictReader(open(REPO / "benchmark/manifests/ears_regular_26x19.csv", encoding="utf-8")))["text"]
         p = Path(tempfile.mkdtemp()) / "t.txt"
         p.write_text("A perfectly ordinary new sentence about the weather today." + chr(10) + bench + chr(10), encoding="utf-8")
@@ -385,7 +385,7 @@ class StepsAndCli(unittest.TestCase):
         self.assertEqual(calls, [1, 3])
 
     def test_cli_errors(self):
-        from voicegym_cli import cli
+        from turing_tester import cli
         self.assertEqual(cli.main(["benchmark"]), 2)
         self.assertEqual(cli.main(["benchmark", "--model", "x", "--api", "y"]), 2)
         self.assertEqual(cli.main([]), 0)
@@ -393,7 +393,7 @@ class StepsAndCli(unittest.TestCase):
     def test_pool(self):
         sys.path.insert(0, str(REPO / "sft"))
         import gen_texts
-        rows = [json.loads(x) for x in open(REPO / "voicegym_cli" / "data" / "sentence_pool.jsonl", encoding="utf-8")]
+        rows = [json.loads(x) for x in open(REPO / "turing_tester" / "data" / "sentence_pool.jsonl", encoding="utf-8")]
         self.assertGreater(len(rows), 2000)
         self.assertTrue(all(gen_texts.invalid_reason(r["text"]) is None for r in rows))
         self.assertEqual(len({r["id"] for r in rows}), len(rows))

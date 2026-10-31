@@ -2,8 +2,8 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from voicegym_cli import envs, hardware, paths
-from voicegym_cli.util import Fail, dir_fingerprint, py, read_json, write_json
+from turing_tester import envs, hardware, paths
+from turing_tester.util import Fail, dir_fingerprint, py, read_json, write_json
 
 EARS_MANIFEST = "benchmark/manifests/ears_regular_26x19.csv"
 LIBRITTS_MANIFEST = "benchmark/manifests/libritts_r_test_clean_10x50.csv"
@@ -34,7 +34,7 @@ def prepare_voice(voice_dir):
 
 
 def dir_fingerprint_audio(d):
-    from voicegym_cli.util import fingerprint
+    from turing_tester.util import fingerprint
     items = []
     for f in sorted(Path(d).iterdir()):
         if f.is_file():

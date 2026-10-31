@@ -20,7 +20,7 @@ create_voice:
   headers:
     xi-api-key: "${ELEVENLABS_API_KEY}"
   form:
-    name: "voicegym-{voice_key}"
+    name: "turing-tester-{voice_key}"
   file_field: files
   voice_id: voice_id
 delete_voice:

@@ -117,7 +117,7 @@ def main():
     p.add_argument("--batch-size", type=int, default=16)
     p.add_argument("--inventory", default=str(sftlib.DATA / "ears_inventory.jsonl"))
     p.add_argument("--voices", default="", help="voices jsonl ({speaker, path, transcript} per line) instead of "
-                                                "the inventory's non-dev EARS speakers (voicegym CLI)")
+                                                "the inventory's non-dev EARS speakers (turing-tester CLI)")
     p.add_argument("--model", default="unsloth/orpheus-3b-0.1-pretrained")
     # same values as generate_orpheus.py's argparse defaults (they are not importable constants)
     p.add_argument("--temperature", type=float, default=0.6)

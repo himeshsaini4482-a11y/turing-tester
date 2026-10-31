@@ -1,5 +1,5 @@
 # Template for any TTS API. Copy it to apis/<provider>.yaml, fill it in from the provider's docs and run
-#   ./voicegym benchmark --api apis/<provider>.yaml
+#   ./turing-tester benchmark --api apis/<provider>.yaml
 #
 # Placeholders, filled per sentence:   {text} {ref_text} {ref_audio_base64} {voice_id}
 # Environment variables:               ${MY_TTS_API_KEY}   ${NAME:-default value}
@@ -26,7 +26,7 @@ timeout_seconds: 120
 # create_voice:
 #   url: https://api.example.com/v1/voices
 #   headers: {Authorization: "Bearer ${MY_TTS_API_KEY}"}
-#   form: {name: "voicegym-{voice_key}"}  # multipart form fields
+#   form: {name: "turing-tester-{voice_key}"}  # multipart form fields
 #   file_field: file                      # the reference clip goes in this field
 #   voice_id: id                          # JSON path of the new voice's id in the response
 # delete_voice:                           # optional: remove the cloned voices afterwards

@@ -1,6 +1,6 @@
-"""Stage 2 (LLM-style TTS with voicegym.yaml): voice-clone generation, one sentence at a time.
+"""Stage 2 (LLM-style TTS with turing-tester.yaml): voice-clone generation, one sentence at a time.
 
-The model folder holds a Hugging Face causal LM + tokenizer and a voicegym.yaml that names the
+The model folder holds a Hugging Face causal LM + tokenizer and a turing-tester.yaml that names the
 audio codec and the prompt layout (benchmark/tokenlm.py, docs/adding_a_model.md). Same loop as
 generate_orpheus.py: prompt = the yaml's prompt with the row's reference clip and text, sample
 until stop_token or max_new_tokens, decode the audio tokens with the codec.
@@ -78,7 +78,7 @@ def main():
 
     write_manifest(os.path.join(args.run_dir, "manifest.csv"), rows)
     with open(os.path.join(args.run_dir, "generation_config.json"), "w", encoding="utf-8") as f:
-        json.dump({"model": os.path.abspath(args.model), "generator": "token-lm (voicegym.yaml)",
+        json.dump({"model": os.path.abspath(args.model), "generator": "token-lm (turing-tester.yaml)",
                    "codec": lm.spec["codec"], "sampling": lm.sampling(), "max_new_tokens": lm.max_new_tokens(),
                    "seed": args.seed, "attn_implementation": attn, "torch_version": torch.__version__,
                    "source_manifest": args.manifest, "n_sentences": len(rows)}, f, indent=2)

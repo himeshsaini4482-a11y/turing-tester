@@ -73,7 +73,7 @@ def load_bench(run_dir):
 
 
 def headline(lines, notes, mode):
-    # the voicegym CLI (--mode full) keeps them under runs/sft/<name>/ via SFT_BENCH_ROOT + SFT_BENCH_PREFIX
+    # the turing-tester CLI (--mode full) keeps them under runs/sft/<name>/ via SFT_BENCH_ROOT + SFT_BENCH_PREFIX
     root = Path(os.environ["SFT_BENCH_ROOT"]) if os.environ.get("SFT_BENCH_ROOT") else sftlib.RUNS.parent
     prefix = os.environ.get("SFT_BENCH_PREFIX", "")
     runs = {}
@@ -415,7 +415,7 @@ def build(out_path):
     notes = []
     dec = sftlib.read_json(sftlib.RUNS / "decoding.json") or {}
     mode = dec.get("mode", "chunked")
-    lines = ["# VoiceGym SFT: MOSS-TTS-Nano-100M report", "",
+    lines = ["# Turing Tester SFT: MOSS-TTS-Nano-100M report", "",
              f"Generated {time.strftime('%Y-%m-%d %H:%M')}. Decoding: **{mode}** "
              f"(voice_clone_max_text_tokens {dec.get('voice_clone_max_text_tokens', '?')})"
              + ("" if dec else " — `decoding.json` missing, assumed chunked") + ".", ""]

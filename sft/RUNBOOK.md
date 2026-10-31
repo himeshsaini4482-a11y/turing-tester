@@ -1,4 +1,4 @@
-# Runbook for Claude on the VM: running the VoiceGym SFT pipeline
+# Runbook for Claude on the VM: running the Turing Tester SFT pipeline
 
 You are Claude Code running on the **UAI server**: the machine that holds this repo, the AWS
 CLI credentials and `~/.ssh/voicegym-gpu.pem`. You do not train anything on this machine. You

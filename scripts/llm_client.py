@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Optional LLM for VoiceGym: any OpenAI-compatible chat endpoint (a hosted API, or a local server
+"""Optional LLM for Turing Tester: any OpenAI-compatible chat endpoint (a hosted API, or a local server
 such as Ollama, LM Studio or vLLM). Standard library only.
 
-VoiceGym uses it, when configured, to tag the judge's critiques into weaknesses and to write
+Turing Tester uses it, when configured, to tag the judge's critiques into weaknesses and to write
 training sentences aimed at them (sft/tag_weaknesses.py, sft/gen_texts.py). Without it, the
 bundled sentence pool is used. Configuration, from the environment or a local .env (never committed):
 
-  VOICEGYM_LLM_BASE_URL         e.g. http://localhost:11434/v1 (Ollama) or https://api.openai.com/v1
-  VOICEGYM_LLM_MODEL            the served model name
-  VOICEGYM_LLM_API_KEY          bearer token (optional for local servers)
-  VOICEGYM_LLM_TEMPERATURE      default 0.7
-  VOICEGYM_LLM_MAX_TOKENS       default 1024
-  VOICEGYM_LLM_TIMEOUT_SECONDS  default 300
-  VOICEGYM_LLM_NO_THINKING=1    send chat_template_kwargs.enable_thinking=false (vLLM reasoning models)
+  TURING_TESTER_LLM_BASE_URL        e.g. http://localhost:11434/v1 (Ollama) or https://api.openai.com/v1
+  TURING_TESTER_LLM_MODEL           the served model name
+  TURING_TESTER_LLM_API_KEY         bearer token (optional for local servers)
+  TURING_TESTER_LLM_TEMPERATURE     default 0.7
+  TURING_TESTER_LLM_MAX_TOKENS      default 1024
+  TURING_TESTER_LLM_TIMEOUT_SECONDS default 300
+  TURING_TESTER_LLM_NO_THINKING=1   send chat_template_kwargs.enable_thinking=false (vLLM reasoning models)
 
-The key is sent only in the Authorization header and never logged. Only the text VoiceGym builds
+The key is sent only in the Authorization header and never logged. Only the text Turing Tester builds
 is sent (judge critiques and sentence requests), never audio.
 
   python scripts/llm_client.py "Reply with exactly: LLM_OK"
@@ -48,13 +48,15 @@ def load_dotenv(path: Path = REPO_ROOT / ".env") -> None:
 
 
 def settings() -> dict:
-    """The endpoint settings; the team's older VOICEGYM_QWEN_* names are accepted as a fallback."""
+    """The endpoint settings; the older VOICEGYM_LLM_* and VOICEGYM_QWEN_* names are accepted as a fallback."""
     load_dotenv()
 
     def get(name, default=""):
-        return (os.getenv(f"VOICEGYM_LLM_{name}") or os.getenv(f"VOICEGYM_QWEN_{name}") or default).strip()
+        return (os.getenv(f"TURING_TESTER_LLM_{name}") or os.getenv(f"VOICEGYM_LLM_{name}")
+                or os.getenv(f"VOICEGYM_QWEN_{name}") or default).strip()
 
-    legacy = not os.getenv("VOICEGYM_LLM_BASE_URL") and bool(os.getenv("VOICEGYM_QWEN_BASE_URL"))
+    new_url = os.getenv("TURING_TESTER_LLM_BASE_URL") or os.getenv("VOICEGYM_LLM_BASE_URL")
+    legacy = not new_url and bool(os.getenv("VOICEGYM_QWEN_BASE_URL"))
     return {
         "base_url": get("BASE_URL"),
         "api_key": get("API_KEY"),
@@ -62,7 +64,7 @@ def settings() -> dict:
         "temperature": float(get("TEMPERATURE", "0.7")),
         "max_tokens": int(get("MAX_TOKENS", "1024")),
         "timeout": float(get("TIMEOUT_SECONDS", "300")),
-        "no_thinking": legacy or os.getenv("VOICEGYM_LLM_NO_THINKING", "") == "1",
+        "no_thinking": legacy or get("NO_THINKING") == "1",
     }
 
 
@@ -76,7 +78,7 @@ def chat(prompt: str, system: str = "You are a helpful assistant.", temperature:
     """One chat completion; returns the OpenAI-compatible response JSON."""
     s = settings()
     if not s["base_url"] or not s["model"]:
-        raise RuntimeError("set VOICEGYM_LLM_BASE_URL and VOICEGYM_LLM_MODEL (and VOICEGYM_LLM_API_KEY if the "
+        raise RuntimeError("set TURING_TESTER_LLM_BASE_URL and TURING_TESTER_LLM_MODEL (and TURING_TESTER_LLM_API_KEY if the "
                            "server needs one) to use an LLM")
     body = {"model": s["model"],
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
@@ -84,7 +86,7 @@ def chat(prompt: str, system: str = "You are a helpful assistant.", temperature:
             "max_tokens": s["max_tokens"] if max_tokens is None else max_tokens}
     if s["no_thinking"]:
         body["chat_template_kwargs"] = {"enable_thinking": False}
-    headers = {"Content-Type": "application/json", "User-Agent": "VoiceGym-LLM-Client/1.0"}
+    headers = {"Content-Type": "application/json", "User-Agent": "TuringTester-LLM-Client/1.0"}
     if s["api_key"]:
         headers["Authorization"] = f"Bearer {s['api_key']}"
     req = urllib.request.Request(f"{s['base_url'].rstrip('/')}/chat/completions",

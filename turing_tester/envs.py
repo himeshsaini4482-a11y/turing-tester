@@ -2,7 +2,7 @@
 
 The stages need conflicting pins (qwen-tts wants transformers 4.57.3, SpeechJudge 4.52.3,
 MOSS-TTS-Nano torch 2.7.0 + transformers 4.57.1), so each gets its own environment under
-.voicegym/envs/. An environment is (re)built only when its spec changes; ensure() is cheap
+.turing-tester/envs/. An environment is (re)built only when its spec changes; ensure() is cheap
 otherwise. torch comes from the PyTorch index that matches the installed NVIDIA driver
 (uv --torch-backend auto), or is the CPU / Apple MPS build without an NVIDIA GPU.
 
@@ -10,8 +10,8 @@ Pinned code checkouts live in third_party/ (SpeechJudge, MOSS-TTS-Nano, Qwen3-TT
 """
 import subprocess
 
-from voicegym_cli import paths
-from voicegym_cli.util import Fail, fingerprint, read_json, run, say, write_json
+from turing_tester import paths
+from turing_tester.util import Fail, fingerprint, read_json, run, say, write_json
 
 PYTHON = "3.12"
 TORCH = "torch==2.14.1"   # what the experiments' tts/judge environments ran (runs/*/generation_config.json)
@@ -29,9 +29,9 @@ ENVS = {
                           "sentencepiece>=0.1.99", "soundfile", "accelerate>=1.0.0", "tqdm>=4.66.0",
                           "tensorboard>=2.17", "huggingface_hub<1.0"],
              "about": "MOSS-TTS-Nano generation, SFT and DPO"},
-    # LoRA SFT and DPO of LLM-style TTS (Orpheus, voicegym.yaml models)
+    # LoRA SFT and DPO of LLM-style TTS (Orpheus, turing-tester.yaml models)
     "lm": {"requirements": ["requirements-dpo-orpheus.txt"], "packages": ["pyyaml==6.0.2"], "checkouts": [],
-           "about": "SFT and DPO of LLM-style TTS models (Orpheus, voicegym.yaml)"},
+           "about": "SFT and DPO of LLM-style TTS models (Orpheus, turing-tester.yaml)"},
     # Qwen3-TTS official single-speaker fine-tuning
     "qwen3-train": {"requirements": ["requirements-tts.txt"], "packages": [TORCH, "accelerate", "safetensors", "tensorboard"],
                     "checkouts": ["qwen3tts"], "about": "Qwen3-TTS fine-tuning on your own voice"},
@@ -59,12 +59,12 @@ def _git(*args, cwd=None):
     return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True).stdout.strip()
 
 
-# checkouts whose code VoiceGym patches (idempotent scripts), and the environment that runs the patch
+# checkouts whose code Turing Tester patches (idempotent scripts), and the environment that runs the patch
 PATCHES = {"moss": ("sft/patch_moss.py", "moss"), "qwen3tts": ("sft/patch_qwen3_ft.py", "qwen3-train")}
 
 
 def ensure_checkout(name):
-    """The pinned commit of a code checkout, patched when VoiceGym patches it. Returns its folder."""
+    """The pinned commit of a code checkout, patched when Turing Tester patches it. Returns its folder."""
     spec = CHECKOUTS[name]
     d = checkout_dir(name)
     changed = False
@@ -83,10 +83,10 @@ def ensure_checkout(name):
         changed = True
     if name in PATCHES:
         script, env = PATCHES[name]
-        if changed or not (d / ".voicegym-patched").exists():
+        if changed or not (d / ".turing-tester-patched").exists():
             if paths.env_python(env).exists():   # otherwise ensure(env) patches right after building it
                 run([paths.env_python(env), paths.REPO / script, "--repo-dir", d])
-                (d / ".voicegym-patched").write_text(spec["commit"])
+                (d / ".turing-tester-patched").write_text(spec["commit"])
     return d
 
 
@@ -97,7 +97,7 @@ def _spec_key(name):
 
 
 def installed(name):
-    marker = read_json(paths.ENVS / name / ".voicegym.json", {})
+    marker = read_json(paths.ENVS / name / ".turing-tester.json", {})
     return marker.get("spec") == _spec_key(name) and paths.env_python(name).exists()
 
 
@@ -116,8 +116,8 @@ def ensure(name):
     if not py.exists():
         run([paths.uv(), "venv", "--quiet", "--python", PYTHON, "--python-preference", "only-managed", d])
     # CUDA wheels matching the NVIDIA driver; anywhere else the plain (CPU / Apple MPS) build. uv's own
-    # "auto" would pick e.g. Intel XPU wheels for an integrated Intel GPU, which VoiceGym cannot use.
-    from voicegym_cli import hardware
+    # "auto" would pick e.g. Intel XPU wheels for an integrated Intel GPU, which Turing Tester cannot use.
+    from turing_tester import hardware
     backend = "auto" if hardware.nvidia_gpus() else "cpu"
     cmd = [paths.uv(), "pip", "install", "--python", py, "--torch-backend", backend]
     for r in spec["requirements"]:
@@ -127,8 +127,8 @@ def ensure(name):
     for c in spec["checkouts"]:
         if c in PATCHES and PATCHES[c][1] == name:
             run([py, paths.REPO / PATCHES[c][0], "--repo-dir", checkout_dir(c)], log=d / "install.log")
-            (checkout_dir(c) / ".voicegym-patched").write_text(CHECKOUTS[c]["commit"])
-    write_json(d / ".voicegym.json", {"spec": _spec_key(name), "torch_backend": backend})
+            (checkout_dir(c) / ".turing-tester-patched").write_text(CHECKOUTS[c]["commit"])
+    write_json(d / ".turing-tester.json", {"spec": _spec_key(name), "torch_backend": backend})
     return py
 
 

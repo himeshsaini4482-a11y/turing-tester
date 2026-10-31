@@ -1,8 +1,8 @@
-# VoiceGym repository guidance
+# Turing Tester repository guidance
 
 ## Project purpose
 
-VoiceGym benchmarks TTS human-closeness using LibriTTS-R, Qwen3-TTS, and
+Turing Tester benchmarks TTS human-closeness using LibriTTS-R, Qwen3-TTS, and
 SpeechJudge-GRM. Preserve the locked benchmark split and keep automated judge
 results distinct from human-listener claims.
 
@@ -16,7 +16,7 @@ and never tune on the 494 benchmark sentences.
 ## Standalone Qwen 3.5 9B endpoint
 
 `scripts/qwen9b_client.py` is a minimal general-purpose client: it accepts prompt
-text and prints Qwen's response. Other VoiceGym stages may invoke it when they
+text and prints Qwen's response. Other Turing Tester stages may invoke it when they
 need text, including future TTS/SFT sentence generation. Its production base URL
 is:
 

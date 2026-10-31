@@ -34,7 +34,7 @@ mkdir -p "$DIR" "$RUN_DIR"
 export UV_CACHE_DIR=$DIR/uv-cache UV_PYTHON_INSTALL_DIR=$DIR/python
 REPO=${MOSS_REPO:-$DIR/MOSS-TTS-Nano}
 VENV=$DIR/venv
-MOSS_GEN_PY=${MOSS_PY:-$VENV/bin/python}   # the voicegym CLI passes its pinned, patched environment
+MOSS_GEN_PY=${MOSS_PY:-$VENV/bin/python}   # the turing-tester CLI passes its pinned, patched environment
 
 if [ ! -x "$MOSS_GEN_PY" ]; then
   echo "== MOSS-TTS-Nano: installing"

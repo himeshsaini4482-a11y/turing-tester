@@ -17,7 +17,7 @@ from pathlib import Path
 from statistics import mean
 
 REPO = Path(__file__).resolve().parents[1]
-# One SFT run's outputs. The experiment pipeline (scripts/sft/) uses runs/sft itself; the voicegym CLI
+# One SFT run's outputs. The experiment pipeline (scripts/sft/) uses runs/sft itself; the turing-tester CLI
 # points SFT_RUNS at runs/sft/<name>, and SFT_DATA / SFT_DEV at prepared data shared by all runs.
 RUNS = Path(os.environ["SFT_RUNS"]) if os.environ.get("SFT_RUNS") else REPO / "runs" / "sft"
 DATA = Path(os.environ["SFT_DATA"]) if os.environ.get("SFT_DATA") else RUNS / "data"

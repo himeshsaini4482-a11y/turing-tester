@@ -8,7 +8,7 @@ for region in ap-south-2 ap-south-1; do
     --filters Name=tag:Project,Values=voicegym Name=instance-state-name,Values=pending,running,stopping,stopped \
     --query 'Reservations[].Instances[].[InstanceId,InstanceType,Placement.AvailabilityZone,State.Name,LaunchTime]' \
     --output text
-done | { grep . || echo "No VoiceGym GPU workers exist."; }
+done | { grep . || echo "No Turing Tester GPU workers exist."; }
 
 if [ "$(gpu_state)" = running ] && gpu_ssh true 2>/dev/null; then
   gpu_ssh 'nvidia-smi --query-gpu=name,memory.used,memory.total,utilization.gpu --format=csv,noheader; tmux ls 2>/dev/null || echo "no job running"'

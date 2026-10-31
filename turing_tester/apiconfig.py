@@ -19,7 +19,7 @@ Keys come only from environment variables: they are never written to files or pr
   create_voice:                     # create_voice only: called once per reference clip
     url: https://api.example.com/v1/voices
     headers: {...}
-    form: {name: "voicegym-{voice_key}"}   # multipart fields; the clip is sent as file field `file_field`
+    form: {name: "turing-tester-{voice_key}"}   # multipart fields; the clip is sent as file field `file_field`
     file_field: files
     voice_id: voice_id              # JSON path of the new voice's id in the response
   delete_voice: {method: DELETE, url: "https://api.example.com/v1/voices/{voice_id}", headers: {...}}
@@ -49,7 +49,7 @@ class ApiError(Exception):
 
 def _fail(path, msg):
     try:
-        from voicegym_cli.util import Fail
+        from turing_tester.util import Fail
         raise Fail(f"{Path(path).name}: {msg}")
     except ImportError:
         raise SystemExit(f"{Path(path).name}: {msg}")
@@ -198,7 +198,7 @@ class Client:
     def create_voice(self, ref_wav, voice_key):
         cv = self.cfg["create_voice"]
         slots = {"voice_key": voice_key}
-        fields = {k: str(v) for k, v in expand(cv.get("form") or {"name": "voicegym-{voice_key}"}, slots).items()}
+        fields = {k: str(v) for k, v in expand(cv.get("form") or {"name": "turing-tester-{voice_key}"}, slots).items()}
         body, ctype = _multipart(fields, cv.get("file_field", "files"), ref_wav)
         data, _ = self._http(cv.get("method", "POST"), self._url(cv, slots), expand(cv.get("headers") or {}, slots),
                              body, ctype)

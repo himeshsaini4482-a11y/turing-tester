@@ -17,7 +17,8 @@
 import argparse
 from pathlib import Path
 
-MARK = "[voicegym patch]"
+MARK = "[turing-tester patch]"
+OLD_MARK = "[voicegym patch]"   # checkouts patched before the rename
 
 DATASET_EDITS = [
     (
@@ -85,7 +86,7 @@ SFT_EDITS = [
 
 def apply(path, edits):
     text = path.read_text(encoding="utf-8")
-    if MARK in text:
+    if MARK in text or OLD_MARK in text:
         print(f"already patched: {path}")
         return
     for old, new in edits:

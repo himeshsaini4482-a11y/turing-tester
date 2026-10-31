@@ -33,7 +33,8 @@ scripts/gpu/state.env
 # local agent orchestration notes
 .super-claude/
 
-# voicegym CLI: tools, environments and caches; your models, voices and keys
+# turing-tester CLI: tools, environments and caches; your models, voices and keys
+/.turing-tester/
 /.voicegym/
 /models/*
 !/models/README.md

@@ -1,14 +1,14 @@
 # Adding your own model
 
-VoiceGym recognises Qwen3-TTS, MOSS-TTS-Nano and Orpheus folders from their `config.json`. Any other
+Turing Tester recognises Qwen3-TTS, MOSS-TTS-Nano and Orpheus folders from their `config.json`. Any other
 model needs one small file in its folder. Pick the one that matches the model:
 
 | Your model | Add | Benchmark | SFT | DPO |
 |---|---|---|---|---|
-| a language model that outputs audio-codec tokens (one token stream, Hugging Face `AutoModelForCausalLM`) | `voicegym.yaml` | ✅ | ✅ LoRA | ✅ |
+| a language model that outputs audio-codec tokens (one token stream, Hugging Face `AutoModelForCausalLM`) | `turing-tester.yaml` | ✅ | ✅ LoRA | ✅ |
 | anything else (VITS, Kokoro, F5-TTS, a diffusion model, your own code) | `synthesize.py` | ✅ | with a `train.py` | ❌ |
 
-If the model needs extra Python packages, add a `requirements.txt` to the folder. VoiceGym then
+If the model needs extra Python packages, add a `requirements.txt` to the folder. Turing Tester then
 builds a separate environment for it (PyTorch, numpy, soundfile and your requirements) the first time.
 
 ## `synthesize.py`
@@ -30,10 +30,10 @@ def synthesize(text, ref_audio, ref_text):
     return np.asarray(wav, dtype=np.float32), 24000
 ```
 
-The folder is put on `sys.path`, so `synthesize.py` can import its own helper modules. VoiceGym seeds
+The folder is put on `sys.path`, so `synthesize.py` can import its own helper modules. Turing Tester seeds
 `torch` and `numpy` before each sentence, so reruns sample the same way.
 
-### Optional `train.py` (makes `voicegym sft` work)
+### Optional `train.py` (makes `turing-tester sft` work)
 
 ```python
 def train(records_jsonl, output_dir, device):
@@ -41,14 +41,14 @@ def train(records_jsonl, output_dir, device):
     Write a complete model folder (with synthesize.py) to output_dir."""
 ```
 
-VoiceGym prepares the data (your recordings, the teacher's filtered clips or EARS chunks), calls
+Turing Tester prepares the data (your recordings, the teacher's filtered clips or EARS chunks), calls
 `train()`, and then benchmarks and checks the folder you wrote like any other checkpoint.
 
-## `voicegym.yaml` (LLM-style models)
+## `turing-tester.yaml` (LLM-style models)
 
 For a model that is one causal language model over text tokens plus audio-codec tokens, the way
 Orpheus is. The folder must load with `AutoModelForCausalLM.from_pretrained` and
-`AutoTokenizer.from_pretrained`. This is Orpheus written as a `voicegym.yaml`:
+`AutoTokenizer.from_pretrained`. This is Orpheus written as a `turing-tester.yaml`:
 
 ```yaml
 type: token-lm
@@ -107,7 +107,7 @@ def is_audio_token(token_id):   # optional: which ids are audio (for counting fr
 ## Checking a new model quickly
 
 ```bash
-./voicegym benchmark --model models/my-tts --limit 5 --judges btrm
+./turing-tester benchmark --model models/my-tts --limit 5 --judges btrm
 ```
 
 This runs five sentences end to end. Listen to `runs/my-tts_limit5/tts/*.wav` before starting a full run.

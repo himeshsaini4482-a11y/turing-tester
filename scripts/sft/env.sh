@@ -11,7 +11,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 unset LD_LIBRARY_PATH
 
 REPO_DIR=$PWD
-# the voicegym CLI (--mode full) points these at runs/sft/<name> and its own environments
+# the turing-tester CLI (--mode full) points these at runs/sft/<name> and its own environments
 RUNS=${SFT_RUNS:-$REPO_DIR/runs/sft}
 export SFT_RUNS=$RUNS
 BENCH_PREFIX=${SFT_BENCH_PREFIX:-}   # 494-benchmark run dirs: runs/${BENCH_PREFIX}sft_final etc.

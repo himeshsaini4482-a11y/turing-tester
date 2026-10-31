@@ -1,4 +1,4 @@
-"""voicegym sft: fine-tune a TTS model on good examples, then benchmark it before and after.
+"""turing-tester sft: fine-tune a TTS model on good examples, then benchmark it before and after.
 
 Sources (combinable): EARS human recordings (default), your own voice (--voice), a teacher model or
 API (--teacher). Quick mode = one training run with the settings of our experiments
@@ -14,7 +14,7 @@ API (--teacher). Quick mode = one training run with the settings of our experime
                                         B's settings: small, clean, targeted data)
 Every recipe: global batch 32, max length 640, cosine schedule with 3% warm-up, fp32 master weights
 with bf16 autocast, MOSS's 50-token chunking. Other model families: sft/train_lm.py (LoRA, Orpheus
-and voicegym.yaml models), sft/train_qwen3.py (Qwen's own script, your voice only),
+and turing-tester.yaml models), sft/train_qwen3.py (Qwen's own script, your voice only),
 sft/train_custom.py (your train.py); none of these were part of our experiments.
 
 Flow, resumable at every step (runs/sft/<name>/.done/):
@@ -34,14 +34,14 @@ import time
 import wave
 from pathlib import Path
 
-from voicegym_cli import bench, envs, hardware, models, paths, report, sets
-from voicegym_cli.util import (Fail, Steps, confirm_pause, dir_fingerprint, file_key, py, read_json, run, run_name,
+from turing_tester import bench, envs, hardware, models, paths, report, sets
+from turing_tester.util import (Fail, Steps, confirm_pause, dir_fingerprint, file_key, py, read_json, run, run_name,
                                say, write_json)
 
 SFT_DATA = paths.DATA / "sft"
 EARS_DATA = SFT_DATA / "ears"            # EARS training data shared by all runs (inventory, units, chunks, codes)
 SCRATCH = SFT_DATA / "scratch"           # raw EARS audio, cut chunks
-POOL = paths.REPO / "voicegym_cli" / "data" / "sentence_pool.jsonl"
+POOL = paths.REPO / "turing_tester" / "data" / "sentence_pool.jsonl"
 RESERVED = {"pilot", "main", "eval", "ckpt", "data", "dev", "best", "gates", "pilot_report", "REPORT"}
 
 RECIPES = {
@@ -130,20 +130,20 @@ def llm_configured():
 
 
 class Run:
-    """One `voicegym sft` run: runs/sft/<name>/."""
+    """One `turing-tester sft` run: runs/sft/<name>/."""
 
     def __init__(self, args):
         self.args = args
         self.student = models.detect(args.model)
         if not self.student.can_sft:
-            raise Fail(f"{self.student.label} models cannot be trained by VoiceGym "
+            raise Fail(f"{self.student.label} models cannot be trained by Turing Tester "
                        "(see README 'What can be trained'; a synthesize.py model needs a train.py)")
         self.teacher = models.detect_any(args.teacher) if args.teacher else None
         if self.teacher and self.teacher.kind == "api" and self.teacher.api.get("voice_cloning") == "none":
             raise Fail("a teacher must clone voices (its clips are filtered for speaker similarity); this API config "
                        "has voice_cloning: none")
         if self.teacher and self.teacher.kind == "api":
-            from voicegym_cli import apiconfig
+            from turing_tester import apiconfig
             missing = apiconfig.missing_env(self.teacher.api)
             if missing:
                 raise Fail(f"the teacher API needs {', '.join(missing)} in your environment")
@@ -169,7 +169,7 @@ class Run:
         self.dir = paths.RUNS / "sft" / self.name
         self.steps = Steps(self.dir)
         self.device = hardware.device_string()
-        self.log = self.dir / "voicegym.log"
+        self.log = self.dir / "turing-tester.log"
 
     # ---- bookkeeping -------------------------------------------------------------------------
     def identity(self):
@@ -179,12 +179,12 @@ class Run:
                 "texts": str(Path(self.args.texts).resolve()) if self.args.texts else None}
 
     def check_identity(self):
-        meta = read_json(self.dir / "voicegym.json")
+        meta = read_json(self.dir / "turing-tester.json")
         ident = self.identity()
         if meta and meta.get("identity") != ident:
             raise Fail(f"runs/sft/{self.name} was started with other settings:\n  {meta.get('identity')}\n"
                        "  use another --name, or delete that folder to start over")
-        write_json(self.dir / "voicegym.json", {"identity": ident, "name": self.name, "started":
+        write_json(self.dir / "turing-tester.json", {"identity": ident, "name": self.name, "started":
                    (meta or {}).get("started") or time.strftime("%Y-%m-%d %H:%M:%S")})
 
     def stage_env(self):
@@ -232,7 +232,7 @@ class Run:
         write_csv(diag / "manifest.csv", rows)
         envs.ensure("judge")
         py("judge", "benchmark/judge.py", "--manifest", diag / "manifest.csv", "--out-dir", diag, "--votes", 1,
-           log=self.log, env={"VOICEGYM_DEVICE": hardware.judge_device()})
+           log=self.log, env={"TURING_TESTER_DEVICE": hardware.judge_device()})
         py("tts", "sft/tag_weaknesses.py", "--diag-dir", diag, "--eval-dir", self.dir / "eval" / "base",
            "--stage", "diag", log=self.log, env=self.stage_env())
 
@@ -262,7 +262,7 @@ class Run:
         rows = [{"id": f"teacher_t{i:05d}", "text": r["text"], "category": r["category"], "stage": "teacher"}
                 for i, r in enumerate(pool)]
         write_jsonl(out, rows)
-        return f"{len(rows)} sentences from the bundled pool (set VOICEGYM_LLM_* for diagnosis-targeted ones)"
+        return f"{len(rows)} sentences from the bundled pool (set TURING_TESTER_LLM_* for diagnosis-targeted ones)"
 
     def review_texts(self):
         rows = read_jsonl(self.dir / "texts.jsonl")
@@ -370,7 +370,7 @@ class Run:
                 envs.ensure("judge")
                 py("judge", "benchmark/btrm_score.py", "--manifest", T / "student" / "manifest.csv",
                    "--out-dir", T / "student", log=self.log,
-                   env={"VOICEGYM_DEVICE": hardware.judge_device()})
+                   env={"TURING_TESTER_DEVICE": hardware.judge_device()})
         self.steps("teacher_btrm", btrm)
         self.steps("teacher_filter", lambda: py("tts", "sft/filter_teacher.py", "--teacher-dir", T, log=self.log,
                                                 env=env))
@@ -587,7 +587,7 @@ class Run:
     def write_report(self, passed, ev):
         r = RECIPES[self.recipe]
         moss = self.student.kind == "moss_tts_nano"
-        lines = [f"# VoiceGym SFT: {self.name}", "",
+        lines = [f"# Turing Tester SFT: {self.name}", "",
                  f"- Student: {self.student.label} (`{self.student.source}`)",
                  f"- Data: {', '.join(sorted(self.sources))}" + (f"; teacher {self.teacher.label} (`{self.teacher.source}`)"
                                                                 if self.teacher else ""),
@@ -625,8 +625,8 @@ def full_mode(args):
         raise Fail("--mode full reproduces our experiments exactly: a MOSS-TTS-Nano student, EARS, and the Orpheus "
                    "teacher (--teacher unsloth/orpheus-3b-0.1-pretrained or a folder with it); use --mode quick otherwise")
     if not llm_configured():
-        raise Fail("--mode full needs an LLM for the diagnosis and the teacher's sentences: set VOICEGYM_LLM_BASE_URL "
-                   "and VOICEGYM_LLM_MODEL (see .env.example)")
+        raise Fail("--mode full needs an LLM for the diagnosis and the teacher's sentences: set TURING_TESTER_LLM_BASE_URL "
+                   "and TURING_TESTER_LLM_MODEL (see .env.example)")
     name = run_name(args.name, model.default_name + "_full")
     rdir = paths.RUNS / "sft" / name
     for e in ("tts", "judge", "moss"):

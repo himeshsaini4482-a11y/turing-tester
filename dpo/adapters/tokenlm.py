@@ -1,9 +1,9 @@
-"""DPO adapter for any LLM-style TTS described by a voicegym.yaml (benchmark/tokenlm.py).
+"""DPO adapter for any LLM-style TTS described by a turing-tester.yaml (benchmark/tokenlm.py).
 
 The Orpheus adapter with the model's own prompt layout, stop/pad tokens and codec instead of
 Orpheus' constants: LoRA training, pi_ref = the adapters disabled, log-probs from the backbone's
 hidden states on completion positions only (adapters/orpheus.py has the details). Checkpoints are
-the merged model + adapter/ + the folder's voicegym.yaml (and codec file), so the next round and
+the merged model + adapter/ + the folder's turing-tester.yaml (and codec file), so the next round and
 benchmark/generate_tokenlm.py load them like the original folder.
 
 Not run in our experiments (only the MOSS-TTS-Nano adapter was); gates.py D1-D7 check it on the GPU.
@@ -112,7 +112,7 @@ class TokenLMAdapter(OrpheusAdapter):
         merged.save_pretrained(str(tmp), safe_serialization=True)
         self.tok.save_pretrained(str(tmp))
         src = Path(self.lm.folder)
-        for extra in ("voicegym.yaml", str(self.lm.spec.get("codec", ""))):
+        for extra in ("turing-tester.yaml", str(self.lm.spec.get("codec", ""))):
             if extra and (src / extra).is_file():
                 shutil.copy2(src / extra, tmp / extra)
         del merged

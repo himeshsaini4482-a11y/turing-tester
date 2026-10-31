@@ -1,4 +1,4 @@
-"""voicegym benchmark: generate the set's sentences with the model, then judge them against the humans.
+"""turing-tester benchmark: generate the set's sentences with the model, then judge them against the humans.
 
   1. sentence set + human audio      (sets.py)
   2. TTS clips                       the model's generator in its environment (models.py)
@@ -12,8 +12,8 @@ Generation and both judges skip work already on disk, so a stopped run continues
 import time
 from pathlib import Path
 
-from voicegym_cli import envs, hardware, models, paths, report, sets
-from voicegym_cli.util import Fail, dir_fingerprint, file_key, py, read_json, run, say, write_json
+from turing_tester import envs, hardware, models, paths, report, sets
+from turing_tester.util import Fail, dir_fingerprint, file_key, py, read_json, run, say, write_json
 
 JUDGES = ("grm", "btrm")
 
@@ -39,7 +39,7 @@ def run_benchmark(model, bench_set, run_dir, judges=JUDGES, limit=0, votes=1, na
     run_dir.mkdir(parents=True, exist_ok=True)
     ident = {"model": model_identity(model), "set": bench_set.name, "limit": int(limit or 0),
              "sentences": file_key(bench_set.manifest)}
-    meta_path = run_dir / "voicegym.json"
+    meta_path = run_dir / "turing-tester.json"
     old = read_json(meta_path)
     if old and old.get("identity") != ident:
         raise Fail(f"{paths.rel(run_dir)} already holds results for another model, set or --limit:\n"
@@ -51,7 +51,7 @@ def run_benchmark(model, bench_set, run_dir, judges=JUDGES, limit=0, votes=1, na
             "voice_cloning": model.api.get("voice_cloning") if model.kind == "api" else "per_request",
             "started": (old or {}).get("started") or time.strftime("%Y-%m-%d %H:%M:%S")}
     write_json(meta_path, meta)
-    log = run_dir / "voicegym.log"
+    log = run_dir / "turing-tester.log"
     device = hardware.device_string()
 
     say(f"generating with {model.label} ({paths.rel(model.source) if model.local or model.kind == 'api' else model.source})")
@@ -63,7 +63,7 @@ def run_benchmark(model, bench_set, run_dir, judges=JUDGES, limit=0, votes=1, na
     if not manifest.exists():
         raise Fail(f"the generator did not write {paths.rel(manifest)}")
 
-    judge_env = {"VOICEGYM_DEVICE": hardware.judge_device()}
+    judge_env = {"TURING_TESTER_DEVICE": hardware.judge_device()}
     if "btrm" in judges:
         say("SpeechJudge-BTRM (downloads ~22 GB of weights the first time)")
         envs.ensure("judge")
@@ -95,7 +95,7 @@ def main(args):
         raise Fail("give either --model <folder> or --api <apis/provider.yaml>")
     model = models.detect(args.model) if args.model else models.detect_api(args.api)
     if model.kind == "api":
-        from voicegym_cli import apiconfig
+        from turing_tester import apiconfig
         missing = apiconfig.missing_env(model.api)
         if missing:
             raise Fail(f"set {', '.join(missing)} in your environment first (keys are never read from files)")
@@ -103,7 +103,7 @@ def main(args):
     hw = hardware.require_gpu(args.allow_cpu)
     say(f"hardware: {hw}")
     bench_set = sets.prepare(args.set, args.limit)
-    from voicegym_cli.util import run_name
+    from turing_tester.util import run_name
     name = run_name(args.name, model.default_name + ("" if bench_set.name == "ears" else f"_{bench_set.name.replace(':', '_')}")
                     + (f"_limit{args.limit}" if args.limit else ""))
     if name in ("sft", "dpo"):      # runs/sft and runs/dpo hold training runs

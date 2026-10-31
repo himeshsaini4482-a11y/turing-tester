@@ -1,4 +1,4 @@
-# VoiceGym
+# Turing Tester
 
 Measure how close a text-to-speech (TTS) model sounds to real human speech, then make it
 closer with SFT and DPO, all on your own machine.
@@ -9,11 +9,11 @@ closer with SFT and DPO, all on your own machine.
 > The scripts the experiments used are documented in [`docs/internal_pipeline.md`](docs/internal_pipeline.md).
 
 ```
-your TTS model ──► voicegym benchmark ──► score vs real human recordings
+your TTS model ──► turing-tester benchmark ──► score vs real human recordings
       │
-      ├──► voicegym sft ──► learns from human recordings, your voice, or a bigger model
+      ├──► turing-tester sft ──► learns from human recordings, your voice, or a bigger model
       │
-      └──► voicegym dpo ──► learns from its own best and worst samples
+      └──► turing-tester dpo ──► learns from its own best and worst samples
                                └──► every run ends with a before/after benchmark
 ```
 
@@ -31,15 +31,15 @@ Check your machine before anything else:
 ```bash
 git clone https://github.com/himeshsaini4482-a11y/voicegym.git
 cd voicegym
-./voicegym doctor            # Linux / macOS / Git Bash
-.\voicegym doctor            # Windows (PowerShell or cmd)
+./turing-tester doctor            # Linux / macOS / Git Bash
+.\turing-tester doctor            # Windows (PowerShell or cmd)
 ```
 
 `doctor` reports the GPU, free memory, free disk and what is already installed, and tells you
 which commands your machine can run. The first time, the launcher downloads
-[uv](https://docs.astral.sh/uv/) and Python 3.12 into `.voicegym/`. Nothing is installed outside
+[uv](https://docs.astral.sh/uv/) and Python 3.12 into `.turing-tester/`. Nothing is installed outside
 the repo except the usual Hugging Face download cache. Each stage gets its own environment, built on
-first use. To build the environments ahead of time, run `./voicegym setup tts judge`.
+first use. To build the environments ahead of time, run `./turing-tester setup tts judge`.
 
 ## Folders you use
 
@@ -63,15 +63,15 @@ speakers, then compares each clip with the real person's recording of that sente
 Copy the model folder (the one with `config.json` and the weights) into `models/` and run:
 
 ```bash
-./voicegym benchmark --model models/my-tts
+./turing-tester benchmark --model models/my-tts
 ```
 
-VoiceGym detects the model type from the folder:
+Turing Tester detects the model type from the folder:
 
 | Model in the folder | What happens |
 |---|---|
 | Qwen3-TTS, MOSS-TTS-Nano, Orpheus | recognised automatically (a Hugging Face id such as `OpenMOSS-Team/MOSS-TTS-Nano-100M` also works) |
-| another LLM-style TTS (a language-model backbone that outputs audio-codec tokens) | add a short `voicegym.yaml` in the folder that names its codec and prompt format ([guide](docs/adding_a_model.md)) |
+| another LLM-style TTS (a language-model backbone that outputs audio-codec tokens) | add a short `turing-tester.yaml` in the folder that names its codec and prompt format ([guide](docs/adding_a_model.md)) |
 | anything else (VITS, Kokoro, F5-TTS, …) | add a `synthesize.py` with two functions, `load(device)` and `synthesize(text, ref_audio, ref_text)` ([guide](docs/adding_a_model.md)) |
 
 A `requirements.txt` in the model folder gets its own environment.
@@ -82,7 +82,7 @@ Describe the API in one small file in `apis/` and keep the key in an environment
 
 ```bash
 export ELEVENLABS_API_KEY=...            # Windows: $env:ELEVENLABS_API_KEY="..."
-./voicegym benchmark --api apis/elevenlabs.yaml
+./turing-tester benchmark --api apis/elevenlabs.yaml
 ```
 
 Ready-made configs:
@@ -146,13 +146,13 @@ the TTS clip, not that people would.
 ## 2. SFT: train on good examples
 
 ```bash
-./voicegym sft --model models/my-tts                              # learn from EARS human recordings
-./voicegym sft --model models/my-tts --voice voices/my-voice      # learn your own voice
-./voicegym sft --model models/my-tts --teacher models/big-tts     # learn from a bigger model
+./turing-tester sft --model models/my-tts                              # learn from EARS human recordings
+./turing-tester sft --model models/my-tts --voice voices/my-voice      # learn your own voice
+./turing-tester sft --model models/my-tts --teacher models/big-tts     # learn from a bigger model
 ```
 
 You can combine sources, e.g. `--voice voices/my-voice --teacher models/big-tts`. Add `--ears` to
-also use the EARS recordings. A teacher can be any model VoiceGym can benchmark, or an API
+also use the EARS recordings. A teacher can be any model Turing Tester can benchmark, or an API
 (`--teacher apis/my-provider.yaml`) if its terms allow training on its output. The teacher must be
 able to clone voices.
 
@@ -167,21 +167,21 @@ voices/my-voice/
 ```
 
 Use clean, single-speaker recordings: aim for at least 30 minutes, in clips of 3–15 seconds (at
-least 50 clips). VoiceGym holds back 10% of the clips (at least 20) as a test set, so you also get a
+least 50 clips). Turing Tester holds back 10% of the clips (at least 20) as a test set, so you also get a
 benchmark on your own voice, and 5% (at least 10) as a dev set for checking training. With a
 teacher, the teacher speaks in your voice too.
 
 **Training sentences** (used when a teacher speaks new text):
 
-- **Default:** 2,396 hand-written sentences shipped with VoiceGym
-  (`voicegym_cli/data/sentence_pool.jsonl`), grouped by the speech weaknesses they exercise.
+- **Default:** 2,396 hand-written sentences shipped with Turing Tester
+  (`turing_tester/data/sentence_pool.jsonl`), grouped by the speech weaknesses they exercise.
 - `--texts texts/my_sentences.txt`: your own sentences, one per line.
-- **Optional LLM:** set `VOICEGYM_LLM_BASE_URL`, `VOICEGYM_LLM_MODEL` and, if needed,
-  `VOICEGYM_LLM_API_KEY` (any OpenAI-compatible server, including local ones like Ollama or LM
-  Studio; see `.env.example`). VoiceGym then has SpeechJudge-GRM diagnose the model, the LLM tags
+- **Optional LLM:** set `TURING_TESTER_LLM_BASE_URL`, `TURING_TESTER_LLM_MODEL` and, if needed,
+  `TURING_TESTER_LLM_API_KEY` (any OpenAI-compatible server, including local ones like Ollama or LM
+  Studio; see `.env.example`). Turing Tester then has SpeechJudge-GRM diagnose the model, the LLM tags
   the judge's critiques into weaknesses, and it writes 4,000 sentences aimed at them, as in our
   experiments.
-- `--review-texts` (optional): once the diagnosis and the sentences are ready, VoiceGym shows them
+- `--review-texts` (optional): once the diagnosis and the sentences are ready, Turing Tester shows them
   and waits. You can edit `runs/sft/<name>/texts.txt` before the teacher starts.
 
 **What a run does** (`--mode quick`, the default): one training run with the settings from our
@@ -211,7 +211,7 @@ Linux or WSL2, a MOSS-TTS-Nano student, the Orpheus teacher, the optional LLM, a
 
 Other model families use their own trainers, and none of them were part of our experiments:
 
-- Orpheus and `voicegym.yaml` models train with LoRA (rank 16, lr 1e-4).
+- Orpheus and `turing-tester.yaml` models train with LoRA (rank 16, lr 1e-4).
 - Qwen3-TTS uses Qwen's own fine-tuning script, which makes a single-speaker model. It therefore
   works only with `--voice` alone.
 - `synthesize.py` models use the folder's `train.py`.
@@ -221,7 +221,7 @@ Other model families use their own trainers, and none of them were part of our e
 ## 3. DPO: learn from its own best and worst samples
 
 ```bash
-./voicegym dpo --model runs/sft/my-run/final
+./turing-tester dpo --model runs/sft/my-run/final
 ```
 
 DPO does not learn from recordings, only from the model's own samples. To speak, the model
@@ -231,7 +231,7 @@ improves the model across many voices.
 `--voice voices/my-voice` (optional) makes the model clone **your** voice during DPO, so the
 improvement is aimed at the voice you will deploy. Your dev clips then pick the best round and your
 test clips give the before/after score. Use it only if you want the model to speak in your voice, for example after
-`voicegym sft --voice voices/my-voice`.
+`turing-tester sft --voice voices/my-voice`.
 
 DPO works exactly as in our experiments. Each round:
 
@@ -257,7 +257,7 @@ the model. In our runs, DPO did not give a clear gain on top of SFT, and the two
 |---|---|---|---|
 | MOSS-TTS-Nano | ✅ | ✅ as in our experiments | ✅ as in our experiments |
 | Orpheus | ✅ | ✅ LoRA | ✅ LoRA |
-| other LLM-style TTS, with `voicegym.yaml` | ✅ | ✅ LoRA | ✅ LoRA |
+| other LLM-style TTS, with `turing-tester.yaml` | ✅ | ✅ LoRA | ✅ LoRA |
 | Qwen3-TTS (Base) | ✅ | your voice only | ❌ |
 | any other model, with `synthesize.py` | ✅ | with your own `train.py` | ❌ |
 | a TTS API | ✅ | ❌ (can be a teacher) | ❌ |
@@ -281,13 +281,13 @@ it continues where it left off.
   LibriTTS-R is CC BY 4.0. Your own models and APIs keep their own terms.
 - API keys are read from environment variables only and never written to files or logs.
 - `models/`, `voices/`, `.env` and `runs/` audio are never committed to git.
-- With the optional LLM, VoiceGym sends it the judge's written critiques and requests for
+- With the optional LLM, Turing Tester sends it the judge's written critiques and requests for
   sentences, never audio.
 
 ## More
 
 - [`RESULTS.md`](RESULTS.md): what we measured so far.
-- [`docs/adding_a_model.md`](docs/adding_a_model.md): `voicegym.yaml`, `synthesize.py` and `train.py`.
-- [`VoiceGym_SpeechJudge_Project_Plan.md`](VoiceGym_SpeechJudge_Project_Plan.md): the original design and the reasoning behind the metrics.
+- [`docs/adding_a_model.md`](docs/adding_a_model.md): `turing-tester.yaml`, `synthesize.py` and `train.py`.
+- [`TuringTester_SpeechJudge_Project_Plan.md`](TuringTester_SpeechJudge_Project_Plan.md): the original design and the reasoning behind the metrics.
 - [`docs/internal_pipeline.md`](docs/internal_pipeline.md): the experiment scripts (team reference; the AWS worker scripts are in `tools/aws/`).
 - Tests: `python -m unittest discover -s tests` (CPU only; needs numpy, soundfile, librosa, pyyaml).

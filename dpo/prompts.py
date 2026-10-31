@@ -102,7 +102,7 @@ def cmd_build(args):
     if out.exists() and not args.force:
         print(f"{out} exists ({len(dpolib.read_jsonl(out))} prompts); --force rebuilds it", flush=True)
         return
-    if args.voices:   # voicegym CLI: an explicit voice list ({speaker, path, transcript} per line)
+    if args.voices:   # turing-tester CLI: an explicit voice list ({speaker, path, transcript} per line)
         bench = {r["speaker_id"] for r in dpolib.read_csv(dpolib.sftlib.BENCH_MANIFEST)}
         vmap = {v["speaker"]: {"wav": v["path"], "transcript": v["transcript"]} for v in dpolib.read_jsonl(args.voices)}
         n_bench = len(set(vmap) & bench)
@@ -145,7 +145,7 @@ def main():
     t.add_argument("--workers", type=int, default=4)
     b = sub.add_parser("build")
     b.add_argument("--force", action="store_true")
-    b.add_argument("--voices", default="", help="voices jsonl instead of the SFT EARS inventory (voicegym CLI)")
+    b.add_argument("--voices", default="", help="voices jsonl instead of the SFT EARS inventory (turing-tester CLI)")
     args = p.parse_args()
     {"texts": cmd_texts, "build": cmd_build}[args.cmd](args)
 

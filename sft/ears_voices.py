@@ -1,4 +1,4 @@
-"""EARS pieces the voicegym CLI needs without the full EARS inventory (sft/ears_inventory.py):
+"""EARS pieces the turing-tester CLI needs without the full EARS inventory (sft/ears_inventory.py):
 
   voices      every non-dev EARS speaker's rainbow_01_regular (the benchmark's voice-prompt
               convention), the voices a teacher speaks in and DPO rolls out in, as in our runs

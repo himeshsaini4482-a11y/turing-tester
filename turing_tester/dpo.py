@@ -1,4 +1,4 @@
-"""voicegym dpo: online DPO exactly as in our experiments (dpo/README.md), for one model.
+"""turing-tester dpo: online DPO exactly as in our experiments (dpo/README.md), for one model.
 
 Each round the model speaks 1,000 fresh prompts 4 times, SpeechJudge-BTRM scores the samples, the
 best and the worst valid sample form a pair (invalid: WER > 0.2, speaker similarity < 0.85, outside
@@ -8,7 +8,7 @@ fixed, AdamW lr 1e-6, 16 pairs per step, one pass per round); up to 3 rounds, st
 that does not raise the dev BTRM % or fails the guard rails. Then the best round and the starting
 model are benchmarked (EARS 494, or your voice's test clips).
 
-Prompts: texts from --texts, from the LLM when VOICEGYM_LLM_* is set (as in our runs), or from the
+Prompts: texts from --texts, from the LLM when TURING_TESTER_LLM_* is set (as in our runs), or from the
 bundled pool; voices = every non-dev EARS speaker's reading (as in our runs), or yours with --voice.
 Resumable at every step (runs/dpo/<name>/.done/).
 """
@@ -17,9 +17,9 @@ import random
 import shutil
 from pathlib import Path
 
-from voicegym_cli import bench, envs, hardware, models, paths, report, sets
-from voicegym_cli.sft import POOL, SFT_DATA, llm_configured, read_csv, read_jsonl, user_texts, write_csv, write_jsonl
-from voicegym_cli.util import Fail, Steps, py, read_json, run_name, say, write_json
+from turing_tester import bench, envs, hardware, models, paths, report, sets
+from turing_tester.sft import POOL, SFT_DATA, llm_configured, read_csv, read_jsonl, user_texts, write_csv, write_jsonl
+from turing_tester.util import Fail, Steps, py, read_json, run_name, say, write_json
 
 TRIAL = paths.REPO / "dpo" / "archive" / "hparams_trial_01_beta0.1_adamw.json"
 ADAPTER = {"moss_tts_nano": ("moss_nano", "moss"), "orpheus": ("orpheus", "lm"), "token_lm": ("tokenlm", "lm")}
@@ -39,7 +39,7 @@ class Run:
         self.model = models.detect(args.model)
         if not self.model.can_dpo:
             raise Fail(f"DPO needs a model that reports token log-probabilities: MOSS-TTS-Nano, Orpheus or a "
-                       f"voicegym.yaml model ({self.model.label} cannot; see README 'What can be trained')")
+                       f"turing-tester.yaml model ({self.model.label} cannot; see README 'What can be trained')")
         self.adapter, self.env_name = ADAPTER[self.model.kind]
         if self.model.kind == "token_lm":
             self.env_name = self.model.env()      # "lm", or the folder's own environment with its requirements.txt
@@ -52,7 +52,7 @@ class Run:
         self.dir = paths.RUNS / "dpo" / self.name
         self.steps = Steps(self.dir)
         self.device = hardware.device_string()
-        self.log = self.dir / "voicegym.log"
+        self.log = self.dir / "turing-tester.log"
         self.policy_init = str(src.resolve()) if self.model.local else self.model.source
         if self.model.kind == "moss_tts_nano" and not self.model.local:
             # the MOSS adapter and checkpoint code need a local folder (they copy its code files)
@@ -61,7 +61,7 @@ class Run:
     def env(self):
         e = {"DPO_RUNS": self.dir, "DPO_HPARAMS": self.dir / "hparams.json", "DPO_SCRATCH": self.dir / "scratch",
              "SFT_DATA": SFT_DATA / "ears", "SFT_DEV": SFT_DATA / "dev",
-             "VOICEGYM_DEVICE": hardware.judge_device()}
+             "TURING_TESTER_DEVICE": hardware.judge_device()}
         if self.model.kind == "moss_tts_nano":
             e["MOSS_REPO"] = envs.checkout_dir("moss")
         return e
@@ -85,12 +85,12 @@ class Run:
             cfg = {k: v for k, v in defaults["orpheus"].items() if k not in ("reward", "_reward", "_policy_init")}
             cfg["venv"], cfg["eval_generator"] = "LM", "benchmark/generate_tokenlm.py"
         cfg["policy_init"] = self.policy_init
-        cfg["_policy_init"] = "pi_ref = the model given to voicegym dpo, frozen for the whole run."
+        cfg["_policy_init"] = "pi_ref = the model given to turing-tester dpo, frozen for the whole run."
         h["models"] = {self.adapter: cfg}
         h["model"] = self.adapter
         h["rounds"] = self.args.rounds
         h["eval"] = {**h.get("eval", {}), "manifest": str(dev_manifest), "final_skip_grm": False}
-        h["_voicegym"] = ("Written by voicegym dpo from dpo/archive/hparams_trial_01_beta0.1_adamw.json (our trial 1): "
+        h["_turing_tester"] = ("Written by turing-tester dpo from dpo/archive/hparams_trial_01_beta0.1_adamw.json (our trial 1): "
                           "only the model, pi_ref, rounds and the dev manifest differ.")
         write_json(self.dir / "hparams.json", h)
         return h
@@ -167,10 +167,10 @@ class Run:
 
     # ---- the run -------------------------------------------------------------------------------
     def go(self):
-        meta = read_json(self.dir / "voicegym.json")
+        meta = read_json(self.dir / "turing-tester.json")
         if meta and meta.get("identity") != self.identity():
             raise Fail(f"runs/dpo/{self.name} was started with other settings; use another --name or delete it")
-        write_json(self.dir / "voicegym.json", {"identity": self.identity(), "name": self.name})
+        write_json(self.dir / "turing-tester.json", {"identity": self.identity(), "name": self.name})
         say(f"DPO run runs/dpo/{self.name}: {self.model.label} (`{self.policy_init}`), up to {self.args.rounds} rounds")
         self.model.ensure_env()
         envs.ensure(self.env_name)
@@ -218,7 +218,7 @@ class Run:
         improved = best["round"] > 0 and best.get("policy")
         if improved:
             src = Path(abs_policy(best["policy"]))
-            from voicegym_cli.util import dir_fingerprint
+            from turing_tester.util import dir_fingerprint
             if not (final / ".source").exists() or (final / ".source").read_text() != dir_fingerprint(src):
                 shutil.rmtree(final, ignore_errors=True)
                 shutil.copytree(src, final)
@@ -235,7 +235,7 @@ class Run:
         return 0
 
     def write_report(self, best, stopped, improved):
-        lines = [f"# VoiceGym DPO: {self.name}", "", f"- Model: {self.model.label} (`{self.policy_init}`)",
+        lines = [f"# Turing Tester DPO: {self.name}", "", f"- Model: {self.model.label} (`{self.policy_init}`)",
                  f"- Settings: our trial 1 (beta 0.1 fixed, AdamW lr 1e-6, K = 4, 1,000 prompts per round), "
                  f"up to {self.args.rounds} rounds", f"- Voices: {self.voice.name if self.voice else 'EARS speakers (dev speakers held out)'}",
                  f"- Stopped: {stopped or 'all rounds done'}", ""]

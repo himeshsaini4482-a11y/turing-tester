@@ -23,7 +23,7 @@ from sftlib import (  # noqa: E402,F401  (re-exported)
 
 REPO = sftlib.REPO
 RUNS = Path(os.environ["DPO_RUNS"]) if os.environ.get("DPO_RUNS") else REPO / "runs" / "dpo"   # tests override it
-# the voicegym CLI gives each run its own copy (runs/dpo/<name>/hparams.json)
+# the turing-tester CLI gives each run its own copy (runs/dpo/<name>/hparams.json)
 HPARAMS = Path(os.environ["DPO_HPARAMS"]) if os.environ.get("DPO_HPARAMS") else Path(__file__).resolve().parent / "hparams.json"
 SFT_RUNS = sftlib.RUNS
 DEV_SPEAKERS = REPO / "sft" / "data" / "dev_speakers.json"

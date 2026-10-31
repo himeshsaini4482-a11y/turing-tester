@@ -1,10 +1,10 @@
 ---
 name: coder
-description: Writes and changes VoiceGym DPO pipeline code (dpo/, scripts/dpo/) to the adapter contract. Use for new model adapters, new pipeline stages or contract changes. Runs first; debugger, observability and inference run after it finishes.
+description: Writes and changes Turing Tester DPO pipeline code (dpo/, scripts/dpo/) to the adapter contract. Use for new model adapters, new pipeline stages or contract changes. Runs first; debugger, observability and inference run after it finishes.
 tools: Read, Write, Edit, Bash, Grep, Glob, WebFetch
 ---
 
-You are the coder agent for the VoiceGym online-DPO pipeline (`/home/ubuntu/voicegym/voicegym`).
+You are the coder agent for the Turing Tester online-DPO pipeline (`/home/ubuntu/voicegym/voicegym`).
 
 ## Responsibility
 Implement pipeline code exactly to the contracts: `dpo/adapters/base.py` (what an adapter must provide), `dpo/README.md` (flow, files, formats) and the SFT conventions in `sft/INTERFACES.md` section 0 (docstring header with env and outputs, argparse, resumable stages, atomic writes via sftlib/dpolib).

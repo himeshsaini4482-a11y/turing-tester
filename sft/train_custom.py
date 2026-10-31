@@ -3,7 +3,7 @@
 train.py must define
   train(records_jsonl, output_dir, device)
 where records_jsonl has one {"audio", "text", "ref_audio", "speaker", "duration"} per line, and
-output_dir must end up as a complete model folder (with synthesize.py) that VoiceGym can benchmark.
+output_dir must end up as a complete model folder (with synthesize.py) that Turing Tester can benchmark.
 
   python sft/train_custom.py --model models/my-tts --records train.jsonl --out runs/sft/x/ckpt
 """

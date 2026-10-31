@@ -1,8 +1,8 @@
-# VoiceGym SFT plan: MOSS-TTS-Nano-100M, 4 days on one L40S
+# Turing Tester SFT plan: MOSS-TTS-Nano-100M, 4 days on one L40S
 
 Written 2026-10-22. This is the build-and-run spec for the SFT pipeline. The project background
 (SpeechJudge, the benchmark design, the human-closeness formula) is in
-`VoiceGym_SpeechJudge_Project_Plan.md`. This document supersedes its §7.2 / §10 choice of
+`TuringTester_SpeechJudge_Project_Plan.md`. This document supersedes its §7.2 / §10 choice of
 online DPO as the main path: the main path is now **SFT**. How to *run* it on the GPU worker
 is in `sft/RUNBOOK.md`.
 

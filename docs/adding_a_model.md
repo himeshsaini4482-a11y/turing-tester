@@ -15,13 +15,16 @@ builds a separate environment for it (PyTorch, numpy, soundfile and your require
 
 ```python
 # models/my-tts/synthesize.py
+import os
 import numpy as np
+
+HERE = os.path.dirname(os.path.abspath(__file__))   # this folder, wherever the repo is
 
 CLONES_VOICE = True          # False if the model cannot clone (ref_audio is then None)
 
 def load(device):            # called once; device is "cuda:0", "mps" or "cpu"
     global model
-    model = ...              # load your weights from this folder
+    model = MyTTS.load(os.path.join(HERE, "weights.pth")).to(device)
 
 def synthesize(text, ref_audio, ref_text):
     """Speak `text` in the voice of the clip `ref_audio` (a wav path), whose transcript is `ref_text`.
@@ -29,6 +32,13 @@ def synthesize(text, ref_audio, ref_text):
     wav = model.tts(text, speaker_wav=ref_audio)
     return np.asarray(wav, dtype=np.float32), 24000
 ```
+
+- **Weights in the folder:** build their path from `HERE`, as above. A bare `"weights.pth"` fails,
+  because Turing Tester runs your code from the repo's top folder, not from `models/my-tts/`.
+- **Weights on Hugging Face:** `load()` can load them by id instead (for example
+  `MyTTS.from_pretrained("org/model-name")`); the folder then only needs `synthesize.py`.
+- **Sample rate:** return the rate your model actually outputs. A wrong rate makes the audio play
+  too fast or too slow, and the judges score it that way.
 
 The folder is put on `sys.path`, so `synthesize.py` can import its own helper modules. Turing Tester seeds
 `torch` and `numpy` before each sentence, so reruns sample the same way.

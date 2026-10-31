@@ -128,7 +128,7 @@ Our default pipeline isn't just "distill a big model into a small one". Here's w
 
 The result: the student passed its teacher. And in our pilot, hour for hour, the gated teacher clips trained the model better than real studio recordings did (86.2% vs 69.3% of human on speakers the model had never heard). The teacher-trained model was also the only one that kept its word accuracy on spontaneous speech.
 
-We dug through the research, and no published speech paper runs this whole loop. So we wrote one. **Our paper on this weakness-targeted teacher loop is under review right now**, and should be out around January or February 2027 once the review is done.
+We dug through the research, and no published speech paper runs this whole loop. So we wrote one. **Our paper on this loop, "Diagnose, Target, Teach: Critique-Guided, Judge-Gated Distillation for Small Text-to-Speech Models" by Daksh Choudhary (IIT Delhi), is under review right now**, and should be out around January or February 2027 once the review is done.
 
 ## 🎯 After SFT: DPO, the finishing set
 
@@ -154,7 +154,7 @@ Now the fun story we promised. We also ran DPO the "set beta to 0.1 and pray" wa
 |---|---|---|
 | **SpeechJudge** (Zhang et al., ICLR 2026) | The judges, GRM and BTRM | The SpeechJudge authors. We built on it and made it better. |
 | **On the Optimality of Global Improvement Regularization over Local KL Maximization in Incremental Direct Preference Optimization** (Ayosh Singh Yadav, IIT Delhi) | How to set beta in DPO, round by round | Us |
-| **Weakness-targeted teacher data for TTS** | The diagnose, target, teach and gate loop | Us, under review |
+| **Diagnose, Target, Teach: Critique-Guided, Judge-Gated Distillation for Small Text-to-Speech Models** (Daksh Choudhary, IIT Delhi) | The diagnose, target, teach and gate loop | Us, under review |
 
 ## The fine print (we're nice people)
 

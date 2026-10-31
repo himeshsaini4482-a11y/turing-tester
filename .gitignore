@@ -8,26 +8,8 @@ __pycache__/
 /pretrained/
 /third_party/
 
-# run outputs: keep the small result files, ignore audio and raw logs
-runs/*/*
-!runs/*/summary.json
-!runs/*/metrics_summary.json
-!runs/*/generation_config.json
-!runs/*/btrm_summary.json
-!runs/*/report.md
-!runs/*/report.json
-# SFT pipeline (runs/sft/): keep the decisions and reports, ignore audio, codes, mixes, checkpoints
-!runs/sft/REPORT.md
-!runs/sft/DECISIONS.md
-!runs/sft/timings.json
-!runs/sft/decoding.json
-!runs/sft/pilot/
-runs/sft/pilot/*
-!runs/sft/pilot/recipe.json
-!runs/sft/pilot/pilot_report.md
-# job log/exit code from scripts/gpu_run.sh
-/runs/job.*
-/runs/*.log
+# run outputs: everyone's own results, never committed (ours are copied into experiments/runs/)
+/runs/
 scripts/gpu/state.env
 
 # local agent orchestration notes

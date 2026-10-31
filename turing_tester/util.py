@@ -1,4 +1,5 @@
 """Subprocess, logging and resumable-step helpers shared by the commands."""
+import contextlib
 import hashlib
 import json
 import os
@@ -179,10 +180,14 @@ def run_name(name, default):
     return name
 
 
+PAUSE = None   # the interactive interface sets this to hide its status line while a job asks something
+
+
 def confirm_pause(message):
     """--review-texts: wait for the user (Enter continues, Ctrl+C stops)."""
     print("\n" + message, flush=True)
-    try:
-        input("Press Enter to continue (Ctrl+C to stop; re-run the same command to resume) ")
-    except EOFError:
-        raise Fail("--review-texts needs an interactive terminal")
+    with (PAUSE() if PAUSE else contextlib.nullcontext()):
+        try:
+            input("Press Enter to continue (Ctrl+C to stop; re-run the same command to resume) ")
+        except EOFError:
+            raise Fail("--review-texts needs an interactive terminal")

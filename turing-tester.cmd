@@ -1,5 +1,6 @@
 @echo off
-rem Turing Tester launcher (Windows, PowerShell or cmd):  .\turing-tester doctor | setup | benchmark | sft | dpo
+rem Turing Tester launcher (Windows, PowerShell or cmd):  .\turing-tester opens the interface (/ commands);
+rem   .\turing-tester doctor | setup | benchmark | sft | dpo runs one command directly.
 rem Installs a pinned uv into .turing-tester\bin the first time, then runs the CLI with a uv-managed Python 3.12.
 setlocal
 set "ROOT=%~dp0"
@@ -21,5 +22,5 @@ set "UV_PYTHON_INSTALL_DIR=%TT_HOME%\python"
 set "UV_CACHE_DIR=%TT_HOME%\cache\uv"
 set "PYTHONPATH=%ROOT%"
 set "TURING_TESTER_UV=%UV%"
-"%UV%" run --quiet --no-project --python 3.12 --python-preference only-managed --with pyyaml==6.0.2 python -m turing_tester %*
+"%UV%" run --quiet --no-project --python 3.12 --python-preference only-managed --with pyyaml==6.0.2 --with prompt_toolkit==3.0.48 --with rich==13.9.4 python -m turing_tester %*
 exit /b %errorlevel%

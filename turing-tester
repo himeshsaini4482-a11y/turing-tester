@@ -1,0 +1,36 @@
+#!/bin/sh
+# Turing Tester launcher (Linux, macOS, Git Bash on Windows).
+#
+#   ./turing-tester                    opens the interface (/ commands)
+#   ./turing-tester doctor | setup | benchmark | sft | dpo   (./turing-tester --help)
+#
+# Installs a pinned uv into .turing-tester/bin the first time, then runs the CLI (turing_tester/) with a
+# uv-managed Python 3.12. Nothing is installed outside the repo except uv's model/Hugging Face caches.
+set -e
+ROOT=$(cd "$(dirname "$0")" && pwd)
+UV_VERSION=0.12.16
+TT_HOME="$ROOT/.turing-tester"
+UV="$TT_HOME/bin/uv"
+WINDOWS=0
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) WINDOWS=1; UV="$TT_HOME/bin/uv.exe" ;; esac
+
+if [ ! -x "$UV" ]; then
+  echo "turing-tester: installing uv $UV_VERSION into .turing-tester/bin (one time)" >&2
+  mkdir -p "$TT_HOME/bin"
+  if [ "$WINDOWS" = 1 ]; then
+    powershell -NoProfile -ExecutionPolicy Bypass -Command \
+      "\$env:UV_INSTALL_DIR='$(cygpath -w "$TT_HOME/bin")'; \$env:UV_NO_MODIFY_PATH='1'; irm https://astral.sh/uv/$UV_VERSION/install.ps1 | iex"
+  elif command -v curl >/dev/null 2>&1; then
+    curl -LsSf "https://astral.sh/uv/$UV_VERSION/install.sh" | env UV_INSTALL_DIR="$TT_HOME/bin" UV_NO_MODIFY_PATH=1 sh
+  else
+    wget -qO- "https://astral.sh/uv/$UV_VERSION/install.sh" | env UV_INSTALL_DIR="$TT_HOME/bin" UV_NO_MODIFY_PATH=1 sh
+  fi
+fi
+
+export UV_PYTHON_INSTALL_DIR="$TT_HOME/python"
+export UV_CACHE_DIR="$TT_HOME/cache/uv"
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
+export TURING_TESTER_UV="$UV"
+exec "$UV" run --quiet --no-project --python 3.12 --python-preference only-managed \
+  --with pyyaml==6.0.2 --with prompt_toolkit==3.0.48 --with rich==13.9.4 \
+  python -m turing_tester "$@"

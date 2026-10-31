@@ -115,7 +115,9 @@ def main():
     p.add_argument("--out-dir", required=True, help="runs/sft/<stage>/teacher")
     p.add_argument("--gpu-hours", type=float, required=True, help="time box for this round's generation")
     p.add_argument("--batch-size", type=int, default=16)
-    p.add_argument("--inventory", default=str(sftlib.RUNS / "data" / "ears_inventory.jsonl"))
+    p.add_argument("--inventory", default=str(sftlib.DATA / "ears_inventory.jsonl"))
+    p.add_argument("--voices", default="", help="voices jsonl ({speaker, path, transcript} per line) instead of "
+                                                "the inventory's non-dev EARS speakers (turing-tester CLI)")
     p.add_argument("--model", default="unsloth/orpheus-3b-0.1-pretrained")
     # same values as generate_orpheus.py's argparse defaults (they are not importable constants)
     p.add_argument("--temperature", type=float, default=0.6)
@@ -137,7 +139,10 @@ def main():
     if not texts:
         sys.exit(f"no texts in {args.texts}")
     stage = texts[0].get("stage", "")
-    voices = load_voices(args.inventory)
+    if args.voices:
+        voices = sorted(sftlib.read_jsonl(args.voices), key=lambda v: v["speaker"])
+    else:
+        voices = load_voices(args.inventory)
     if not voices:
         sys.exit(f"no non-dev {sftlib.PROMPT_READING} rows in {args.inventory} (run sft/ears_inventory.py)")
     missing = [v["path"] for v in voices if not os.path.exists(v["path"])]

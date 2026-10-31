@@ -30,10 +30,10 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import sftlib  # noqa: E402
 
-DEV = sftlib.RUNS / "dev"
+DEV = sftlib.DEV
 WAV_DIR = DEV / "wav"
-INVENTORY = sftlib.RUNS / "data" / "ears_inventory.jsonl"
-EARS_RAW = sftlib.RUNS / "data" / "ears_raw.jsonl"
+INVENTORY = sftlib.DATA / "ears_inventory.jsonl"
+EARS_RAW = sftlib.DATA / "ears_raw.jsonl"
 DEV_SPEAKERS = Path(__file__).resolve().parent / "data" / "dev_speakers.json"
 SET_FILES = {"mirror": DEV / "dev_mirror.csv", "fresh": DEV / "dev_fresh.csv"}
 FRESH_PER_SPEAKER = 10

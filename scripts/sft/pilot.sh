@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # The test round (pilot): settle every open design question before the main training
-# (INTERFACES §4), then write runs/sft/pilot/recipe.json for scripts/sft/main.sh.
+# (INTERFACES §4), then write $RUNS/pilot/recipe.json for scripts/sft/main.sh.
 #
-#   KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/sft/pilot.sh"
+#   KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/sft/pilot.sh"
 #   ARMS="B A CU" TEACHER_GPU_HOURS=3 PILOT_TEXTS=1000 F1_POLICY=exclude bash scripts/sft/pilot.sh
 #
 # Order: setup -> gates -> EARS inventory -> dev-mirror -> base eval under both decodings ->
@@ -10,7 +10,7 @@
 # dev-fresh -> encode -> base full dev eval -> GRM diagnosis -> teacher round -> arms
 # (mix, train, eval) -> decide.py pilot.
 #
-# Resumable: every step leaves a marker in runs/sft/.done/ (see `step` in env.sh), so after a
+# Resumable: every step leaves a marker in $RUNS/.done/ (see `step` in env.sh), so after a
 # crash or worker restart just launch it again. Exit 3 = STOP (no pilot arm beats base).
 #
 # If the teacher round accepted nothing, arms A, B and D are skipped (CU, CT, F still run).
@@ -22,8 +22,8 @@ source "$(dirname "$0")/env.sh"
 ARMS=${ARMS:-B A CU CT D F}
 TEACHER_GPU_HOURS=${TEACHER_GPU_HOURS:-5}
 PILOT_TEXTS=${PILOT_TEXTS:-4000}   # > what 5 GPU-h renders: the teacher is time-boxed
-TEACHER_CODES=runs/sft/pilot/teacher/codes
-TEACHER_ACCEPTED=runs/sft/pilot/teacher/accepted_raw.jsonl
+TEACHER_CODES=$RUNS/pilot/teacher/codes
+TEACHER_ACCEPTED=$RUNS/pilot/teacher/accepted_raw.jsonl
 LR=2e-5
 SAVE_EVERY=100   # > epochs: only checkpoint-last is saved and evaluated
 
@@ -46,22 +46,22 @@ gate_qwen() {
 }
 
 bench_base() {   # $1 = chunked|whole, $2 = text tokens
-  MOSS_MODEL="$MOSS_MODEL_DIR" RUN_NAME="moss_base_$1" MOSS_MAX_TEXT_TOKENS="$2" SKIP_GRM=1 \
+  MOSS_MODEL="$MOSS_MODEL_DIR" RUN_NAME="${BENCH_PREFIX}moss_base_$1" MOSS_MAX_TEXT_TOKENS="$2" SKIP_GRM=1 \
     bash scripts/run_moss_nano.sh
 }
 
 base_eval_full() {
-  bash scripts/sft/eval_ckpt.sh "base_$(dec_mode)" "$MOSS_MODEL_DIR" runs/sft/dev/eval_full.csv "$(dec_tokens)"
+  bash scripts/sft/eval_ckpt.sh "base_$(dec_mode)" "$MOSS_MODEL_DIR" $RUNS/dev/eval_full.csv "$(dec_tokens)"
 }
 
 dev_fresh() {
   "$TTS_PY" sft/dev_sets.py fresh
-  "$TTS_PY" sft/dev_sets.py eval-manifest --sets mirror,fresh --seeds 3 --out runs/sft/dev/eval_full.csv
+  "$TTS_PY" sft/dev_sets.py eval-manifest --sets mirror,fresh --seeds 3 --out $RUNS/dev/eval_full.csv
 }
 
 dev_mirror() {
   "$TTS_PY" sft/dev_sets.py mirror
-  "$TTS_PY" sft/dev_sets.py eval-manifest --sets mirror --seeds 3 --out runs/sft/dev/eval_mirror.csv
+  "$TTS_PY" sft/dev_sets.py eval-manifest --sets mirror --seeds 3 --out $RUNS/dev/eval_mirror.csv
 }
 
 # make_mix.py config per arm (INTERFACES §2.9 / §4). No category re-weighting in the pilot, so
@@ -94,7 +94,7 @@ arm_epochs() { case $1 in A|B) echo 6 ;; *) echo 2 ;; esac; }
 # Mix and train in one step: the mix lives on NVMe ($SCR), which is wiped when the worker stops.
 train_arm() {
   local arm=$1 mix
-  if [ -s "runs/sft/ckpt/pilot/$arm/checkpoint-last/pytorch_model.bin" ]; then
+  if [ -s "$RUNS/ckpt/pilot/$arm/checkpoint-last/pytorch_model.bin" ]; then
     echo "pilot arm $arm: checkpoint-last exists, skipping mix + train"
     return 0
   fi
@@ -107,8 +107,8 @@ train_arm() {
 
 eval_arm() {
   local arm=$1
-  bash scripts/sft/eval_ckpt.sh "pilot_$arm" "runs/sft/ckpt/pilot/$arm/checkpoint-last" \
-    runs/sft/dev/eval_full.csv "$(dec_tokens)" "base_$(dec_mode)"
+  bash scripts/sft/eval_ckpt.sh "pilot_$arm" "$RUNS/ckpt/pilot/$arm/checkpoint-last" \
+    $RUNS/dev/eval_full.csv "$(dec_tokens)" "base_$(dec_mode)"
 }
 
 decide_pilot() {
@@ -118,8 +118,8 @@ decide_pilot() {
     echo
     echo "=================================================================="
     echo " PILOT STOP: no pilot arm beats base on dev-mirror (CI lo > 0)."
-    echo " Do not start the main workflow. Read runs/sft/pilot/pilot_report.md"
-    echo " and runs/sft/DECISIONS.md, then report to the user (PLAN §8)."
+    echo " Do not start the main workflow. Read $RUNS/pilot/pilot_report.md"
+    echo " and $RUNS/DECISIONS.md, then report to the user (PLAN §8)."
     echo "=================================================================="
     exit 3
   fi
@@ -136,15 +136,15 @@ step pilot_02b_gate_roundtrip  "$MOSS_PY" sft/gates.py roundtrip
 step pilot_02c_gate_qwen       gate_qwen
 step pilot_03_ears_inventory   "$TTS_PY" sft/ears_inventory.py
 step pilot_04_dev_mirror       dev_mirror
-step pilot_05a_base_eval_chunked bash scripts/sft/eval_ckpt.sh base_chunked "$MOSS_MODEL_DIR" runs/sft/dev/eval_mirror.csv 50
-step pilot_05b_base_eval_whole   bash scripts/sft/eval_ckpt.sh base_whole "$MOSS_MODEL_DIR" runs/sft/dev/eval_mirror.csv 100
-step pilot_06_decoding         "$TTS_PY" sft/decide.py decoding --chunked runs/sft/eval/base_chunked --whole runs/sft/eval/base_whole
+step pilot_05a_base_eval_chunked bash scripts/sft/eval_ckpt.sh base_chunked "$MOSS_MODEL_DIR" $RUNS/dev/eval_mirror.csv 50
+step pilot_05b_base_eval_whole   bash scripts/sft/eval_ckpt.sh base_whole "$MOSS_MODEL_DIR" $RUNS/dev/eval_mirror.csv 100
+step pilot_06_decoding         "$TTS_PY" sft/decide.py decoding --chunked $RUNS/eval/base_chunked --whole $RUNS/eval/base_whole
 step pilot_07a_bench_chunked   bench_base chunked 50
 step pilot_07b_bench_whole     bench_base whole 100
 step pilot_08_align            "$TTS_PY" sft/align.py
 step pilot_09_build_ears       "$MOSS_PY" sft/build_ears.py --max-tokens "$(train_max_tokens)" --moss-repo "$MOSS_REPO" --model-dir "$MOSS_MODEL_DIR"
 step pilot_10_dev_fresh        dev_fresh
-step pilot_11_encode_ears      bash scripts/sft/encode.sh runs/sft/data/ears_raw.jsonl runs/sft/data/ears_codes
+step pilot_11_encode_ears      bash scripts/sft/encode.sh $RUNS/data/ears_raw.jsonl $RUNS/data/ears_codes
 step pilot_12_base_eval_full   base_eval_full
 step pilot_13_diagnose         bash scripts/sft/diagnose.sh pilot "base_$(dec_mode)"
 step pilot_14_teacher          bash scripts/sft/teacher_round.sh pilot "$MOSS_MODEL_DIR" "$TEACHER_GPU_HOURS" "$PILOT_TEXTS"
@@ -158,4 +158,4 @@ for arm in $ARMS; do
   step "pilot_15_eval_$arm"    eval_arm "$arm"
 done
 step pilot_16_decide           decide_pilot
-echo "== pilot done: runs/sft/pilot/recipe.json, runs/sft/pilot/pilot_report.md"
+echo "== pilot done: $RUNS/pilot/recipe.json, $RUNS/pilot/pilot_report.md"

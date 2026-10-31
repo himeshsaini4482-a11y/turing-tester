@@ -34,7 +34,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import sftlib  # noqa: E402
 
-DATA = sftlib.RUNS / "data"
+DATA = sftlib.DATA
 INVENTORY = DATA / "ears_inventory.jsonl"
 UNITS = DATA / "units.jsonl"
 

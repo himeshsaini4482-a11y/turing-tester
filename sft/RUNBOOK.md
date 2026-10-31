@@ -1,4 +1,4 @@
-# Runbook for Claude on the VM: running the VoiceGym SFT pipeline
+# Runbook for Claude on the VM: running the Turing Tester SFT pipeline
 
 You are Claude Code running on the **UAI server**: the machine that holds this repo, the AWS
 CLI credentials and `~/.ssh/voicegym-gpu.pem`. You do not train anything on this machine. You
@@ -40,7 +40,7 @@ this; that is the DPO stage that follows. Budget: 4 days of one GPU.
 
 ## 1. Hard rules
 
-1. **Do not run `scripts/gpu_down.sh` until the project is finished** or the user says so. It
+1. **Do not run `tools/aws/gpu_down.sh` until the project is finished** or the user says so. It
    terminates the worker and destroys everything on it except what was copied back into `runs/`.
    To pause and save money, *stop* the instance instead (§5). Stopping keeps its disk.
 2. **Never tune on the benchmark.** The 494 set (`benchmark/manifests/ears_regular_26x19.csv`)
@@ -73,7 +73,7 @@ python3 -m compileall -q benchmark scripts sft && for f in scripts/sft/*.sh; do 
   print it). `gpu_run.sh` rsyncs it to the worker. Smoke-test it here:
   `python3 scripts/qwen9b_client.py "Reply with exactly: QWEN_OK"`.
 - `aws sts get-caller-identity` works, and `~/.ssh/voicegym-gpu.pem` exists.
-- `bash scripts/gpu_status.sh`: no worker should already be running or stopped. If one is
+- `bash tools/aws/gpu_status.sh`: no worker should already be running or stopped. If one is
   stopped, it may hold results: follow the message `gpu_up.sh` prints, don't delete it blindly.
 - Optional knobs, set as env vars in the job command: `F1_POLICY=auto|include|exclude` (default
   auto), `TEACHER_GPU_HOURS` (pilot default 5), `PILOT_TEXTS` (default 4000), `ARMS` (default
@@ -90,7 +90,7 @@ the background and poll:
 
 ```bash
 mkdir -p runs/sft/logs
-nohup env KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/sft/pilot.sh" \
+nohup env KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/sft/pilot.sh" \
   > runs/sft/logs/pilot.server.log 2>&1 &
 ```
 
@@ -98,8 +98,8 @@ nohup env KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/sft/pilot.sh" \
 - `tail -n 50 runs/sft/logs/<job>.server.log` shows the job log streamed from the worker. Each
   pipeline step prints `== [HH:MM:SS] <step>` when it starts and `== [done] <step> in Ns` when
   it ends.
-- `bash scripts/gpu_status.sh` shows whether the worker is alive, GPU memory, and the current job.
-- `source scripts/gpu/config.sh && gpu_ssh 'tail -n 30 voicegym/runs/job.log; ls voicegym/runs/sft/.done | tail; nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv'`
+- `bash tools/aws/gpu_status.sh` shows whether the worker is alive, GPU memory, and the current job.
+- `source tools/aws/config.sh && gpu_ssh 'tail -n 30 voicegym/runs/job.log; ls voicegym/runs/sft/.done | tail; nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv'`
 - A job is finished when the server-side `gpu_run.sh` process exits. Its last line says
   `Job finished with exit code N`, and `runs/` on this server has been refreshed.
 - Poll every 15–30 min. Use the scheduling or monitor tools you have rather than tight sleep loops.
@@ -121,7 +121,7 @@ entry per finished step) and tell the user if the 4-day schedule no longer fits.
 
 ### Job 1 — test round: `scripts/sft/pilot.sh` (~20–30 h)
 ```bash
-nohup env KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/sft/pilot.sh" > runs/sft/logs/pilot.server.log 2>&1 &
+nohup env KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/sft/pilot.sh" > runs/sft/logs/pilot.server.log 2>&1 &
 ```
 What it does, in order (INTERFACES §4):
 1. **Setup and gates.** MOSS venv, pinned repo + patch, then gates:
@@ -170,7 +170,7 @@ and wait for the user.
 
 ### Job 2 — main workflow: `scripts/sft/main.sh` (~40–60 h, plus one extra training run and its evals per round for the re-weighting check)
 ```bash
-nohup env KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/sft/main.sh" > runs/sft/logs/main.server.log 2>&1 &
+nohup env KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/sft/main.sh" > runs/sft/logs/main.server.log 2>&1 &
 ```
 Runs `main_rounds` rounds (from the recipe, default 2). Each round:
 1. GRM diagnoses the current best;
@@ -201,7 +201,7 @@ After each round (`runs/sft/main_r<k>/round_summary.json` + `DECISIONS.md`), tel
 ### Job 3 — final benchmark: `scripts/sft/final.sh` (~8–20 h, mostly GRM)
 Runs automatically at the end of job 2. To run it alone:
 ```bash
-nohup env KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/sft/final.sh" > runs/sft/logs/final.server.log 2>&1 &
+nohup env KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/sft/final.sh" > runs/sft/logs/final.server.log 2>&1 &
 ```
 Steps:
 1. Copies the chosen checkpoint to `runs/sft/best/final/`.
@@ -215,8 +215,8 @@ Add `RUNNER_UP=<ckpt dir>` to also benchmark a second checkpoint if time allows.
 1. Read `REPORT.md` fully and check its numbers against the summary JSONs.
 2. Send the user the headline table (BTRM % + CI, the diff vs base with CI, parity, ratio, wins,
    GRM closeness, WER, sim, UTMOS: base vs final) and the **Disclosure** section verbatim.
-3. Ask the user before shutting down. With their OK: `bash scripts/gpu_down.sh`, then confirm
-   `bash scripts/gpu_status.sh` shows no worker.
+3. Ask the user before shutting down. With their OK: `bash tools/aws/gpu_down.sh`, then confirm
+   `bash tools/aws/gpu_status.sh` shows no worker.
 
 ### Budget guard
 - Start time = first `gpu_up`. The 4-day budget is 96 h of worker time (~$215).
@@ -250,7 +250,7 @@ Add `RUNNER_UP=<ckpt dir>` to also benchmark a second checkpoint if time allows.
 |---|---|
 | `gpu_run.sh` on this server died, job still running on the worker | Re-run the same `gpu_run.sh` command. It sees the tmux session and waits for it instead of starting a new one. |
 | A job failed | Read the tail of `runs/job.log` (copied back) to find the failing step. Fix the cause and re-run the same command; finished steps are skipped. If the fix is code, see Hard rule 4. |
-| Worker *stopped* (idle stop or you paused it) | `source scripts/gpu/config.sh; aws ec2 start-instances --region $GPU_REGION --instance-ids $GPU_INSTANCE_ID`, wait for running, then re-run the job. The NVMe was wiped. Steps whose outputs lived only there are redone automatically or fail loudly; delete those steps' markers in `runs/sft/.done/` if they fail. Durable data (codes, teacher audio, checkpoints, evals) is in `runs/sft/` on the EBS disk. |
+| Worker *stopped* (idle stop or you paused it) | `source tools/aws/config.sh; aws ec2 start-instances --region $GPU_REGION --instance-ids $GPU_INSTANCE_ID`, wait for running, then re-run the job. The NVMe was wiped. Steps whose outputs lived only there are redone automatically or fail loudly; delete those steps' markers in `runs/sft/.done/` if they fail. Durable data (codes, teacher audio, checkpoints, evals) is in `runs/sft/` on the EBS disk. |
 | Worker *terminated* / lost | Launch the job again with `PUSH_RUNS="sft moss_base_chunked moss_base_whole"` so prior results are pushed to the new worker. The EARS audio is re-downloaded; delete the `.done` markers of steps that need it (inventory, align, build) only if they fail. |
 | Need to pause (e.g. waiting > 2 h for the user) | Make sure no job runs (`gpu_status.sh`), then `aws ec2 stop-instances ...`. Resume as above. |
 | 9B unreachable from the worker (gate G0c failed) | The 9B steps are stdlib-only and run fine here. When the job stops at the tagging or text step, run that step's command here: `python3 sft/tag_weaknesses.py ...` / `python3 sft/gen_texts.py ...` with the arguments shown in the job log. Then `touch runs/sft/.done/<step>` and re-launch with `PUSH_RUNS=sft`. |

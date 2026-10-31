@@ -41,7 +41,7 @@ ITEMS_MIN = 8
 N_EVIDENCE = 5          # quotes kept per category in the report
 ATTEMPTS = 3            # first try + 2 retries
 
-# Tests replace this with a mock; by default scripts/qwen9b_client.chat is imported on first use.
+# Tests replace this with a mock; by default scripts/llm_client.chat is imported on first use.
 CHAT = None
 
 
@@ -50,7 +50,7 @@ def llm(prompt, system, temperature, max_tokens):
     global CHAT
     if CHAT is None:
         sftlib.add_scripts_to_path()
-        from qwen9b_client import chat
+        from llm_client import chat
         CHAT = chat
     try:
         resp = CHAT(prompt, system=system, temperature=temperature, max_tokens=max_tokens)

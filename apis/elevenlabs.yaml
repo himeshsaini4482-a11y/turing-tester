@@ -1,0 +1,32 @@
+# ElevenLabs (https://elevenlabs.io/docs/api-reference). Needs ELEVENLABS_API_KEY in the environment.
+# Each benchmark speaker's reference clip becomes an instant voice clone (a paid-plan feature), which
+# is deleted again when the run finishes. ELEVENLABS_MODEL picks the model (default eleven_multilingual_v2).
+name: elevenlabs
+url: "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+query:
+  output_format: pcm_24000
+headers:
+  xi-api-key: "${ELEVENLABS_API_KEY}"
+body:
+  text: "{text}"
+  model_id: "${ELEVENLABS_MODEL:-eleven_multilingual_v2}"
+response:
+  audio: binary
+  format: pcm_s16le
+  sample_rate: 24000
+voice_cloning: create_voice
+create_voice:
+  url: https://api.elevenlabs.io/v1/voices/add
+  headers:
+    xi-api-key: "${ELEVENLABS_API_KEY}"
+  form:
+    name: "turing-tester-{voice_key}"
+  file_field: files
+  voice_id: voice_id
+delete_voice:
+  method: DELETE
+  url: "https://api.elevenlabs.io/v1/voices/{voice_id}"
+  headers:
+    xi-api-key: "${ELEVENLABS_API_KEY}"
+requests_per_minute: 60
+timeout_seconds: 120

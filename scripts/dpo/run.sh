@@ -4,7 +4,7 @@
 #   rollout -> BTRM -> WER/sim/UTMOS -> pairs (+ beta* diagnostic) -> train -> dev eval -> select
 #   -> final 494 benchmark -> report
 #
-#   KEEP_UP=1 bash scripts/gpu_run.sh "bash scripts/dpo/run.sh"
+#   KEEP_UP=1 bash tools/aws/gpu_run.sh "bash scripts/dpo/run.sh"
 #
 # Exit 3 = paused for the user: dpo/hparams.json USER_REVIEW (beta, kl, optimizer) is not filled
 # in yet. Round 1's rollout, scores, pairs and beta_diagnostic.md are done by then; set the values

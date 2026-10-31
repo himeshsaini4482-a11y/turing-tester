@@ -36,7 +36,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import sftlib  # noqa: E402
 
-DATA = sftlib.RUNS / "data"
+DATA = sftlib.DATA
 INVENTORY = DATA / "ears_inventory.jsonl"
 SUMMARY = DATA / "inventory_summary.json"
 DEV_SPEAKERS = Path(__file__).resolve().parent / "data" / "dev_speakers.json"

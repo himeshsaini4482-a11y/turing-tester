@@ -228,7 +228,7 @@ def gate_roundtrip(_args):
 
 def gate_qwen(_args):
     sftlib.add_scripts_to_path()
-    from qwen9b_client import chat
+    from llm_client import chat
 
     try:
         start = time.time()

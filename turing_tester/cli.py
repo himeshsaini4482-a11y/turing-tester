@@ -1,4 +1,5 @@
-"""turing-tester: benchmark, SFT and DPO for TTS models (see README.md)."""
+"""turing-tester: benchmark, SFT and DPO for TTS models (see README.md). With no command, in a
+terminal, it opens the interactive interface where you type / commands."""
 import argparse
 import sys
 
@@ -65,6 +66,9 @@ def main(argv=None):
     p = build_parser()
     args = p.parse_args(argv)
     if not args.command:
+        from turing_tester import shell
+        if sys.stdin.isatty() and sys.stdout.isatty() and shell.available():
+            return shell.main()     # the interactive interface (/ commands)
         p.print_help()
         return 0
     try:

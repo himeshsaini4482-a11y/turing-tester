@@ -1,6 +1,0 @@
-{
-  "model": "fishaudio/drama-3-int4",
-  "server": "sglang-omni /v1/audio/speech",
-  "source_manifest": "benchmark/manifests/ears_regular_26x19.csv",
-  "n_sentences": 5
-}

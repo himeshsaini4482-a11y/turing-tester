@@ -9,12 +9,12 @@ closer with SFT and DPO, all on your own machine.
 > The scripts the experiments used are documented in [`docs/internal_pipeline.md`](docs/internal_pipeline.md).
 
 ```
-your TTS model ──► turing-tester benchmark ──► score vs real human recordings
+your TTS model ──► /benchmark ──► score vs real human recordings
       │
-      ├──► turing-tester sft ──► learns from human recordings, your voice, or a bigger model
+      ├──► /sft ──► learns from human recordings, your voice, or a bigger model
       │
-      └──► turing-tester dpo ──► learns from its own best and worst samples
-                               └──► every run ends with a before/after benchmark
+      └──► /dpo ──► learns from its own best and worst samples
+                    └──► every run ends with a before/after benchmark
 ```
 
 ## What you need
@@ -26,20 +26,126 @@ your TTS model ──► turing-tester benchmark ──► score vs real human r
 | **Software** | `git` and an up-to-date NVIDIA driver. Everything else (Python, libraries, models, datasets) is installed automatically the first time a command needs it |
 | **Internet** | for the first run of each command (downloads: ~45 GB of judge weights; a teacher or DPO run also fetches one reference clip per EARS speaker, which means downloading each speaker's ~600 MB archive once); after that, runs work offline except API benchmarks |
 
-Check your machine before anything else:
+## Start
 
 ```bash
-git clone https://github.com/himeshsaini4482-a11y/voicegym.git
-cd voicegym
-./turing-tester doctor            # Linux / macOS / Git Bash
-.\turing-tester doctor            # Windows (PowerShell or cmd)
+git clone https://github.com/himeshsaini4482-a11y/turing-tester.git
+cd turing-tester
+./turing-tester            # Linux / macOS / Git Bash
+.\turing-tester            # Windows (PowerShell or cmd)
 ```
 
-`doctor` reports the GPU, free memory, free disk and what is already installed, and tells you
-which commands your machine can run. The first time, the launcher downloads
-[uv](https://docs.astral.sh/uv/) and Python 3.12 into `.turing-tester/`. Nothing is installed outside
-the repo except the usual Hugging Face download cache. Each stage gets its own environment, built on
-first use. To build the environments ahead of time, run `./turing-tester setup tts judge`.
+This opens the Turing Tester interface in your terminal (the title is drawn in shaded block letters; in a terminal narrower than 52 columns it is plain text). You work in it by typing `/` commands:
+
+```
+ ████████╗██╗   ██╗██████╗ ██╗███╗   ██╗ ██████╗
+ ╚══██╔══╝██║   ██║██╔══██╗██║████╗  ██║██╔════╝
+    ██║   ██║   ██║██████╔╝██║██╔██╗ ██║██║  ███╗
+    ██║   ██║   ██║██╔══██╗██║██║╚██╗██║██║   ██║
+    ██║   ╚██████╔╝██║  ██║██║██║ ╚████║╚██████╔╝
+    ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝
+
+ ████████╗███████╗███████╗████████╗███████╗██████╗
+ ╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+    ██║   █████╗  ███████╗   ██║   █████╗  ██████╔╝
+    ██║   ██╔══╝  ╚════██║   ██║   ██╔══╝  ██╔══██╗
+    ██║   ███████╗███████║   ██║   ███████╗██║  ██║
+    ╚═╝   ╚══════╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+╭───────────────────────────────────────────────────────────────────────╮
+│                                                                       │
+│  How close does your TTS model sound to a real person?                │
+│                                                                       │
+│  GPU     NVIDIA GeForce RTX 4090 · 24 GB                              │
+│  found   2 models in models/ · 1 API in apis/ · 1 voice in voices/    │
+│                                                                       │
+│  /doctor to check this machine · /help for all commands               │
+│                                                                       │
+╰───────────────────────────────────────────────────────────────────────╯
+
+> /be
+  /benchmark   score a model or API against real human recordings
+```
+
+The first start downloads [uv](https://docs.astral.sh/uv/) and Python 3.12 into `.turing-tester/`
+(about a minute). Nothing is installed outside the repo except the usual Hugging Face download
+cache. Run `/doctor` first: it reports the GPU, free memory, free disk and what is already
+installed, and tells you which commands your machine can run.
+
+### Commands
+
+| Command | What it does |
+|---|---|
+| `/doctor` | check this machine: GPU, memory, disk, what is installed, which commands can run |
+| `/models` | list the models in `models/` and the API configs in `apis/`, with the type detected for each and whether it can be benchmarked, SFT'd or DPO'd |
+| `/voices` | list your recordings in `voices/` with clip counts and total minutes |
+| `/benchmark` | score a model or API against real human recordings ([section 1](#1-benchmark-a-model)) |
+| `/sft` | fine-tune a model on good examples ([section 2](#2-sft-train-on-good-examples)) |
+| `/dpo` | improve a model on its own best and worst samples ([section 3](#3-dpo-learn-from-its-own-best-and-worst-samples)) |
+| `/runs` | list past runs with their headline scores |
+| `/report <run>` | show a run's results in the terminal |
+| `/setup [tts judge …]` | build environments now instead of on first use |
+| `/help [command]` | list the commands, or show one command's options |
+| `/clear` | clear the screen |
+| `/exit` | leave (also Ctrl+D) |
+
+**Guided or direct.** Type a command on its own and it asks what it needs, one question at a time,
+with choices you pick using the arrow keys (for `/benchmark`: which model, which sentence set,
+quick check or full run). Before starting it shows a summary and the equivalent direct command, so
+you learn the short form. Or give everything at once:
+
+```
+> /benchmark models/my-tts --limit 10
+```
+
+The first argument can be a model folder, a Hugging Face id or an API config; the type is detected
+automatically. The options are the ones listed in each section below.
+
+**Keys**
+
+| Key | Does |
+|---|---|
+| `/` | opens the command menu; keep typing and it shows the closest commands first (see below) |
+| Tab | completes commands, options and file paths (`models/`, `voices/`, `apis/`, `runs/`) |
+| ↑ / ↓ | earlier commands (history is kept in `.turing-tester/history`) |
+| Esc | cancels a guided question |
+| Ctrl+C | stops the running job and returns to the prompt; at an empty prompt, press twice to leave |
+| Ctrl+D | leaves |
+
+**Command suggestions.** As soon as you type `/`, a menu under the prompt lists every command with a
+one-line description. Each letter you type re-sorts it so the closest matches come first:
+
+```
+> /r                                     > /bnch                          > /benchmrk models/my-tts
+  /report    show a run's results          /benchmark   score a model…      unknown command /benchmrk
+  /runs      list past runs …                                               did you mean /benchmark? (Enter runs it)
+  /benchmark score a model …
+```
+
+- Commands that start with what you typed come first (`/r` → `/report`, `/runs`), then commands that contain
+  it, then commands with the same letters in order (`/bnch` → `/benchmark`), then near-misses
+  with a typo or two (`/benchmrk` → `/benchmark`).
+- ↑ / ↓ moves through the menu, Tab or Enter picks the highlighted command, Esc closes the menu.
+- Short forms work when only one command matches: `/bench`, `/doc`, `/rep`.
+- If you press Enter on a command that does not exist, nothing runs; it suggests the closest one
+  and Enter accepts it.
+- After the command name, the menu switches to that command's options (`--limit`, `--set`, …) and
+  then to matching paths in `models/`, `voices/`, `apis/` and `runs/`.
+
+**Running jobs.** A running job's output streams into the interface, with a line under it showing
+the current step and the elapsed time. One job runs at a time. A job that was stopped, or cut off
+by a closed window, continues where it left off when you run the same command again. For runs that
+take hours, start Turing Tester inside `tmux` or `screen` so a dropped connection does not stop it.
+
+Text that does not start with `/` is not sent anywhere; the interface reminds you to use a command.
+
+### Without the interface
+
+Every command also works straight from your shell, without the `/`, for scripts and servers:
+
+```bash
+./turing-tester doctor
+./turing-tester benchmark --model models/my-tts --limit 10
+```
 
 ## Folders you use
 
@@ -62,8 +168,8 @@ speakers, then compares each clip with the real person's recording of that sente
 
 Copy the model folder (the one with `config.json` and the weights) into `models/` and run:
 
-```bash
-./turing-tester benchmark --model models/my-tts
+```
+> /benchmark models/my-tts
 ```
 
 Turing Tester detects the model type from the folder:
@@ -78,11 +184,16 @@ A `requirements.txt` in the model folder gets its own environment.
 
 ### A TTS API
 
-Describe the API in one small file in `apis/` and keep the key in an environment variable:
+Describe the API in one small file in `apis/` and keep the key in an environment variable, set
+before you start Turing Tester:
 
 ```bash
 export ELEVENLABS_API_KEY=...            # Windows: $env:ELEVENLABS_API_KEY="..."
-./turing-tester benchmark --api apis/elevenlabs.yaml
+./turing-tester
+```
+
+```
+> /benchmark apis/elevenlabs.yaml
 ```
 
 Ready-made configs:
@@ -145,11 +256,13 @@ the TTS clip, not that people would.
 
 ## 2. SFT: train on good examples
 
-```bash
-./turing-tester sft --model models/my-tts                              # learn from EARS human recordings
-./turing-tester sft --model models/my-tts --voice voices/my-voice      # learn your own voice
-./turing-tester sft --model models/my-tts --teacher models/big-tts     # learn from a bigger model
 ```
+> /sft models/my-tts                              # learn from EARS human recordings
+> /sft models/my-tts --voice voices/my-voice      # learn your own voice
+> /sft models/my-tts --teacher models/big-tts     # learn from a bigger model
+```
+
+`/sft` on its own asks for the model and the data sources instead.
 
 You can combine sources, e.g. `--voice voices/my-voice --teacher models/big-tts`. Add `--ears` to
 also use the EARS recordings. A teacher can be any model Turing Tester can benchmark, or an API
@@ -220,8 +333,8 @@ Other model families use their own trainers, and none of them were part of our e
 
 ## 3. DPO: learn from its own best and worst samples
 
-```bash
-./turing-tester dpo --model runs/sft/my-run/final
+```
+> /dpo runs/sft/my-run/final
 ```
 
 DPO does not learn from recordings, only from the model's own samples. To speak, the model
@@ -231,7 +344,7 @@ improves the model across many voices.
 `--voice voices/my-voice` (optional) makes the model clone **your** voice during DPO, so the
 improvement is aimed at the voice you will deploy. Your dev clips then pick the best round and your
 test clips give the before/after score. Use it only if you want the model to speak in your voice, for example after
-`turing-tester sft --voice voices/my-voice`.
+`/sft --voice voices/my-voice`.
 
 DPO works exactly as in our experiments. Each round:
 
@@ -286,8 +399,9 @@ it continues where it left off.
 
 ## More
 
-- [`RESULTS.md`](RESULTS.md): what we measured so far.
+- [`RESULTS.md`](RESULTS.md): what we measured so far, with the SFT write-ups in
+  [`docs/sft_experiment/`](docs/sft_experiment/). Your own runs go to `runs/`, which is never committed.
 - [`docs/adding_a_model.md`](docs/adding_a_model.md): `turing-tester.yaml`, `synthesize.py` and `train.py`.
 - [`TuringTester_SpeechJudge_Project_Plan.md`](TuringTester_SpeechJudge_Project_Plan.md): the original design and the reasoning behind the metrics.
 - [`docs/internal_pipeline.md`](docs/internal_pipeline.md): the experiment scripts (team reference; the AWS worker scripts are in `tools/aws/`).
-- Tests: `python -m unittest discover -s tests` (CPU only; needs numpy, soundfile, librosa, pyyaml).
+- Tests: `python -m unittest discover -s tests` (CPU only; needs numpy, soundfile, librosa, pyyaml; the interface tests also need prompt_toolkit and rich).

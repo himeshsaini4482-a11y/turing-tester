@@ -1,7 +1,9 @@
 # Turing Tester results
 
-Every experiment run so far, with numbers taken from the committed run files
-(`runs/*/summary.json`, `btrm_summary.json`, `metrics_summary.json`, `runs/sft/*.md`).
+Every experiment run so far, with numbers taken from the runs' summary files (`summary.json`,
+`btrm_summary.json`, `metrics_summary.json`). Those files are no longer kept in the repo (they are in
+its git history); this page is the record. The detailed SFT write-ups are in
+[`docs/sft_experiment/`](docs/sft_experiment/).
 Audio, per-call judge logs and the DPO round logs stayed on the GPU worker and are not in the repo.
 
 **All scores below are automatic judges (SpeechJudge-GRM, SpeechJudge-BTRM, Whisper, WavLM,
@@ -58,7 +60,7 @@ on some runs to save GPU time; `orpheus_full` was BTRM-only).
 | `dpo_ru_r01_beta0.1` | +8.0 [+4.5, +11.4] | −0.9 [−4.0, +2.2] |
 | `dpo_t2_runnerup_r01` | +7.3 [+3.9, +10.7] | −1.6 [−4.9, +1.6] |
 
-From `runs/sft/REPORT.md` (BTRM, paired over the 494): SFT final vs base **+40.4 [+29.0, +52.7]**,
+From [`docs/sft_experiment/REPORT.md`](docs/sft_experiment/REPORT.md) (BTRM, paired over the 494): SFT final vs base **+40.4 [+29.0, +52.7]**,
 runner-up vs base +44.9 [+33.7, +56.8].
 
 ## 4. What the results say
@@ -78,7 +80,7 @@ runner-up vs base +44.9 [+33.7, +56.8].
 
 ## 5. SFT experiments (MOSS-TTS-Nano-100M)
 
-Full report: `runs/sft/REPORT.md`; every decision: `runs/sft/DECISIONS.md`.
+Full report: [`docs/sft_experiment/REPORT.md`](docs/sft_experiment/REPORT.md); every decision: [`docs/sft_experiment/DECISIONS.md`](docs/sft_experiment/DECISIONS.md).
 
 **Data.** EARS: 107 speakers, 100 h; 47.6 h of aligned chunks after filtering (Whisper
 large-v3-turbo alignment). The 494 benchmark files are excluded. Teacher: Orpheus 3B cloning
@@ -135,7 +137,7 @@ BTRM ranks them, best vs worst valid sample form a pair (invalid: WER > 0.2, sim
 
 Results are in section 3. The run-to-trial mapping is from the run names and archived settings;
 the per-round dev reports (`runs/dpo/`) are on the worker, not in the repo.
-`runs/dpo_final_moss_nano` has only a generation config: that final run was not scored.
+`dpo_final_moss_nano` has only a generation config: that final run was not scored.
 
 ## 7. 5-sentence smoke tests (too small to trust)
 

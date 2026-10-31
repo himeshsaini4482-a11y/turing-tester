@@ -1,4 +1,4 @@
-# VoiceGym results
+# Turing Tester results
 
 Every experiment run so far, with numbers taken from the committed run files
 (`runs/*/summary.json`, `btrm_summary.json`, `metrics_summary.json`, `runs/sft/*.md`).

@@ -1,5 +1,5 @@
 """LLM-style TTS runtime: one causal LM over text tokens + audio-codec tokens, described by the
-model folder's voicegym.yaml (docs/adding_a_model.md). Used by generate_tokenlm.py (benchmark),
+model folder's turing-tester.yaml (docs/adding_a_model.md). Used by generate_tokenlm.py (benchmark),
 sft/train_lm.py (LoRA SFT) and dpo/adapters/tokenlm.py (DPO).
 
   prompt     = the yaml `prompt` list, with `text` / `ref_text` tokenized by the folder's tokenizer
@@ -12,7 +12,7 @@ as in generate_orpheus.py), or a .py file in the model folder with
   load(device) -> state, encode(state, wav_path) -> [token ids], decode(state, [token ids]) -> mono float numpy
 (decode raises ValueError for an invalid token sequence).
 
-ORPHEUS is the voicegym.yaml equivalent of generate_orpheus.py, so Orpheus folders can use this
+ORPHEUS is the turing-tester.yaml equivalent of generate_orpheus.py, so Orpheus folders can use this
 runtime too (LoRA SFT); the benchmark and DPO keep the original Orpheus code.
 """
 import importlib.util
@@ -34,14 +34,14 @@ ORPHEUS = {
 
 def load_spec(folder):
     import yaml
-    path = Path(folder) / "voicegym.yaml"
+    path = Path(folder) / "turing-tester.yaml"
     if path.exists():
         with open(path, encoding="utf-8") as f:
             spec = yaml.safe_load(f) or {}
         if spec.get("family") == "orpheus" or str(spec.get("type", "")).replace("_", "-") != "token-lm":
             return dict(ORPHEUS)
         return spec
-    return dict(ORPHEUS)   # an Orpheus folder without voicegym.yaml
+    return dict(ORPHEUS)   # an Orpheus folder without turing-tester.yaml
 
 
 class Snac24:

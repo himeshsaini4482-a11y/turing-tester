@@ -1,10 +1,10 @@
-# VoiceGym: SpeechJudge-Based TTS Evaluation and Improvement Environment
+# Turing Tester: SpeechJudge-Based TTS Evaluation and Improvement Environment
 
 **Purpose of this document:** A detailed record of the idea, technical discussion, alternatives, decisions, recommended plan, benchmark design, and implementation caveats discussed for the hackathon project.
 
-**Scope:** This document covers the conversation from the original idea of AI-vs-human voice detection through the final VoiceGym / SpeechJudge / DPO discussion. It intentionally excludes the later discussion about other companies and business models.
+**Scope:** This document covers the conversation from the original idea of AI-vs-human voice detection through the final Turing Tester / SpeechJudge / DPO discussion. It intentionally excludes the later discussion about other companies and business models.
 
-**Working project name:** VoiceGym (name is provisional)
+**Working project name:** Turing Tester (name is provisional)
 
 **Primary goal:** Build a hackathon prototype that evaluates synthetic speech, identifies recurring quality weaknesses, uses an existing learned speech-quality judge to guide post-training of a small text-to-speech (TTS) model, and measures whether the updated model actually improves.
 
@@ -70,9 +70,9 @@ The initial target is TTS labs or developers who want to improve the speech gene
 
 ---
 
-## 2. Product definition: VoiceGym
+## 2. Product definition: Turing Tester
 
-VoiceGym is the working name for a platform that helps a lab answer four questions:
+Turing Tester is the working name for a platform that helps a lab answer four questions:
 
 1. **How good is the model right now?**
 2. **What kinds of speech quality problems does it exhibit?**
@@ -254,7 +254,7 @@ DPO is not the same thing as conventional policy-gradient reinforcement learning
 
 In conventional RLHF (Reinforcement Learning from Human Feedback), humans commonly judge model outputs. Their preferences may be used to train a reward model, and that reward model then grades further outputs. The generation model is then optimized using the reward signal.
 
-VoiceGym can reuse an already-trained reward model. This means humans do not have to grade every new candidate during every iteration. SpeechJudge supplies an **AI approximation of human preference** based on human-labelled data it has already learned from.
+Turing Tester can reuse an already-trained reward model. This means humans do not have to grade every new candidate during every iteration. SpeechJudge supplies an **AI approximation of human preference** based on human-labelled data it has already learned from.
 
 This is not the elimination of human judgment. It is the reuse of previous human judgments through a learned grader. The grader can be wrong, particularly on new languages, unusual speaking styles or outputs unlike its training data. Independent human evaluation remains important to verify real progress and detect reward hacking.
 
@@ -295,7 +295,7 @@ Interpretation:
 - These results are evidence that the approach can work; they do not prove online DPO always beats SFT or offline DPO for every TTS model.
 - The project should not treat the table as a result it has already achieved. It is a prior published result to compare against, not the hackathon's own experimental outcome.
 
-The key lesson is that SpeechJudge is not only a grader; the paper shows it can be used as a reward function that drives updates to a TTS generator. This makes it a strong starting point for VoiceGym.
+The key lesson is that SpeechJudge is not only a grader; the paper shows it can be used as a reward function that drives updates to a TTS generator. This makes it a strong starting point for Turing Tester.
 
 ---
 
@@ -501,9 +501,9 @@ A simplified conventional RLHF loop is:
 4. The model is trained or optimized to improve the reward.
 5. The model is evaluated and the cycle may repeat.
 
-### 9.2 VoiceGym's AI-feedback variant
+### 9.2 Turing Tester's AI-feedback variant
 
-VoiceGym uses an existing SpeechJudge reward model that was trained on human-labelled preferences:
+Turing Tester uses an existing SpeechJudge reward model that was trained on human-labelled preferences:
 
 1. Qwen generates candidate speech.
 2. SpeechJudge compares outputs or provides a reward signal.
@@ -802,7 +802,7 @@ SpeechJudge's public model and dataset are marked CC BY-NC 4.0. Other provider-g
 
 ### Short pitch
 
-> **VoiceGym is a feedback-driven training environment for TTS models. It evaluates generated speech, uses a learned preference model to find better candidates, helps update supported TTS models through online preference optimization, and measures the result on locked tests. The goal is to replace manual trial-and-error with a repeatable process for making synthetic voices more natural without sacrificing text accuracy or voice identity.**
+> **Turing Tester is a feedback-driven training environment for TTS models. It evaluates generated speech, uses a learned preference model to find better candidates, helps update supported TTS models through online preference optimization, and measures the result on locked tests. The goal is to replace manual trial-and-error with a repeatable process for making synthetic voices more natural without sacrificing text accuracy or voice identity.**
 
 ### What makes the project meaningful
 
@@ -816,7 +816,7 @@ SpeechJudge's public model and dataset are marked CC BY-NC 4.0. Other provider-g
 
 Do not claim:
 
-- That VoiceGym has invented reward-model-driven TTS optimization; the SpeechJudge paper already demonstrates a related post-training experiment.
+- That Turing Tester has invented reward-model-driven TTS optimization; the SpeechJudge paper already demonstrates a related post-training experiment.
 - That it completely removes humans from RLHF; it reuses judgments learned from existing human feedback and still needs independent human validation.
 - That a SpeechJudge score is an absolute “human-likeness percentage.”
 - That an increase in the judge's score proves human listeners prefer the result.

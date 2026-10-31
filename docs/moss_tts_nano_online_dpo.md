@@ -11,7 +11,7 @@ Sources this design is built on (all read directly, not paraphrased from memory)
 | Codec: [`OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano`](https://huggingface.co/OpenMOSS-Team/MOSS-Audio-Tokenizer-Nano) | commit `6aa02b01e445cc585582cf0ba480bc3ea6c8dd68` |
 | Code + official SFT recipe: [github.com/OpenMOSS/MOSS-TTS-Nano](https://github.com/OpenMOSS/MOSS-TTS-Nano) (`finetuning/sft.py`, `finetuning/dataset.py`, `ort_cpu_runtime.py`, `infer.py`) | commit `8b7bcc9341b3b4ef3a3a58ba1338a7d85ff133eb` |
 | `trl` (`trainer/dpo_trainer.py`, `trainer/dpo_config.py`, `experimental/online_dpo/*`, `trainer/utils.py`) | tag `v1.16.0` (latest on PyPI at time of writing) |
-| Existing VoiceGym code: `voicegym/benchmark/{judge,metrics,generate_tts}.py`, `VoiceGym_SpeechJudge_Project_Plan.md` | workspace |
+| Existing Turing Tester code: `voicegym/benchmark/{judge,metrics,generate_tts}.py`, `TuringTester_SpeechJudge_Project_Plan.md` | workspace |
 
 Notation: `[FILL: per user's paper]` = a value the user's own (unavailable) paper must specify. `[UNVERIFIED: …]` = could not be confirmed from the sources above. `[ESTIMATE]` = derived arithmetic, not measured.
 
@@ -140,7 +140,7 @@ Matmul FLOPs ≈ 2 × params touched. Attention-score FLOPs are ignored for the 
   - Optional LoRA (§e).
   - Start the reward services: SpeechJudge-GRM in `.venv-judge`; Whisper, WavLM and UTMOS as in `benchmark/metrics.py`.
 - **1. Prompt sampling** (Alg. 1 line 3, `x_t ~ P`).
-  - Draw `n_prompts` `[FILL]` items `x = (text, reference clip)`. Default source: LibriTTS-R **train** splits `[FILL: per user's paper]`. Never use `test-clean`, which is the VoiceGym held-out benchmark.
+  - Draw `n_prompts` `[FILL]` items `x = (text, reference clip)`. Default source: LibriTTS-R **train** splits `[FILL: per user's paper]`. Never use `test-clean`, which is the Turing Tester held-out benchmark.
   - Reference clip = same speaker, different utterance, 4–10 s, mirroring `prepare_data.py`.
   - Keep text ≤ 50 SentencePiece tokens so that one `generate` call equals one completion; Nano chunks longer voice-clone text.
   - Encode each reference clip **once** with `codec.batch_encode` and cache the `(T_ref, 16)` codes.
@@ -154,7 +154,7 @@ Matmul FLOPs ≈ 2 × params touched. Attention-score FLOPs are ignored for the 
   - `codec.batch_decode([codes...], num_quantizers=nq)` gives 48 kHz stereo waveforms.
   - Use the same `nq` for generation, decoding and log-prob computation (default 16 `[FILL]`).
   - Downmix or resample to 16 kHz mono for ASR, SIM and UTMOS, as `metrics.py` does.
-- **4. Preference labelling** (Alg. 1 line 4). Reward choice is `[FILL: per user's paper]`. The suggested cascade reuses existing VoiceGym components:
+- **4. Preference labelling** (Alg. 1 line 4). Reward choice is `[FILL: per user's paper]`. The suggested cascade reuses existing Turing Tester components:
   - **Hard gates → invalid** (Alg. 1 line 5):
     - no `audio_end` (`ended == False`)
     - decode error
@@ -162,7 +162,7 @@ Matmul FLOPs ≈ 2 × params touched. Attention-score FLOPs are ignored for the 
     - WER > `[FILL]` (Whisper `openai/whisper-large-v3`)
     - SIM < `[FILL]` (`microsoft/wavlm-base-plus-sv`)
   - **Cheap scalar reward on all K:** `r = w_wer·(−WER) + w_sim·SIM + w_mos·UTMOS22` (or DNSMOS) with weights `[FILL: per user's paper]`.
-  - **Expensive judge on a shortlist:** SpeechJudge-GRM (`RMSnow/SpeechJudge-GRM`, CC BY-NC 4.0) scores each shortlisted candidate against the **human reference recording** in both A/B orders. This is exactly VoiceGym's `judge.py` closeness (`TTS/human × 100`), and it costs 2 calls per candidate instead of K(K−1) pairwise calls. Shortlist size is `[FILL]`.
+  - **Expensive judge on a shortlist:** SpeechJudge-GRM (`RMSnow/SpeechJudge-GRM`, CC BY-NC 4.0) scores each shortlisted candidate against the **human reference recording** in both A/B orders. This is exactly Turing Tester's `judge.py` closeness (`TTS/human × 100`), and it costs 2 calls per candidate instead of K(K−1) pairwise calls. Shortlist size is `[FILL]`.
 - **5. Pair construction** (Alg. 1 lines 4–6).
   - Per prompt, take the valid candidates. If fewer than 2, skip.
   - `y_w = argmax r`, `y_l = argmin r` (or another policy `[FILL: per user's paper]`).
@@ -209,7 +209,7 @@ flowchart TD
     CK --> G
 ```
 
-### c.3 Integration with this repo (VoiceGym)
+### c.3 Integration with this repo (Turing Tester)
 
 Three environments are needed, because `transformers` pins conflict:
 - **`.venv-judge`** (existing): SpeechJudge-GRM with `transformers==4.52.3`. Run it as a long-lived scoring service (HTTP or a file queue) built from the existing `load_judge()` in `benchmark/judge.py`.
@@ -737,7 +737,7 @@ Because all three core methods must be replaced, this amounts to a rewrite on an
 
 ### f.2 Quality guardrails
 
-Use the locked VoiceGym `test-clean` 10×50 manifest. It is never used for training.
+Use the locked Turing Tester `test-clean` 10×50 manifest. It is never used for training.
 
 | Guardrail | Measurement | Pass rule |
 |---|---|---|
@@ -753,7 +753,7 @@ Use the locked VoiceGym `test-clean` 10×50 manifest. It is never used for train
 
 | Axis | Values |
 |---|---|
-| Hardware | NVIDIA L40S / A100 / H100 (VoiceGym VM class, `[FILL]` exact); 4-core x86 CPU (model-card realtime claim); Apple Silicon `[FILL]` (CPU/MPS, untested by upstream; `sft.py` requires CUDA) |
+| Hardware | NVIDIA L40S / A100 / H100 (Turing Tester VM class, `[FILL]` exact); 4-core x86 CPU (model-card realtime claim); Apple Silicon `[FILL]` (CPU/MPS, untested by upstream; `sft.py` requires CUDA) |
 | Precision | fp32, bf16 (LM); codec fp32 vs bf16 |
 | Attention | eager, sdpa, flash_attention_2 |
 | Generation loop | released; + I1 local KV cache; + I2 sync removal; + I3 CUDA graphs / compile |
@@ -768,7 +768,7 @@ Use the locked VoiceGym `test-clean` 10×50 manifest. It is never used for train
 - **Warmup.** `[FILL]` (≥ 5) untimed generations per configuration, so that `torch.compile`, cuDNN autotune and CUDA graph capture finish first.
 - **Repetitions.** ≥ `[FILL]` (e.g. 20) timed runs per (configuration × text-length bucket). Report median, p90 and p95, plus a 95% bootstrap CI.
 - **Fixed inputs and seeds.** Use the same prompts, seeds (`torch.manual_seed` per sentence, as in `generate_tts.py`), `max_new_frames` and `nq` across systems. Pin model, codec and `trl` commits, plus `torch`/CUDA versions in `generation_config.json`.
-- **Isolation.** One process per GPU. The judge never shares the policy GPU (VoiceGym rule). Lock GPU clocks if possible and record the driver version.
+- **Isolation.** One process per GPU. The judge never shares the policy GPU (Turing Tester rule). Lock GPU clocks if possible and record the driver version.
 - **Comparisons.**
   1. **Baseline**: Nano-100M @ `44502f8` with the released loop.
   2. **DPO'd**: the final round checkpoint, same loop.
@@ -782,7 +782,7 @@ Use the locked VoiceGym `test-clean` 10×50 manifest. It is never used for train
 ## g. Execution checklist
 
 - [x] Read the entire KL paper: 6/6 pages; §1–6, Eqs. 1–18, Table 1, Algorithm 1, references [1]–[4]
-- [x] Inspected the workspace: existing VoiceGym benchmark (SpeechJudge-GRM judge, Whisper WER, WavLM SIM, UTMOS, Qwen3-TTS generator, two-venv split). No existing DPO or Nano code; the design aligns with and reuses these components.
+- [x] Inspected the workspace: existing Turing Tester benchmark (SpeechJudge-GRM judge, Whisper WER, WavLM SIM, UTMOS, Qwen3-TTS generator, two-venv split). No existing DPO or Nano code; the design aligns with and reuses these components.
 - [x] Located the HF repo through the HF API search: `OpenMOSS-Team/MOSS-TTS-Nano-100M` (`…/MOSS-TTS-Nano` redirects to it)
 - [x] Fetched the model card, `config.json`, `modeling_moss_tts_nano.py`, `gpt2_decoder.py`, `prompting.py` and the tokenizer code (no weights)
 - [x] Fetched the codec card and `config.json` (`MOSS-Audio-Tokenizer-Nano`)

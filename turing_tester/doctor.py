@@ -1,9 +1,9 @@
-"""voicegym doctor: what this machine has and which commands it can run."""
+"""turing-tester doctor: what this machine has and which commands it can run."""
 import platform
 import shutil
 import sys
 
-from voicegym_cli import envs, hardware, paths
+from turing_tester import envs, hardware, paths
 
 DISK_BENCHMARK_GB = 100
 DISK_SFT_EARS_GB = 250
@@ -15,7 +15,7 @@ def mark(ok):
 
 
 def main(args):
-    print("VoiceGym doctor\n")
+    print("Turing Tester doctor\n")
     print(f"  system      {platform.system()} {platform.release()} ({platform.machine()}), Python {sys.version.split()[0]} (uv-managed)")
     git = shutil.which("git")
     print(f"  git         {'found' if git else 'NOT FOUND (needed to download pinned code)'}")
@@ -38,9 +38,9 @@ def main(args):
     print(f"  disk free   {disk:.0f} GB (on the drive holding {paths.REPO})")
     if any(s in str(paths.REPO).lower() for s in ("onedrive", "dropbox", "icloud", "google drive")):
         print("  WARNING     this repo is inside a synced folder: environments, judge weights and datasets (100+ GB)\n"
-              "              would be synced too, and sync locks can break runs. Clone VoiceGym outside it.")
+              "              would be synced too, and sync locks can break runs. Clone Turing Tester outside it.")
 
-    print("\n  environments (built automatically on first use, or now with ./voicegym setup):")
+    print("\n  environments (built automatically on first use, or now with ./turing-tester setup):")
     for name, ok in envs.status().items():
         print(f"    {mark(ok)}{name:<12} {envs.ENVS[name]['about']}")
     judges = {"SpeechJudge-GRM": paths.PRETRAINED / "SpeechJudge-GRM",

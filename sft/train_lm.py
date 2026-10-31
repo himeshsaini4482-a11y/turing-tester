@@ -1,4 +1,4 @@
-"""LoRA SFT for LLM-style TTS (Orpheus, or any voicegym.yaml token-lm model).
+"""LoRA SFT for LLM-style TTS (Orpheus, or any turing-tester.yaml token-lm model).
 
 Not part of our experiments (those trained MOSS-TTS-Nano with its own finetuning code); it applies the
 same SFT idea to models that are one causal LM over text + audio-codec tokens:
@@ -9,10 +9,10 @@ same SFT idea to models that are one causal LM over text + audio-codec tokens:
 LoRA (peft) on the attention and MLP projections, r 16, alpha 32, dropout 0: the same shape as the
 Orpheus DPO adapter (dpo/hparams.json). The base weights stay frozen in bf16; LoRA weights train in
 fp32 under bf16 autocast. Each saved checkpoint is the merged full model (what the benchmark loads)
-plus sft_lora/ (the LoRA weights alone, for reference; already merged) and the base folder's voicegym.yaml
+plus sft_lora/ (the LoRA weights alone, for reference; already merged) and the base folder's turing-tester.yaml
 (and codec file).
 
-Records: JSON lines {"audio", "text", "ref_audio"} (voicegym CLI: teacher clips, your voice, EARS chunks);
+Records: JSON lines {"audio", "text", "ref_audio"} (turing-tester CLI: teacher clips, your voice, EARS chunks);
 --ref-texts maps each ref_audio path to its transcript. Codec tokens are computed once and cached
 in <out>/codes.jsonl (resumable).
 
@@ -159,7 +159,7 @@ def main():
         merged.save_pretrained(str(tmp), safe_serialization=True)
         lm.tok.save_pretrained(str(tmp))
         src = Path(args.model)
-        for extra in ("voicegym.yaml", lm.spec.get("codec", "")):
+        for extra in ("turing-tester.yaml", lm.spec.get("codec", "")):
             if extra and (src / extra).is_file():
                 shutil.copy2(src / extra, tmp / extra)
         del merged

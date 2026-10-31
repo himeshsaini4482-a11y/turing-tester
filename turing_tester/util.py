@@ -7,18 +7,18 @@ import sys
 import time
 from pathlib import Path
 
-from voicegym_cli import paths
+from turing_tester import paths
 
 
 class Fail(SystemExit):
     """A clean, user-facing error: printed without a traceback."""
 
     def __init__(self, msg):
-        super().__init__(f"voicegym: {msg}")
+        super().__init__(f"turing-tester: {msg}")
 
 
 def say(msg):
-    print(f"voicegym: {msg}", flush=True)
+    print(f"turing-tester: {msg}", flush=True)
 
 
 def stage_env(extra=None):
@@ -29,9 +29,9 @@ def stage_env(extra=None):
     env.pop("LD_LIBRARY_PATH", None)
     env.pop("PYTHONPATH", None)
     env.update({"PYTHONUNBUFFERED": "1", "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1",
-                "VOICEGYM_REPO": str(paths.REPO)})
+                "TURING_TESTER_REPO": str(paths.REPO)})
     if "CUDA_VISIBLE_DEVICES" not in os.environ:
-        from voicegym_cli import hardware
+        from turing_tester import hardware
         gpu = _visible_gpu(hardware)
         if gpu is not None:      # several GPUs: use the largest one (cuda:0 inside the stage)
             env["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -70,7 +70,7 @@ def run(cmd, log=None, env=None, cwd=None, check=True):
                                     stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace")
         except FileNotFoundError:
             raise Fail(f"cannot run {cmd[0]}: not found (an environment may be incomplete; "
-                       "delete .voicegym/envs/<name> to rebuild it)")
+                       "delete .turing-tester/envs/<name> to rebuild it)")
         for line in proc.stdout:
             sys.stdout.write(line)
             sys.stdout.flush()
@@ -92,7 +92,7 @@ def run(cmd, log=None, env=None, cwd=None, check=True):
 
 
 def py(env_name, script, *args, log=None, env=None, check=True):
-    """Run a repo script (path relative to the repo) in a VoiceGym environment."""
+    """Run a repo script (path relative to the repo) in a Turing Tester environment."""
     return run([paths.env_python(env_name), paths.REPO / script, *args], log=log, env=env, check=check)
 
 

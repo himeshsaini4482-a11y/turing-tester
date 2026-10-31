@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Send a prompt directly to VoiceGym's standalone Qwen 3.5 9B endpoint."""
+"""Send a prompt directly to Turing Tester's standalone Qwen 3.5 9B endpoint."""
 
 from __future__ import annotations
 
@@ -59,7 +59,7 @@ def chat(
 ) -> dict:
     """Send one prompt and return the OpenAI-compatible response JSON.
 
-    Other VoiceGym stages import this (e.g. sft/gen_texts.py); main() is the CLI around it.
+    Other Turing Tester stages import this (e.g. sft/gen_texts.py); main() is the CLI around it.
     """
     load_dotenv(env_file)
     base_url = os.getenv("VOICEGYM_QWEN_BASE_URL", "").strip()
@@ -96,7 +96,7 @@ def chat(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "User-Agent": "VoiceGym-Qwen9B-Client/1.0",
+            "User-Agent": "TuringTester-Qwen9B-Client/1.0",
         },
     )
 

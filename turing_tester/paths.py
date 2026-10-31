@@ -1,10 +1,10 @@
-"""Where VoiceGym keeps things. Everything is inside the repo and gitignored."""
+"""Where Turing Tester keeps things. Everything is inside the repo and gitignored."""
 import os
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-HOME = REPO / ".voicegym"            # uv, Python, environments, caches
+HOME = REPO / ".turing-tester"            # uv, Python, environments, caches
 ENVS = HOME / "envs"
 THIRD_PARTY = REPO / "third_party"   # pinned code checkouts (SpeechJudge, MOSS-TTS-Nano, Qwen3-TTS)
 PRETRAINED = REPO / "pretrained"     # judge weights (SpeechJudge-GRM, Qwen2.5-Omni-7B + BTRM)
@@ -18,7 +18,7 @@ WINDOWS = sys.platform == "win32"
 
 
 def env_python(name):
-    """Interpreter of a VoiceGym environment (it may not exist yet)."""
+    """Interpreter of a Turing Tester environment (it may not exist yet)."""
     d = ENVS / name
     return d / "Scripts" / "python.exe" if WINDOWS else d / "bin" / "python"
 
@@ -30,9 +30,9 @@ def env_script(name, script):
 
 
 def uv():
-    """The pinned uv the launcher installed (VOICEGYM_UV), else one on PATH."""
-    if os.environ.get("VOICEGYM_UV"):
-        return os.environ["VOICEGYM_UV"]
+    """The pinned uv the launcher installed (TURING_TESTER_UV), else one on PATH."""
+    if os.environ.get("TURING_TESTER_UV"):
+        return os.environ["TURING_TESTER_UV"]
     own = HOME / "bin" / ("uv.exe" if WINDOWS else "uv")
     return str(own) if own.exists() else "uv"
 

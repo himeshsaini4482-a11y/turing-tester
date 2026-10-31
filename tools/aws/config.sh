@@ -1,4 +1,4 @@
-# Shared settings for the on-demand VoiceGym GPU worker (sourced by the gpu_*.sh scripts).
+# Shared settings for the on-demand Turing Tester GPU worker (sourced by the gpu_*.sh scripts).
 #
 # The worker is disposable: gpu_up.sh launches it from the voicegym-gpu AMI in the first
 # zone/type with capacity, gpu_down.sh copies runs/ back and terminates it.

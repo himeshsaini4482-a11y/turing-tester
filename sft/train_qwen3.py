@@ -2,7 +2,7 @@
 
 Not part of our experiments. Qwen's script trains a single-speaker "custom_voice" model: afterwards
 the model speaks that voice by name (generate_tts.py --speaker), it no longer clones others. So this
-path exists for `voicegym sft --model <Qwen3-TTS Base> --voice voices/<name>` only.
+path exists for `turing-tester sft --model <Qwen3-TTS Base> --voice voices/<name>` only.
 
 Steps (third_party/Qwen3-TTS/finetuning, pinned commit, flash-attn swapped for SDPA):
   prepare_data.py  audio codes for every training clip (Qwen/Qwen3-TTS-Tokenizer-12Hz)

@@ -1,21 +1,21 @@
-"""voicegym: benchmark, SFT and DPO for TTS models (see README.md)."""
+"""turing-tester: benchmark, SFT and DPO for TTS models (see README.md)."""
 import argparse
 import sys
 
-from voicegym_cli.util import Fail
+from turing_tester.util import Fail
 
 EPILOG = """examples:
-  ./voicegym doctor
-  ./voicegym benchmark --model models/my-tts
-  ./voicegym benchmark --api apis/elevenlabs.yaml --limit 10
-  ./voicegym sft --model models/my-tts --teacher models/big-tts
-  ./voicegym sft --model models/my-tts --voice voices/my-voice
-  ./voicegym dpo --model runs/sft/my-tts/final
-(on Windows: .\\voicegym ...)"""
+  ./turing-tester doctor
+  ./turing-tester benchmark --model models/my-tts
+  ./turing-tester benchmark --api apis/elevenlabs.yaml --limit 10
+  ./turing-tester sft --model models/my-tts --teacher models/big-tts
+  ./turing-tester sft --model models/my-tts --voice voices/my-voice
+  ./turing-tester dpo --model runs/sft/my-tts/final
+(on Windows: .\\turing-tester ...)"""
 
 
 def build_parser():
-    p = argparse.ArgumentParser(prog="voicegym", description=__doc__, epilog=EPILOG,
+    p = argparse.ArgumentParser(prog="turing-tester", description=__doc__, epilog=EPILOG,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="command", metavar="command")
 
@@ -69,25 +69,25 @@ def main(argv=None):
         return 0
     try:
         if args.command == "doctor":
-            from voicegym_cli import doctor
+            from turing_tester import doctor
             return doctor.main(args)
         if args.command == "setup":
-            from voicegym_cli import envs
+            from turing_tester import envs
             for name in args.envs or ["tts", "judge"]:
                 envs.ensure(name)
-            print("voicegym: environments ready")
+            print("turing-tester: environments ready")
             return 0
         if args.command == "benchmark":
-            from voicegym_cli import bench
+            from turing_tester import bench
             return bench.main(args)
         if args.command == "sft":
-            from voicegym_cli import sft
+            from turing_tester import sft
             return sft.main(args)
         if args.command == "dpo":
-            from voicegym_cli import dpo
+            from turing_tester import dpo
             return dpo.main(args)
     except KeyboardInterrupt:
-        print("\nvoicegym: stopped. Run the same command again to continue where it left off.", file=sys.stderr)
+        print("\nturing-tester: stopped. Run the same command again to continue where it left off.", file=sys.stderr)
         return 130
     except Fail as e:
         print(str(e.code), file=sys.stderr)

@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import sys
 
-from voicegym_cli import paths
+from turing_tester import paths
 
 MIN_NVIDIA_GB = 24
 MIN_APPLE_GB = 32
@@ -82,7 +82,7 @@ def device_string():
 
 
 def judge_device():
-    """VOICEGYM_DEVICE for the judge scripts."""
+    """TURING_TESTER_DEVICE for the judge scripts."""
     return {"cuda:0": "cuda"}.get(device_string(), device_string())
 
 
@@ -104,13 +104,13 @@ def can_run_models():
     kind, gpu = accelerator()
     if kind == "cuda":
         if gpu["total_gb"] + 0.5 < MIN_NVIDIA_GB:
-            return False, (f"{gpu['name']} has {gpu['total_gb']:.0f} GB; VoiceGym needs an NVIDIA GPU with "
+            return False, (f"{gpu['name']} has {gpu['total_gb']:.0f} GB; Turing Tester needs an NVIDIA GPU with "
                            f"{MIN_NVIDIA_GB} GB or more (the judges are 7B models run at full precision)")
         return True, f"{gpu['name']}, {gpu['total_gb']:.0f} GB"
     if kind == "mps":
         ram = ram_gb()
         if ram + 0.5 < MIN_APPLE_GB:
-            return False, f"Apple Silicon with {ram:.0f} GB memory; VoiceGym needs {MIN_APPLE_GB} GB or more"
+            return False, f"Apple Silicon with {ram:.0f} GB memory; Turing Tester needs {MIN_APPLE_GB} GB or more"
         return True, f"Apple Silicon, {ram:.0f} GB unified memory (best effort, slow)"
     return False, ("no NVIDIA GPU found (nvidia-smi did not answer) and this is not an Apple Silicon Mac; "
                    "install the NVIDIA driver, or use a machine with a supported GPU")
@@ -120,5 +120,5 @@ def require_gpu(allow_cpu=False):
     ok, why = can_run_models()
     if ok or allow_cpu:
         return why
-    from voicegym_cli.util import Fail
-    raise Fail(why + "\n  (run ./voicegym doctor for details)")
+    from turing_tester.util import Fail
+    raise Fail(why + "\n  (run ./turing-tester doctor for details)")

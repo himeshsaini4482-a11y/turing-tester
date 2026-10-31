@@ -1,18 +1,18 @@
-"""Validation of voicegym.yaml for LLM-style TTS (type: token-lm). Standard library only.
+"""Validation of turing-tester.yaml for LLM-style TTS (type: token-lm). Standard library only.
 
 The runtime side (tokenizer, codec, prompt building) is benchmark/tokenlm.py, which runs in the
 model's environment. docs/adding_a_model.md documents the format.
 """
 from pathlib import Path
 
-from voicegym_cli.util import Fail
+from turing_tester.util import Fail
 
 BUILTIN_CODECS = ("snac_24khz",)
 SEGMENTS = ("text", "ref_text", "ref_audio")
 
 
 def validate(vg, folder):
-    where = f"{Path(folder).name}/voicegym.yaml"
+    where = f"{Path(folder).name}/turing-tester.yaml"
 
     def bad(msg):
         raise Fail(f"{where}: {msg} (see docs/adding_a_model.md)")

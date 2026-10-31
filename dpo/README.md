@@ -1,4 +1,4 @@
-# VoiceGym online DPO (after SFT)
+# Turing Tester online DPO (after SFT)
 
 Online, iterative DPO for TTS following the KL paper's Algorithm 1 (`docs/KL_divergence_paper.pdf`):
 each round, the current policy speaks fresh prompts K times, SpeechJudge-BTRM ranks the samples, the

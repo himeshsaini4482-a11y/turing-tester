@@ -1,5 +1,5 @@
 #!/bin/bash
-# Boot-time setup for the VoiceGym GPU worker: idle auto-stop.
+# Boot-time setup for the Turing Tester GPU worker: idle auto-stop.
 # The box powers off (= EC2 "stopped", disk kept) after IDLE_MIN minutes with no
 # GPU process, no SSH login, no tmux session and no /home/ubuntu/.keep-awake file.
 cat > /usr/local/bin/voicegym-idle-check <<'SCRIPT'
@@ -21,14 +21,14 @@ SCRIPT
 chmod +x /usr/local/bin/voicegym-idle-check
 cat > /etc/systemd/system/voicegym-idle.service <<'UNIT'
 [Unit]
-Description=VoiceGym idle auto-stop check
+Description=Turing Tester idle auto-stop check
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/voicegym-idle-check
 UNIT
 cat > /etc/systemd/system/voicegym-idle.timer <<'UNIT'
 [Unit]
-Description=Run VoiceGym idle check every minute
+Description=Run Turing Tester idle check every minute
 [Timer]
 OnBootSec=5min
 OnUnitActiveSec=1min

@@ -20,7 +20,7 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from voicegym_cli import apiconfig  # noqa: E402
+from turing_tester import apiconfig  # noqa: E402
 
 from common import read_manifest, write_manifest  # noqa: E402
 

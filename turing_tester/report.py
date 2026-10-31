@@ -191,7 +191,7 @@ def benchmark_report(run_dir, meta):
     rows = load_run(run_dir)
     s = summary(rows)
     no_clone = meta.get("voice_cloning") == "none"
-    lines = [f"# VoiceGym benchmark: {meta.get('name', run_dir.name)}", "",
+    lines = [f"# Turing Tester benchmark: {meta.get('name', run_dir.name)}", "",
              f"- Model: {meta.get('model_label', '?')} (`{meta.get('model', '?')}`)",
              f"- Sentence set: {meta.get('set_description', meta.get('set', '?'))} ({s['n_sentences']} sentences"
              + (f", first {meta['limit']} only" if meta.get("limit") else "") + ")",

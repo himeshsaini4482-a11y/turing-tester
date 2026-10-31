@@ -28,7 +28,7 @@ from statistics import mean
 
 from common import read_manifest, resolve_attn
 
-DEVICE = os.environ.get("VOICEGYM_DEVICE", "cuda")   # "mps" on Apple Silicon
+DEVICE = os.environ.get("TURING_TESTER_DEVICE", "cuda")   # "mps" on Apple Silicon
 
 
 def load_btrm(speechjudge_dir, base_path, rm_path, attn):

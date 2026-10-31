@@ -1,6 +1,8 @@
 # Turing Tester online DPO (after SFT)
 
-Online, iterative DPO for TTS following the KL paper's Algorithm 1 (`docs/KL_divergence_paper.pdf`):
+Online, iterative DPO for TTS following Algorithm 1 of the KL paper (A. S. Yadav, *On the Optimality of Global
+Improvement Regularization over Local KL Maximization in Incremental Direct Preference Optimization*,
+unpublished; not included in this repo):
 each round, the current policy speaks fresh prompts K times, SpeechJudge-BTRM ranks the samples, the
 best and the worst valid sample form a pair, and the policy takes Eq. 2 steps against a frozen π_ref,
 while the paper's KL quantities (u_w, u_l, M, k̂, D̂, β) are tracked every step.

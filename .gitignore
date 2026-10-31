@@ -8,7 +8,7 @@ __pycache__/
 /pretrained/
 /third_party/
 
-# run outputs: everyone's own results, never committed (ours are copied into experiments/runs/)
+# run outputs: everyone's own results, never committed (ours are summarised in RESULTS.md)
 /runs/
 scripts/gpu/state.env
 

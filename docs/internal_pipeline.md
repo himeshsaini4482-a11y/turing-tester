@@ -143,6 +143,9 @@ Settings: `tools/aws/config.sh`. To rebuild the image after changing the environ
 
 ## Outputs (`runs/<RUN_NAME>/`)
 
+`runs/` is not committed. The numbers of the runs in `RESULTS.md` are recorded there (the summary
+files themselves are in the git history), and the SFT write-ups are in `docs/sft_experiment/`.
+
 | File | Contents |
 |---|---|
 | `summary.json` | **Human-closeness**: overall, per speaker, per sentence (TTS/human scores) |

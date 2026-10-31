@@ -1,4 +1,4 @@
-# .venv-dpo: MOSS-TTS-Nano rollout, codec decode and trl DPO training (docs/moss_tts_nano_online_dpo.md)
+# .venv-dpo: MOSS-TTS-Nano rollout, codec decode and trl DPO training (the earlier trl design study; dpo/ does not use it)
 # (Nano pins transformers==4.57.1, which conflicts with SpeechJudge's 4.52.3, hence a separate venv)
 # trl 1.16.0 requires Python >= 3.11
 trl==1.16.0

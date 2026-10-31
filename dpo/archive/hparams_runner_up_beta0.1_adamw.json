@@ -80,7 +80,7 @@
   "eval": {
     "manifest": "runs/sft/dev/eval_mirror.csv",
     "final_skip_grm": false,
-    "_eval": "Every round: the model's benchmark generator on the SFT dev mirror (228 rows, 4 held-out speakers), BTRM, WER/sim/UTMOS, then sft/compare.py vs the round-0 (pi_ref) eval with the SFT guard rails (sft/PLAN.md section 1). The 494 benchmark runs once, at the end, never to choose anything."
+    "_eval": "Every round: the model's benchmark generator on the SFT dev mirror (228 rows, 4 held-out speakers), BTRM, WER/sim/UTMOS, then sft/compare.py vs the round-0 (pi_ref) eval with the SFT guard rails. The 494 benchmark runs once, at the end, never to choose anything."
   },
   "precision": "fp32_master_bf16_autocast",
   "_precision": "Same as SFT decision D13: fp32 weights, bf16 autocast. Pure bf16 rounds most small updates away.",
